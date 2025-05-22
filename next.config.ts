@@ -18,6 +18,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    // Fix for 'async_hooks' module not found error, often related to OpenTelemetry
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        async_hooks: false, // Tells Webpack to ignore this module for client-side bundles
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
