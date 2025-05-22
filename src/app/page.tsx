@@ -1,3 +1,21 @@
-export default function Home() {
-  return <></>;
+import { HeroSection } from '@/components/HeroSection';
+import { ProjectsSection } from '@/components/ProjectsSection';
+import { SkillsSection } from '@/components/SkillsSection';
+import { ExperienceSection } from '@/components/ExperienceSection';
+import { EducationSection } from '@/components/EducationSection';
+import { ResumeSection } from '@/components/ResumeSection';
+import { ContactSection } from '@/components/ContactSection';
+
+export default function HomePage() {
+  return (
+    <>
+      <HeroSection />
+      <ProjectsSection />
+      <SkillsSection />
+      <ExperienceSection />
+      <EducationSection />
+      <ResumeSection />
+      <ContactSection />
+    </>
+  );
 }
