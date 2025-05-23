@@ -1,9 +1,10 @@
+
 "use client";
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from '@/components/ui/sheet';
 import { Menu, X, BrainCircuit } from 'lucide-react'; // Using BrainCircuit as a logo icon
 import { portfolioOwner } from '@/lib/data'; // Assuming portfolioOwner.name is available
 
@@ -81,31 +82,44 @@ export function Navbar() {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-xs sm:max-w-sm">
-              <div className="flex justify-between items-center mb-6">
-                <Link href="/" className="flex items-center gap-2" onClick={closeSheet}>
-                  <BrainCircuit className="h-6 w-6 text-primary" />
-                  <span className="font-bold">AISolutions</span>
+            <SheetContent side="right" className="w-full max-w-xs sm:max-w-sm p-0">
+              <SheetHeader className="p-6 border-b">
+                <div className="flex items-center justify-between">
+                  <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
+                  <SheetClose asChild>
+                    <Button variant="ghost" size="icon">
+                      <X className="h-5 w-5" />
+                      <span className="sr-only">Close menu</span>
+                    </Button>
+                  </SheetClose>
+                </div>
+              </SheetHeader>
+              
+              <div className="p-6">
+                <Link 
+                  href="/" 
+                  className="flex items-center gap-2 mb-6"
+                  onClick={() => { closeSheet(); setActiveLink('#hero');}}
+                >
+                  <BrainCircuit className="h-7 w-7 text-primary" />
+                  <span className="font-bold text-xl">AISolutions</span>
                 </Link>
-                <Button variant="ghost" size="icon" onClick={closeSheet}>
-                  <X className="h-6 w-6" />
-                  <span className="sr-only">Close menu</span>
-                </Button>
+
+                <nav className="flex flex-col gap-4">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className={`text-lg font-medium transition-colors hover:text-primary ${
+                        activeLink === link.href ? 'text-primary' : 'text-muted-foreground'
+                      }`}
+                      onClick={() => { closeSheet(); setActiveLink(link.href); }}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </nav>
               </div>
-              <nav className="flex flex-col gap-4">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className={`text-lg font-medium transition-colors hover:text-primary ${
-                      activeLink === link.href ? 'text-primary' : 'text-muted-foreground'
-                    }`}
-                    onClick={() => { closeSheet(); setActiveLink(link.href); }}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </nav>
             </SheetContent>
           </Sheet>
         </div>
