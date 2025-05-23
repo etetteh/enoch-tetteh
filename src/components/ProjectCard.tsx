@@ -2,13 +2,12 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import type { Project } from '@/types/portfolio';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface ProjectCardProps {
   project: Project;
@@ -16,6 +15,36 @@ interface ProjectCardProps {
   onActivate: () => void;
   projectNumber: number;
 }
+
+// Helper function to highlight skills in the description
+const highlightSkillsInDescriptionInternal = (
+  description: string,
+  skillsToHighlight: string[]
+): React.ReactNode[] => {
+  if (!skillsToHighlight || skillsToHighlight.length === 0) {
+    return [description];
+  }
+
+  // Escape special regex characters in skill names and join them with | for an OR condition
+  // Ensure we match whole words only using \b (word boundary)
+  const pattern = skillsToHighlight
+    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
+    .join('|');
+  const regex = new RegExp(`(${pattern})`, 'gi');
+
+  const parts = description.split(regex);
+
+  return parts.map((part, index) => {
+    // Check if the current part is one of the skills (case-insensitive)
+    const isSkill = skillsToHighlight.some(skill => part.toLowerCase() === skill.toLowerCase());
+    if (isSkill) {
+      // Use index from map as key, as it's unique among siblings here
+      return <span key={index} className="font-semibold text-accent">{part}</span>;
+    }
+    return part;
+  });
+};
+
 
 export function ProjectCard({ project, isActive, onActivate, projectNumber }: ProjectCardProps) {
   return (
@@ -31,27 +60,31 @@ export function ProjectCard({ project, isActive, onActivate, projectNumber }: Pr
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onActivate();}}
     >
-      {/* Background Image - Always present, object-fit handles scaling */}
       <Image
         src={project.imageUrl}
         alt={project.title}
-        layout="fill"
-        objectFit="cover"
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        style={{ objectFit: 'cover' }}
         className={cn(
           "absolute inset-0 z-0 transition-opacity duration-500",
           isActive ? "opacity-20 dark:opacity-10" : "opacity-100 group-hover:opacity-80"
         )}
         data-ai-hint={project.imageHint || 'technology project'}
-        priority={projectNumber <= 2} // Prioritize loading images for initially visible/soon-to-be-active cards
+        priority={projectNumber <= 2}
       />
 
-      {/* Content - Conditional rendering */}
       {isActive ? (
         // Expanded View
         <div className="relative z-10 flex flex-col h-full p-6 bg-card/80 dark:bg-card/90 backdrop-blur-sm">
           <h3 className="text-2xl font-bold text-primary mb-3">{project.title}</h3>
           <ScrollArea className="flex-grow mb-4 pr-3">
-            <p className="text-sm text-foreground leading-relaxed">{project.description}</p>
+            <p className="text-sm text-foreground leading-relaxed">
+              {highlightSkillsInDescriptionInternal(
+                project.description,
+                project.techStack
+              )}
+            </p>
           </ScrollArea>
           <div className="mb-4">
             <h4 className="text-xs font-semibold text-muted-foreground mb-2">TECH STACK:</h4>
@@ -65,16 +98,16 @@ export function ProjectCard({ project, isActive, onActivate, projectNumber }: Pr
             <div className="flex justify-end gap-2 mt-auto pt-4 border-t border-border/20">
               {project.githubUrl && (
                 <Button variant="outline" size="sm" asChild onClick={(e) => e.stopPropagation()}>
-                  <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                     <Github /> GitHub
-                  </Link>
+                  </a>
                 </Button>
               )}
               {project.liveUrl && (
                 <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={(e) => e.stopPropagation()}>
-                  <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink /> Live Demo
-                  </Link>
+                  </a>
                 </Button>
               )}
             </div>
