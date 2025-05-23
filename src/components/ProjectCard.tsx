@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Project } from '@/types/portfolio';
@@ -16,15 +17,27 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
+import { cn } from '@/lib/utils';
 
 interface ProjectCardProps {
   project: Project;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
+
   return (
     <Dialog>
-      <div className="group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl">
+      <div
+        ref={cardRef}
+        className={cn(
+          "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
+          "transition-all duration-700 ease-out", // Fade-in animation classes
+          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        )}
+      >
         <DialogTrigger asChild>
           <Card className="flex flex-col h-full overflow-hidden cursor-pointer bg-card rounded-lg">
             <CardHeader className="p-0">

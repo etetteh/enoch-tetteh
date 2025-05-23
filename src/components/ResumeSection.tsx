@@ -10,22 +10,36 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
 
 export function ResumeSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isVisible = useFadeInOnScroll(sectionRef, { threshold: 0.1 });
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const downloadBlockRef = useRef<HTMLDivElement>(null);
+  const tailorFormRef = useRef<HTMLDivElement>(null); // Ref for the div wrapping ResumeTailorForm
+
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const isDownloadBlockVisible = useFadeInOnScroll(downloadBlockRef, { threshold: 0.1 });
+  const isTailorFormVisible = useFadeInOnScroll(tailorFormRef, { threshold: 0.1 });
 
   return (
-    <section
-      ref={sectionRef}
-      id="resume-tailor"
-      className={cn(
-        "bg-secondary transition-all duration-700 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      )}
-    >
+    <section id="resume-tailor" className="bg-secondary">
       <div className="container">
-        <h2 className="section-title">Resume & AI Tailoring</h2>
+        <h2
+          ref={titleRef}
+          className={cn(
+            "section-title",
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
+        >
+          Resume & AI Tailoring
+        </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div className="space-y-6">
+          <div
+            ref={downloadBlockRef}
+            className={cn(
+              "space-y-6",
+              "transition-all duration-700 ease-out",
+              isDownloadBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            )}
+          >
             <h3 className="text-2xl font-semibold text-primary">Download My Resume</h3>
             <p className="text-muted-foreground">
               Get a copy of my full resume to learn more about my qualifications and experience.
@@ -43,7 +57,13 @@ export function ResumeSection() {
             </p>
           </div>
 
-          <div>
+          <div
+            ref={tailorFormRef}
+            className={cn(
+              "transition-all duration-700 ease-out",
+              isTailorFormVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            )}
+          >
             <ResumeTailorForm />
           </div>
         </div>

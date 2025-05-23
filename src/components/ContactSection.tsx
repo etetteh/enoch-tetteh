@@ -4,28 +4,40 @@
 import { useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Linkedin, Github } from "lucide-react"; // Removed Phone, MapPin as they are commented out
+import { Mail, Linkedin, Github } from "lucide-react";
 import Link from "next/link";
 import { portfolioOwner } from "@/lib/data";
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
 
 export function ContactSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isVisible = useFadeInOnScroll(sectionRef, { threshold: 0.1 });
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardWrapperRef = useRef<HTMLDivElement>(null);
+
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const isCardVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
 
   return (
-    <section
-      ref={sectionRef}
-      id="contact"
-      className={cn(
-        "transition-all duration-700 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      )}
-    >
+    <section id="contact">
       <div className="container">
-        <h2 className="section-title">Get In Touch</h2>
-        <div className="group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl max-w-2xl mx-auto">
+        <h2
+          ref={titleRef}
+          className={cn(
+            "section-title",
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
+        >
+          Get In Touch
+        </h2>
+        <div
+          ref={cardWrapperRef}
+          className={cn(
+            "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl max-w-2xl mx-auto",
+            "transition-all duration-700 ease-out",
+            isCardVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
+        >
           <Card className="bg-card rounded-lg">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold text-primary">Contact Me</CardTitle>
@@ -40,17 +52,6 @@ export function ContactSection() {
                   {portfolioOwner.contactEmail}
                 </a>
               </div>
-              {/* Add other contact details if needed, e.g., phone, location */}
-              {/*
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-accent" />
-                <span className="text-foreground">+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="h-5 w-5 text-accent" />
-                <span className="text-foreground">San Francisco, CA</span>
-              </div>
-              */}
               <div className="flex gap-4 pt-4 border-t">
                 <Button variant="outline" asChild>
                   <Link href={portfolioOwner.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
