@@ -31,7 +31,7 @@ export function Navbar() {
       });
       let current = '';
       const navbarElement = document.querySelector('header');
-      const navbarHeight = navbarElement ? navbarElement.offsetHeight + 20 : 140; 
+      const navbarHeight = navbarElement ? navbarElement.offsetHeight + 20 : 140;
 
       const scrollY = window.scrollY;
 
@@ -68,7 +68,7 @@ export function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); 
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -87,7 +87,7 @@ export function Navbar() {
           onClick={() => setActiveLink(link.href)}
           className={cn(
             "block px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background",
-            isMobile ? "whitespace-nowrap" : "", 
+            isMobile ? "whitespace-nowrap" : "",
             activeLink === link.href
               ? 'bg-primary text-primary-foreground shadow-md'
               : 'text-muted-foreground hover:bg-background hover:text-primary'
@@ -102,14 +102,22 @@ export function Navbar() {
   if (!isMounted) {
     // Basic skeleton loader for navbar
     return (
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 h-[120px] md:h-[140px]"> 
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 h-[76px] md:h-[68px]"> {/* Adjusted height example */}
         <div className="container py-4">
-          <div className="flex justify-between items-center mb-3">
-            <div className="h-7 w-1/4 bg-muted rounded"></div>
-            <div className="h-9 w-9 bg-muted rounded-full"></div> {/* Placeholder for ThemeSwitcher */}
+          {/* Desktop Skeleton */}
+          <div className="hidden md:flex justify-between items-center">
+            <div className="h-7 w-1/4 bg-muted rounded"></div> {/* Name */}
+            <div className="h-9 w-1/2 bg-secondary rounded-full"></div> {/* Nav Pills */}
+            <div className="h-9 w-9 bg-muted rounded-full"></div> {/* ThemeSwitcher */}
           </div>
-          <div className="h-9 w-3/4 bg-secondary rounded-full mt-1 hidden md:block mx-auto"></div>
-          <div className="h-9 w-full bg-secondary rounded-full mt-1 md:hidden"></div>
+          {/* Mobile Skeleton */}
+          <div className="md:hidden">
+            <div className="flex justify-between items-center mb-3">
+              <div className="h-7 w-1/3 bg-muted rounded"></div> {/* Name */}
+              <div className="h-9 w-9 bg-muted rounded-full"></div> {/* ThemeSwitcher */}
+            </div>
+            <div className="h-9 w-full bg-secondary rounded-full mt-1"></div> {/* Mobile Pills */}
+          </div>
         </div>
       </header>
     );
@@ -117,8 +125,9 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container py-4"> 
-        <div className="flex justify-between items-center mb-3">
+      <div className="container py-4">
+        {/* Desktop Layout: Name - Nav Pills - ThemeSwitcher */}
+        <div className="hidden md:flex justify-between items-center">
           <Link
             href="#hero"
             className="text-xl font-bold text-primary hover:text-primary/90 transition-colors"
@@ -126,15 +135,29 @@ export function Navbar() {
           >
             {portfolioOwner.name}
           </Link>
+          <nav> {/* Desktop Nav Pills are directly rendered here */}
+            {renderPillNavLinks(false)}
+          </nav>
           <ThemeSwitcher />
         </div>
 
-        <nav className="hidden md:flex justify-center mt-1"> 
-          {renderPillNavLinks(false)}
-        </nav>
-
-        <div className="md:hidden mt-1 w-full overflow-x-auto scrollbar-hide flex justify-start py-1" tabIndex={0}>
-          {renderPillNavLinks(true)}
+        {/* Mobile Layout */}
+        <div className="md:hidden">
+          {/* Row 1: Name and ThemeSwitcher */}
+          <div className="flex justify-between items-center mb-3">
+            <Link
+              href="#hero"
+              className="text-xl font-bold text-primary hover:text-primary/90 transition-colors"
+              onClick={() => setActiveLink('#hero')}
+            >
+              {portfolioOwner.name}
+            </Link>
+            <ThemeSwitcher />
+          </div>
+          {/* Row 2: Scrollable Navigation Pills */}
+          <div className="mt-1 w-full overflow-x-auto scrollbar-hide flex justify-start py-1" tabIndex={0}>
+            {renderPillNavLinks(true)}
+          </div>
         </div>
       </div>
     </header>
