@@ -30,17 +30,36 @@ export function Navbar() {
 
     const handleScroll = () => {
       const sections = navLinks.map(link => document.getElementById(link.href.substring(1)));
-      let current = '#hero'; // Default to hero if no other section is scrolled to
+      let current = ''; 
+      // Adjusted to find the section that is currently most visible or at the top
       for (const section of sections) {
         if (section) {
           const sectionTop = section.offsetTop;
-          // Adjust offset if navbar height is dynamic or for better active state triggering
-          if (window.scrollY >= sectionTop - 80) { // 80px offset
+          const sectionHeight = section.offsetHeight;
+          // Check if section is within the top part of the viewport more generously
+          if (window.scrollY >= sectionTop - 80 && window.scrollY < sectionTop + sectionHeight - 80) {
             current = `#${section.id}`;
+            break; 
           }
         }
       }
-      setActiveLink(current);
+       // If no section is prominently in view based on the above, fall back to the topmost one scrolled past
+      if (!current) {
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          if (section && window.scrollY >= section.offsetTop - 80) {
+            current = `#${section.id}`;
+            break;
+          }
+        }
+      }
+      // Default to hero if nothing else is active
+      if (!current && sections.length > 0 && sections[0] && window.scrollY < sections[0].offsetTop - 80) {
+        current = '#hero';
+      }
+
+
+      setActiveLink(current || '#hero');
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -59,30 +78,28 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link 
-          href="/" 
+          href="#hero" // Changed from "/" to "#hero" to also set active link
           className="text-xl font-bold text-primary hover:text-primary/90 transition-colors" 
           onClick={() => { closeSheet(); setActiveLink('#hero');}}
         >
           {ownerName}
         </Link>
 
-        <nav className="hidden md:flex items-center">
-          <div className="bg-secondary rounded-full p-1 flex items-center space-x-1 shadow-sm">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                  activeLink === link.href 
-                    ? 'bg-primary text-primary-foreground shadow-md' 
-                    : 'text-muted-foreground hover:text-primary hover:bg-card' 
-                }`}
-                onClick={() => setActiveLink(link.href)}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
+        <nav className="hidden md:flex items-center space-x-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className={`pb-1 text-sm font-medium transition-colors duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                activeLink === link.href 
+                  ? 'text-primary font-semibold border-b-2 border-primary' 
+                  : 'text-muted-foreground hover:text-primary' 
+              }`}
+              onClick={() => setActiveLink(link.href)}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="md:hidden">
@@ -94,23 +111,23 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs sm:max-w-sm p-0">
-              <SheetHeader className="p-6 border-b">
+              <SheetHeader className="p-6 pb-4 border-b">
                 <div className="flex items-center justify-between">
                    <Link 
-                    href="/" 
+                    href="#hero" 
                     className="text-lg font-bold text-primary"
                     onClick={() => { closeSheet(); setActiveLink('#hero');}}
                   >
                     {ownerName}
                   </Link>
                   <SheetClose asChild>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="text-muted-foreground">
                       <X className="h-5 w-5" />
                       <span className="sr-only">Close menu</span>
                     </Button>
                   </SheetClose>
                 </div>
-                 <SheetTitle className="sr-only">Menu</SheetTitle> {/* Keep for accessibility, hide visually if logo serves as title */}
+                 <SheetTitle className="text-base font-medium text-muted-foreground pt-1">Menu</SheetTitle>
               </SheetHeader>
               
               <div className="p-6">
