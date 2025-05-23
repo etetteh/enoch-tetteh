@@ -1,10 +1,12 @@
 
 'use client';
 
+import type { ReactNode } from 'react';
 import type { Project } from '@/types/portfolio';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
@@ -12,8 +14,6 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 interface ProjectCardProps {
   project: Project;
-  isActive: boolean;
-  onActivate: () => void;
   projectNumber: number;
 }
 
@@ -22,13 +22,11 @@ const highlightSkillsInDescriptionInternal = (
   description: string,
   skillsToHighlight: string[],
   currentProjectNumber: number
-): React.ReactNode[] => {
+): ReactNode[] => {
   if (!skillsToHighlight || skillsToHighlight.length === 0) {
     return [description];
   }
 
-  // Escape special regex characters in skill names and join them with | for an OR condition
-  // Ensure we match whole words only using \b (word boundary)
   const pattern = skillsToHighlight
     .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
     .join('|');
@@ -37,7 +35,6 @@ const highlightSkillsInDescriptionInternal = (
   const parts = description.split(regex);
 
   return parts.map((part, index) => {
-    // Check if the current part is one of the skills (case-insensitive)
     const isSkill = skillsToHighlight.some(skill => part.toLowerCase() === skill.toLowerCase());
     if (isSkill) {
       return <span key={`project-${currentProjectNumber}-skill-${part}-${index}`} className="font-semibold text-accent">{part}</span>;
@@ -46,34 +43,25 @@ const highlightSkillsInDescriptionInternal = (
   });
 };
 
-
-export function ProjectCard({ project, isActive, onActivate, projectNumber }: ProjectCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
+export function ProjectCard({ project, projectNumber }: ProjectCardProps) {
+  const cardWrapperRef = useRef<HTMLDivElement>(null);
+  const isCardVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
 
   return (
     <div
-      ref={cardRef}
-      onClick={onActivate}
+      ref={cardWrapperRef}
       className={cn(
-        "relative flex-none rounded-xl overflow-hidden shadow-lg cursor-pointer transition-all duration-500 ease-in-out h-[450px] group",
-        "bg-card text-card-foreground",
+        "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
         "transition-all duration-700 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
-        isActive ? "w-[90vw] max-w-[600px]" : "w-20 md:w-24 hover:w-28 md:hover:w-32"
+        isCardVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}
-      aria-expanded={isActive}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onActivate();}}
     >
-      {/* Image component removed */}
-
-      {isActive ? (
-        // Expanded View
-        <div className="relative z-10 flex flex-col h-full p-6 bg-card/80 dark:bg-card/90 backdrop-blur-sm">
-          <h3 className="text-2xl font-bold text-primary mb-3">{project.title}</h3>
-          <ScrollArea className="flex-grow mb-4 pr-3">
+      <Card className="bg-card rounded-lg flex flex-col h-full">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-primary mb-1">{project.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-grow space-y-4">
+          <ScrollArea className="h-[100px] pr-3"> {/* Adjust height as needed */}
             <p className="text-sm text-foreground leading-relaxed">
               {highlightSkillsInDescriptionInternal(
                 project.description,
@@ -82,49 +70,34 @@ export function ProjectCard({ project, isActive, onActivate, projectNumber }: Pr
               )}
             </p>
           </ScrollArea>
-          <div className="mb-4">
-            <h4 className="text-xs font-semibold text-muted-foreground mb-2">TECH STACK:</h4>
+          <div>
+            <h4 className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Tech Stack:</h4>
             <div className="flex flex-wrap gap-2">
               {project.techStack.map((tech) => (
                 <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
               ))}
             </div>
           </div>
-          {(project.githubUrl || project.liveUrl) && (
-            <div className="flex justify-end gap-2 mt-auto pt-4 border-t border-border/20">
-              {project.githubUrl && (
-                <Button variant="outline" size="sm" asChild onClick={(e) => e.stopPropagation()}>
-                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                    <Github /> GitHub
-                  </a>
-                </Button>
-              )}
-              {project.liveUrl && (
-                <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={(e) => e.stopPropagation()}>
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink /> Live Demo
-                  </a>
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
-      ) : (
-        // Collapsed View
-        <div className="relative z-10 flex flex-col justify-end h-full p-3 md:p-4 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
-          <div className={cn(
-            "transition-all duration-300 ease-in-out",
-            "group-hover:mb-1"
-            )}>
-            <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/80 text-primary-foreground text-sm md:text-base font-bold mb-1 md:mb-2 ring-2 ring-primary-foreground/50">
-              {projectNumber}
-            </div>
-            <h4 className="text-white text-xs md:text-sm font-semibold line-clamp-2 transform-gpu transition-all duration-300 ease-in-out origin-bottom opacity-0 group-hover:opacity-100 group-hover:scale-100 scale-90">
-              {project.title}
-            </h4>
-          </div>
-        </div>
-      )}
+        </CardContent>
+        {(project.githubUrl || project.liveUrl) && (
+          <CardFooter className="flex justify-end gap-2 pt-4 border-t">
+            {project.githubUrl && (
+              <Button variant="outline" size="sm" asChild>
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <Github /> GitHub
+                </a>
+              </Button>
+            )}
+            {project.liveUrl && (
+              <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink /> Live Demo
+                </a>
+              </Button>
+            )}
+          </CardFooter>
+        )}
+      </Card>
     </div>
   );
 }
