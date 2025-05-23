@@ -3,8 +3,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { portfolioChatbot, type PortfolioChatbotInput, type PortfolioChatbotOutput } from '@/ai/flows/portfolio-chatbot';
-import { suggestedQueriesFlow } from '@/ai/flows/suggested-queries-flow';
-import type { SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow'; // Corrected import type
+import { suggestedQueriesFlow, type SuggestedQueriesInput } from '@/ai/flows/suggested-queries-flow'; // Corrected import
+import type { SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter, SheetClose, SheetTrigger } from '@/components/ui/sheet';
@@ -36,6 +36,10 @@ export function Chatbot() {
 
   const [dynamicSuggestedQueries, setDynamicSuggestedQueries] = useState<string[]>(defaultSuggestedQueries);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(true);
+  
+  const [displayedSuggestedQuery, setDisplayedSuggestedQuery] = useState<string>('');
+  const queryIndexRef = useRef(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -48,18 +52,19 @@ export function Chatbot() {
       try {
         const pageContent = extractPageContent();
         if (pageContent) {
-          const suggestionsOutput: SuggestedQueriesOutput = await suggestedQueriesFlow({ portfolioContent: pageContent });
+          const input: SuggestedQueriesInput = { portfolioContent: pageContent };
+          const suggestionsOutput: SuggestedQueriesOutput = await suggestedQueriesFlow(input);
           if (suggestionsOutput.queries && suggestionsOutput.queries.length > 0) {
-            setDynamicSuggestedQueries(suggestionsOutput.queries.slice(0, 3)); // Take up to 3
+            setDynamicSuggestedQueries(suggestionsOutput.queries);
           } else {
-            setDynamicSuggestedQueries(defaultSuggestedQueries.slice(0, 3));
+            setDynamicSuggestedQueries(defaultSuggestedQueries);
           }
         } else {
-          setDynamicSuggestedQueries(defaultSuggestedQueries.slice(0, 3));
+          setDynamicSuggestedQueries(defaultSuggestedQueries);
         }
       } catch (error) {
         console.error("Failed to fetch dynamic suggestions:", error);
-        setDynamicSuggestedQueries(defaultSuggestedQueries.slice(0, 3));
+        setDynamicSuggestedQueries(defaultSuggestedQueries);
          toast({
           title: "Suggestion Error",
           description: "Could not load AI-powered suggestions, using defaults.",
@@ -72,6 +77,26 @@ export function Chatbot() {
 
     fetchSuggestions();
   }, [toast]);
+  
+  useEffect(() => {
+    if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0) {
+      if (!isOpen && isMounted) {
+        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+        intervalRef.current = setInterval(() => {
+          queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
+          setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+        }, 3000);
+      } else if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isOpen, isMounted, dynamicSuggestedQueries, isLoadingSuggestions]);
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -124,11 +149,12 @@ export function Chatbot() {
     processQuery(query);
   };
   
-  const handleSuggestionClick = async (suggestion: string) => {
+  const handleSingleSuggestionClick = async () => {
+    if (!displayedSuggestedQuery) return;
     setIsOpen(true);
     // Wait for sheet to potentially open
     await new Promise(resolve => setTimeout(resolve, 50)); 
-    processQuery(suggestion);
+    processQuery(displayedSuggestedQuery);
   };
   
   if (!isMounted) {
@@ -150,19 +176,17 @@ export function Chatbot() {
                 Loading suggestions...
             </Button>
            ) : (
-            dynamicSuggestedQueries.map((suggestion, index) => (
+            displayedSuggestedQuery && (
               <Button
-                key={index}
                 variant="outline"
                 size="sm"
-                onClick={() => handleSuggestionClick(suggestion)}
-                style={{ animationDelay: `${index * 100}ms` }}
+                onClick={handleSingleSuggestionClick}
                 className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95 slide-in-from-bottom-5"
               >
                 <Sparkles className="mr-2 h-4 w-4 text-accent" />
-                {suggestion}
+                {displayedSuggestedQuery}
               </Button>
-            ))
+            )
            )}
         </div>
       )}
@@ -250,3 +274,4 @@ export function Chatbot() {
     </>
   );
 }
+
