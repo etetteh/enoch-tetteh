@@ -7,7 +7,7 @@ import Balancer from 'react-wrap-balancer';
 export function HeroSection() {
   return (
     <section id="hero" className="bg-gradient-to-b from-background to-secondary py-20 md:py-32">
-      <div className="container mx-auto text-center">
+      <div className="container text-center">
         <h1 className="text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl">
           <Balancer>{portfolioOwner.name}</Balancer>
         </h1>

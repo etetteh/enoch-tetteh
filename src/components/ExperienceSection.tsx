@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export function ExperienceSection() {
   return (
     <section id="experience" className="bg-secondary">
-      <div className="container mx-auto">
+      <div className="container">
         <h2 className="section-title">Professional Experience</h2>
         <div className="space-y-8">
           {experiences.map((exp) => (

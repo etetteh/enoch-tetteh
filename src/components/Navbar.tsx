@@ -29,9 +29,8 @@ export function Navbar() {
         return id ? document.getElementById(id) : null;
       });
       let current = '';
-      // Adjust navbarHeight dynamically or use a larger, safer fixed value
       const navbarElement = document.querySelector('header');
-      const navbarHeight = navbarElement ? navbarElement.offsetHeight + 20 : 140; // Added buffer
+      const navbarHeight = navbarElement ? navbarElement.offsetHeight + 20 : 140; 
 
       const scrollY = window.scrollY;
 
@@ -39,8 +38,6 @@ export function Navbar() {
         if (section) {
           const sectionTop = section.offsetTop;
           const sectionHeight = section.offsetHeight;
-          // Check if the top of the section is within a range from the navbar bottom
-          // or if the scroll position is within the section itself
           if (scrollY >= sectionTop - navbarHeight && scrollY < sectionTop + sectionHeight - navbarHeight) {
             current = `#${section.id}`;
             break;
@@ -48,14 +45,10 @@ export function Navbar() {
         }
       }
       
-      // Fallback logic if no section is actively "current"
       if (!current) {
-        // If above the first section, make the first link active
         if (sections.length > 0 && sections[0] && scrollY < sections[0].offsetTop - navbarHeight) {
           current = navLinks[0].href;
         } else {
-          // If scrolled past the last section, keep the last link active (or specific logic)
-          // For now, this loop will find the last one that matches the condition
           for (let i = sections.length - 1; i >= 0; i--) {
             const section = sections[i];
             if (section && scrollY >= section.offsetTop - navbarHeight) {
@@ -66,7 +59,6 @@ export function Navbar() {
         }
       }
       
-      // Default to first link if still no current link determined
       if (!current && navLinks.length > 0) {
         current = navLinks[0].href;
       }
@@ -107,13 +99,12 @@ export function Navbar() {
   );
 
   if (!isMounted) {
-    // Skeleton loader to mimic the structure
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 h-[120px] md:h-[140px]"> 
-        <div className="container mx-auto py-4">
-          <div className="h-7 w-1/4 bg-muted rounded mb-3"></div> {/* Skeleton for name */}
-          <div className="h-9 w-3/4 bg-secondary rounded-full mt-1 hidden md:block mx-auto"></div> {/* Skeleton for desktop nav */}
-          <div className="h-9 w-full bg-secondary rounded-full mt-1 md:hidden"></div> {/* Skeleton for mobile nav */}
+        <div className="container py-4">
+          <div className="h-7 w-1/4 bg-muted rounded mb-3"></div>
+          <div className="h-9 w-3/4 bg-secondary rounded-full mt-1 hidden md:block mx-auto"></div>
+          <div className="h-9 w-full bg-secondary rounded-full mt-1 md:hidden"></div>
         </div>
       </header>
     );
@@ -121,8 +112,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto py-4"> {/* Ensures overall centering and padding */}
-        {/* Name Section - Aligned Left */}
+      <div className="container py-4"> 
         <div className="mb-3"> 
           <Link
             href="#hero"
@@ -133,12 +123,10 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop Navigation - Centered */}
         <nav className="hidden md:flex justify-center mt-1"> 
           {renderPillNavLinks(false)}
         </nav>
 
-        {/* Mobile Navigation - Scrollable from left, content effectively centered if it fits */}
         <div className="md:hidden mt-1 w-full overflow-x-auto scrollbar-hide flex justify-start py-1" tabIndex={0}>
           {renderPillNavLinks(true)}
         </div>

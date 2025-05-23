@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 export function SkillsSection() {
   return (
     <section id="skills">
-      <div className="container mx-auto">
+      <div className="container">
         <h2 className="section-title">Skills & Expertise</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {skillCategories.map((category) => (
