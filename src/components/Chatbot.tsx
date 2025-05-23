@@ -178,12 +178,12 @@ export function Chatbot() {
             displayedSuggestedQuery && (
               <Button
                 variant="outline"
-                size="sm"
+                size="sm" 
                 onClick={handleSingleSuggestionClick}
-                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90"
+                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
               >
-                <Sparkles className="mr-2 h-4 w-4 text-accent" />
-                {displayedSuggestedQuery}
+                <Sparkles className="mr-2 h-4 w-4 text-accent flex-shrink-0" />
+                <span>{displayedSuggestedQuery}</span>
               </Button>
             )
            )}
@@ -273,5 +273,3 @@ export function Chatbot() {
     </>
   );
 }
-
-    
