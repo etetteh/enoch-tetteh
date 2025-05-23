@@ -64,7 +64,7 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" className="bg-secondary">
-      <div className="container mx-auto">
+      <div className="container">
         <h2
           ref={titleRef}
           className={cn(
@@ -106,7 +106,7 @@ export function ProjectsSection() {
                         {highlightSkillsInDescriptionInternal(
                             currentProject.description,
                             currentProject.techStack,
-                            currentIndex + 1
+                            currentIndex + 1 // Using currentIndex as a unique number for the project
                         )}
                         </p>
                     </ScrollArea>
@@ -156,23 +156,21 @@ export function ProjectsSection() {
           </div>
 
           {/* Navigation Arrows */}
-          <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+          <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
             <Button
               variant="outline"
-              size="icon"
               onClick={handlePrev}
-              className="rounded-full w-full h-full bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+              className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
               aria-label="Previous Project"
             >
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </div>
-          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
             <Button
               variant="outline"
-              size="icon"
               onClick={handleNext}
-               className="rounded-full w-full h-full bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+              className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
               aria-label="Next Project"
             >
               <ChevronRight className="h-6 w-6" />
