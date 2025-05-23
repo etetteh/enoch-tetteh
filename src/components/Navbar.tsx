@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from '@/components/ui/sheet';
-import { Menu, X, BrainCircuit } from 'lucide-react'; // Using BrainCircuit as a logo icon
-import { portfolioOwner } from '@/lib/data'; // Assuming portfolioOwner.name is available
+import { Menu, X, Cpu } from 'lucide-react'; // Using Cpu as a logo icon
+import { portfolioOwner } from '@/lib/data'; 
 
 const navLinks = [
   { href: '#hero', label: 'Home' },
@@ -22,16 +22,19 @@ export function Navbar() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [isMounted, setIsMounted] = useState(false);
+  const [ownerName, setOwnerName] = useState('');
 
   useEffect(() => {
-    setIsMounted(true); // Component has mounted, safe to use window
+    setIsMounted(true); 
+    setOwnerName(portfolioOwner.name); // Set owner name on mount
+
     const handleScroll = () => {
       const sections = navLinks.map(link => document.getElementById(link.href.substring(1)));
       let current = '';
       sections.forEach(section => {
         if (section) {
           const sectionTop = section.offsetTop;
-          if (window.scrollY >= sectionTop - 100) { // Adjusted offset for better accuracy
+          if (window.scrollY >= sectionTop - 100) { 
             current = `#${section.id}`;
           }
         }
@@ -40,7 +43,7 @@ export function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Call on mount to set initial active link
+    handleScroll(); 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -48,15 +51,15 @@ export function Navbar() {
   const closeSheet = () => setIsSheetOpen(false);
 
   if (!isMounted) {
-    return null; // Or a loading skeleton for Navbar
+    return null; 
   }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 mr-6" onClick={() => { closeSheet(); setActiveLink('#hero');}}>
-          <BrainCircuit className="h-7 w-7 text-primary" />
-          <span className="font-bold text-xl">AISolutions</span>
+          <Cpu className="h-7 w-7 text-primary" />
+          <span className="font-bold text-xl">{ownerName}</span>
         </Link>
 
         <nav className="hidden md:flex gap-6 items-center">
@@ -101,8 +104,8 @@ export function Navbar() {
                   className="flex items-center gap-2 mb-6"
                   onClick={() => { closeSheet(); setActiveLink('#hero');}}
                 >
-                  <BrainCircuit className="h-7 w-7 text-primary" />
-                  <span className="font-bold text-xl">AISolutions</span>
+                  <Cpu className="h-7 w-7 text-primary" />
+                  <span className="font-bold text-xl">{ownerName}</span>
                 </Link>
 
                 <nav className="flex flex-col gap-4">

@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'AISolutions Portfolio | Showcase of AI Projects and Expertise',
-  description: 'Explore the portfolio of an AI solutions expert, featuring innovative projects, skills, and experience in the field of Artificial Intelligence.',
+  title: 'Alex Johnson | AI Engineer & Google Cloud Portfolio | Seeking Roles at Google',
+  description: 'Portfolio of Alex Johnson, an AI Engineer specializing in Google Cloud, TensorFlow, and scalable machine learning solutions. Showcasing projects and expertise relevant for opportunities at Google.',
 };
 
 export default function RootLayout({

@@ -1,33 +1,33 @@
 import type { Project, SkillCategory, Experience, Education } from '@/types/portfolio';
-import { Briefcase, GraduationCap, Lightbulb, Sparkles, Brain, Bot, Database, Cloud, Users, Code } from 'lucide-react';
+import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow } from 'lucide-react';
 
 export const projects: Project[] = [
   {
     id: '1',
-    title: 'Intelligent Document Analyzer',
-    description: 'An AI-powered tool to extract key information and insights from various document types, improving data processing efficiency by 40%.',
+    title: 'Scalable Document Intelligence Platform (GCP)',
+    description: "Architected and deployed an AI-powered platform on Google Cloud (Vertex AI, Document AI) to extract and analyze insights from millions of documents, boosting data processing efficiency by over 45% and enabling new data-driven business decisions.",
     imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'document analysis',
-    techStack: ['Python', 'NLP', 'OpenCV', 'TensorFlow', 'React'],
+    imageHint: 'cloud data platform',
+    techStack: ['Google Cloud Platform', 'Vertex AI', 'Document AI', 'Python', 'TensorFlow', 'Kubernetes', 'React'],
     githubUrl: '#',
     liveUrl: '#',
   },
   {
     id: '2',
-    title: 'Predictive Maintenance System',
-    description: 'Developed a machine learning model to predict equipment failures, reducing downtime and maintenance costs for industrial clients.',
+    title: 'Proactive Anomaly Detection for Large-Scale Systems',
+    description: "Developed and implemented a machine learning system using TensorFlow and Scikit-learn for real-time anomaly detection in distributed systems, significantly reducing critical incident response times and improving system reliability for a platform serving over 10 million users. Deployed on GKE.",
     imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'industrial machinery',
-    techStack: ['Python', 'Scikit-learn', 'Pandas', 'AWS SageMaker', 'Grafana'],
+    imageHint: 'anomaly detection system',
+    techStack: ['Python', 'TensorFlow', 'Scikit-learn', 'Prometheus', 'GKE', 'BigQuery'],
     githubUrl: '#',
   },
   {
     id: '3',
-    title: 'Personalized Recommendation Engine',
-    description: 'Built a recommendation system for an e-commerce platform, increasing user engagement and sales through tailored suggestions.',
+    title: 'Next-Generation Recommendation Engine (TensorFlow Recommenders)',
+    description: "Engineered a high-performance recommendation system leveraging TensorFlow Recommenders (TFRS) and deployed on Google Cloud. Achieved a 25% uplift in user engagement and a 15% increase in conversion rates for a major e-commerce client by delivering highly personalized content suggestions.",
     imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'online shopping',
-    techStack: ['Collaborative Filtering', 'Matrix Factorization', 'Spark MLlib', 'Next.js'],
+    imageHint: 'recommendation engine',
+    techStack: ['TensorFlow Recommenders', 'Python', 'Google Cloud AI Platform', 'BigQuery', 'Next.js'],
     liveUrl: '#',
   },
 ];
@@ -36,52 +36,52 @@ export const skillCategories: SkillCategory[] = [
   {
     name: 'Programming Languages',
     icon: Code,
-    skills: ['Python', 'JavaScript', 'TypeScript', 'Java', 'SQL'],
+    skills: ['Python', 'JavaScript', 'TypeScript', 'Java', 'SQL', 'Go'],
   },
   {
-    name: 'AI & Machine Learning',
+    name: 'AI/ML & Google AI',
     icon: Brain,
-    skills: ['Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning', 'TensorFlow', 'PyTorch', 'Scikit-learn'],
+    skills: ['Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform'],
   },
   {
-    name: 'Data Science & Analytics',
+    name: 'Data Science & Google Cloud Data',
     icon: Database,
-    skills: ['Data Mining', 'Statistical Analysis', 'Data Visualization (Tableau, PowerBI)', 'Pandas', 'NumPy', 'Spark'],
+    skills: ['Data Mining', 'Statistical Analysis', 'Data Visualization (Tableau, PowerBI)', 'Pandas', 'NumPy', 'Spark', 'BigQuery', 'Looker'],
   },
   {
-    name: 'Web Technologies',
-    icon: Users,
-    skills: ['React', 'Next.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs', 'GraphQL'],
+    name: 'Web Technologies & Distributed Systems',
+    icon: AppWindow,
+    skills: ['React', 'Next.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs', 'GraphQL', 'gRPC'],
   },
   {
-    name: 'Cloud & DevOps',
+    name: 'Google Cloud & DevOps',
     icon: Cloud,
-    skills: ['AWS (SageMaker, EC2, S3)', 'Azure ML', 'Docker', 'Kubernetes', 'CI/CD', 'Git'],
+    skills: ['Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML', 'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform'],
   },
 ];
 
 export const experiences: Experience[] = [
   {
     id: '1',
-    role: 'Senior AI Engineer',
+    role: 'Lead AI Engineer (Google Cloud Focus)',
     company: 'Innovatech Solutions',
     period: '2021 - Present',
     description: [
-      'Led development of AI-driven products from conception to deployment, resulting in new revenue streams.',
-      'Mentored junior engineers and contributed to best practices in machine learning model development and deployment.',
-      'Collaborated with cross-functional teams to integrate AI capabilities into existing platforms.',
+      "Led a team of 5 engineers in designing and deploying AI solutions on Google Cloud Platform, directly contributing to a 20% YOY revenue growth from AI products.",
+      "Pioneered the use of Vertex AI pipelines for MLOps, reducing model deployment times by 60% and improving model monitoring.",
+      "Drove cross-functional collaboration with product and infrastructure teams to integrate cutting-edge AI, like large language models (LLMs), into flagship products, enhancing user experience for 1M+ active users."
     ],
     icon: Briefcase,
   },
   {
     id: '2',
-    role: 'Machine Learning Researcher',
+    role: 'Machine Learning Engineer & Researcher',
     company: 'Tech Forward Labs',
     period: '2019 - 2021',
     description: [
-      'Conducted research on cutting-edge NLP techniques, publishing findings in top-tier conferences.',
-      'Developed novel algorithms for text summarization and sentiment analysis.',
-      'Built and evaluated proof-of-concept models for various industry applications.',
+      "Researched and developed novel deep learning models for NLP tasks, resulting in 2 publications in ACL and NeurIPS workshops and demonstrating significant improvements over SOTA.",
+      "Engineered and optimized data processing pipelines for large-scale text datasets using Apache Beam on Google Cloud Dataflow.",
+      "Built and rigorously evaluated proof-of-concept AI models, demonstrating feasibility for projects later adopted for Google Cloud integration."
     ],
     icon: Briefcase,
   },
@@ -93,7 +93,7 @@ export const education: Education[] = [
     degree: 'M.S. in Artificial Intelligence',
     institution: 'Stanford University',
     period: '2017 - 2019',
-    description: 'Specialized in Deep Learning and Natural Language Processing. Thesis on "Advanced Techniques for Neural Machine Translation".',
+    description: "Specialized in Deep Learning and Natural Language Processing. Thesis: 'Scalable Neural Machine Translation with Attention Mechanisms on Distributed TensorFlow'. Contributed to open-source TensorFlow projects.",
     icon: GraduationCap,
   },
   {
@@ -101,15 +101,15 @@ export const education: Education[] = [
     degree: 'B.S. in Computer Science',
     institution: 'Massachusetts Institute of Technology (MIT)',
     period: '2013 - 2017',
-    description: 'Graduated with honors. Focus on algorithms and software development. Capstone project on "AI-Powered Chess Engine".',
+    description: "Graduated with high honors. Focus on algorithms, distributed systems, and software engineering. Capstone: 'AI-Powered Search Optimization using Reinforcement Learning', deployed on a simulated large-scale environment.",
     icon: GraduationCap,
   },
 ];
 
 export const portfolioOwner = {
   name: "Alex Johnson",
-  title: "AI Solutions Architect & Innovator",
-  bio: "Passionate about leveraging artificial intelligence to solve complex problems and drive business value. With a strong foundation in machine learning, data science, and software engineering, I specialize in developing and deploying innovative AI solutions across various industries. My goal is to transform data into actionable insights and create intelligent systems that make a tangible impact.",
+  title: "Innovative AI Engineer & Google Cloud Specialist",
+  bio: "Driven AI Engineer with a proven track record of developing scalable, high-impact machine learning solutions. Expertise in Google Cloud Platform, TensorFlow, and building production-grade AI systems. Passionate about tackling complex challenges and eager to contribute to Google's mission of organizing the world's information and making it universally accessible and useful.",
   contactEmail: "alex.johnson.ai@example.com",
   linkedinUrl: "https://www.linkedin.com/in/example",
   githubUrl: "https://github.com/example",
