@@ -158,7 +158,7 @@ export function ProjectsSection() {
             variant="outline"
             size="icon"
             onClick={handlePrev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/50 hover:bg-background text-foreground"
+            className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/50 hover:bg-background text-foreground"
             aria-label="Previous Project"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -167,7 +167,7 @@ export function ProjectsSection() {
             variant="outline"
             size="icon"
             onClick={handleNext}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/50 hover:bg-background text-foreground"
+            className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/50 hover:bg-background text-foreground"
             aria-label="Next Project"
           >
             <ChevronRight className="h-6 w-6" />
@@ -192,3 +192,4 @@ export function ProjectsSection() {
     </section>
   );
 }
+
