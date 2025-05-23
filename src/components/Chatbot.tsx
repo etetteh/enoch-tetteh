@@ -28,15 +28,19 @@ export function Chatbot() {
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [portfolioContent, setPortfolioContent] = useState<string>('');
+  // const [portfolioContent, setPortfolioContent] = useState<string>(''); // This state is not directly used for rendering
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const [displayedSuggestedQuery, setDisplayedSuggestedQuery] = useState(suggestedQueries[0]);
+  const queryIndexRef = useRef(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     setIsMounted(true);
     if (typeof window !== 'undefined') {
-      setMessages([{id: 'greeting', text: "Hello there! I'm Alex's portfolio assistant. I can help you find information about Alex's projects, skills, and experience on this page. What are you looking for?", sender: 'bot'}]);
+      setMessages([{id: 'greeting', text: "Hello there! I'm Alex's portfolio assistant. How can I help you learn more about Alex's projects, skills, or experience today?", sender: 'bot'}]);
     }
   }, []);
 
@@ -44,6 +48,32 @@ export function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const cycleQuery = () => {
+      queryIndexRef.current = (queryIndexRef.current + 1) % suggestedQueries.length;
+      setDisplayedSuggestedQuery(suggestedQueries[queryIndexRef.current]);
+    };
+
+    if (!isOpen) {
+      setDisplayedSuggestedQuery(suggestedQueries[queryIndexRef.current]); // Initialize/reset
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      intervalRef.current = setInterval(cycleQuery, 3000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isOpen, isMounted]); // suggestedQueries is stable, so not strictly needed as dep
+
   const extractPageContent = () => {
     if (typeof document !== 'undefined') {
       const mainElement = document.querySelector('main');
@@ -58,13 +88,10 @@ export function Chatbot() {
     const userMessage: Message = { id: Date.now().toString(), text: queryString, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
     
-    if (queryString === query) { // If it's from the input field, clear it
-      setQuery('');
-    }
     setIsLoading(true);
 
     const currentPortfolioContent = extractPageContent();
-    setPortfolioContent(currentPortfolioContent);
+    // setPortfolioContent(currentPortfolioContent); // Not strictly needed if only passed to AI
 
     try {
       const input: PortfolioChatbotInput = {
@@ -86,7 +113,7 @@ export function Chatbot() {
       });
     } finally {
       setIsLoading(false);
-      setQuery(''); // Ensure query is cleared after processing, regardless of source
+      setQuery(''); // Clear the main input field
     }
   };
 
@@ -95,11 +122,11 @@ export function Chatbot() {
     processQuery(query);
   };
 
-  const handleSuggestionClick = async (suggestion: string) => {
+  const handleSingleSuggestionClick = async () => {
     setIsOpen(true); 
-    // Wait for sheet to potentially open if triggered by suggestion
+    // Wait for sheet to potentially open
     await new Promise(resolve => setTimeout(resolve, 50));
-    processQuery(suggestion);
+    processQuery(displayedSuggestedQuery);
   };
 
   if (!isMounted) {
@@ -108,21 +135,17 @@ export function Chatbot() {
 
   return (
     <>
-      {/* Suggested Queries */}
+      {/* Single Suggested Query Button */}
       {isMounted && !isOpen && (
-        <div className="fixed bottom-24 right-6 space-y-2 flex flex-col items-end z-40">
-          {suggestedQueries.map((sq, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              size="sm"
-              onClick={() => handleSuggestionClick(sq)}
-              className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              {sq}
-            </Button>
-          ))}
+        <div className="fixed bottom-24 right-6 flex flex-col items-end z-40">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleSingleSuggestionClick}
+            className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95"
+          >
+            {displayedSuggestedQuery}
+          </Button>
         </div>
       )}
 
