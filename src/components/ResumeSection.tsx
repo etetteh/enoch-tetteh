@@ -6,7 +6,7 @@ import { ResumeTailorForm } from "./ResumeTailorForm";
 export function ResumeSection() {
   return (
     <section id="resume-tailor" className="bg-secondary">
-      <div className="container">
+      <div className="container mx-auto">
         <h2 className="section-title">Resume & AI Tailoring</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-6">

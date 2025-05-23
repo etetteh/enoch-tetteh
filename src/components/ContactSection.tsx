@@ -7,7 +7,7 @@ import { portfolioOwner } from "@/lib/data";
 export function ContactSection() {
   return (
     <section id="contact">
-      <div className="container">
+      <div className="container mx-auto">
         <h2 className="section-title">Get In Touch</h2>
         <Card className="max-w-2xl mx-auto shadow-lg">
           <CardHeader>
