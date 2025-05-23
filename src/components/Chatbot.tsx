@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { portfolioChatbot, type PortfolioChatbotInput, type PortfolioChatbotOutput } from '@/ai/flows/portfolio-chatbot';
-import { suggestedQueriesFlow, type SuggestedQueriesInput } from '@/ai/flows/suggested-queries-flow'; // Corrected import
+import { suggestedQueriesFlow, type SuggestedQueriesInput } from '@/ai/flows/suggested-queries-flow';
 import type { SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -164,7 +164,7 @@ export function Chatbot() {
   return (
     <>
       {isMounted && !isOpen && (
-        <div className="fixed bottom-24 right-6 flex flex-col items-end gap-2 z-40">
+        <div className="fixed bottom-22 right-6 flex flex-col items-end gap-2 z-40"> {/* Adjusted bottom from 24 to 22 */}
            {isLoadingSuggestions ? (
              <Button
                 variant="outline"
