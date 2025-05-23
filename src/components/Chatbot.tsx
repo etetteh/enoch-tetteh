@@ -3,8 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { portfolioChatbot, type PortfolioChatbotInput, type PortfolioChatbotOutput } from '@/ai/flows/portfolio-chatbot';
-import { suggestedQueriesFlow, type SuggestedQueriesInput } from '@/ai/flows/suggested-queries-flow';
-import type { SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow';
+import { suggestedQueriesFlow, type SuggestedQueriesInput, type SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter, SheetClose, SheetTrigger } from '@/components/ui/sheet';
@@ -55,7 +54,9 @@ export function Chatbot() {
           const input: SuggestedQueriesInput = { portfolioContent: pageContent };
           const suggestionsOutput: SuggestedQueriesOutput = await suggestedQueriesFlow(input);
           if (suggestionsOutput.queries && suggestionsOutput.queries.length > 0) {
-            setDynamicSuggestedQueries(suggestionsOutput.queries);
+            // Filter out any potentially empty strings from AI
+            const validQueries = suggestionsOutput.queries.filter(q => q && q.trim() !== '');
+            setDynamicSuggestedQueries(validQueries.length > 0 ? validQueries : defaultSuggestedQueries);
           } else {
             setDynamicSuggestedQueries(defaultSuggestedQueries);
           }
@@ -76,12 +77,12 @@ export function Chatbot() {
     };
 
     fetchSuggestions();
-  }, [toast]);
+  }, [toast]); 
   
   useEffect(() => {
     if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0) {
       if (!isOpen && isMounted) {
-        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current % dynamicSuggestedQueries.length]); 
         intervalRef.current = setInterval(() => {
           queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
           setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
@@ -150,10 +151,8 @@ export function Chatbot() {
   };
   
   const handleSingleSuggestionClick = async () => {
-    if (!displayedSuggestedQuery) return;
-    setIsOpen(true);
-    // Wait for sheet to potentially open
-    await new Promise(resolve => setTimeout(resolve, 50)); 
+    if (!displayedSuggestedQuery || isLoading) return;
+    setIsOpen(true); 
     processQuery(displayedSuggestedQuery);
   };
   
@@ -164,13 +163,13 @@ export function Chatbot() {
   return (
     <>
       {isMounted && !isOpen && (
-        <div className="fixed bottom-22 right-6 flex flex-col items-end gap-2 z-40"> {/* Adjusted bottom from 24 to 22 */}
+        <div className="fixed bottom-24 right-6 flex flex-col items-end z-40">
            {isLoadingSuggestions ? (
              <Button
                 variant="outline"
                 size="sm"
                 disabled
-                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95"
+                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90"
               >
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Loading suggestions...
@@ -181,7 +180,7 @@ export function Chatbot() {
                 variant="outline"
                 size="sm"
                 onClick={handleSingleSuggestionClick}
-                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95 slide-in-from-bottom-5"
+                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90"
               >
                 <Sparkles className="mr-2 h-4 w-4 text-accent" />
                 {displayedSuggestedQuery}
@@ -275,3 +274,4 @@ export function Chatbot() {
   );
 }
 
+    
