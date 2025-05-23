@@ -1,12 +1,27 @@
+
+'use client';
+
+import { useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { portfolioOwner } from "@/lib/data";
 import Balancer from 'react-wrap-balancer';
-
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
+import { cn } from '@/lib/utils';
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isVisible = useFadeInOnScroll(sectionRef, { threshold: 0.1 });
+
   return (
-    <section id="hero" className="bg-gradient-to-b from-background to-secondary py-20 md:py-32">
+    <section
+      ref={sectionRef}
+      id="hero"
+      className={cn(
+        "bg-gradient-to-b from-background to-secondary py-20 md:py-32 transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      )}
+    >
       <div className="container text-center">
         <h1 className="text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl">
           <Balancer>{portfolioOwner.name}</Balancer>

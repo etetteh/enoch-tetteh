@@ -1,12 +1,28 @@
+
+'use client';
+
+import { useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Linkedin, Github, Phone, MapPin } from "lucide-react";
+import { Mail, Linkedin, Github } from "lucide-react"; // Removed Phone, MapPin as they are commented out
 import Link from "next/link";
 import { portfolioOwner } from "@/lib/data";
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
+import { cn } from '@/lib/utils';
 
 export function ContactSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isVisible = useFadeInOnScroll(sectionRef, { threshold: 0.1 });
+
   return (
-    <section id="contact">
+    <section
+      ref={sectionRef}
+      id="contact"
+      className={cn(
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      )}
+    >
       <div className="container">
         <h2 className="section-title">Get In Touch</h2>
         <div className="group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl max-w-2xl mx-auto">
@@ -25,7 +41,7 @@ export function ContactSection() {
                 </a>
               </div>
               {/* Add other contact details if needed, e.g., phone, location */}
-              {/* 
+              {/*
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-accent" />
                 <span className="text-foreground">+1 (555) 123-4567</span>
