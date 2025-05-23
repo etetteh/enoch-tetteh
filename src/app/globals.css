@@ -115,3 +115,12 @@
     @apply text-3xl font-bold tracking-tight text-center sm:text-4xl md:text-5xl mb-8 md:mb-12 text-primary;
   }
 }
+
+/* Scrollbar hiding utilities */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

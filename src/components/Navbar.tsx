@@ -3,15 +3,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Menu } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data';
 
 const navLinks = [
@@ -25,14 +17,11 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [isMounted, setIsMounted] = useState(false);
-  const [ownerName, setOwnerName] = useState('');
 
   useEffect(() => {
     setIsMounted(true);
-    setOwnerName(portfolioOwner.name);
 
     const handleScroll = () => {
       const sections = navLinks.map(link => {
@@ -41,21 +30,18 @@ export function Navbar() {
       });
       let current = '';
       const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
       const navbarHeight = 80; // Approximate height of the navbar + some offset
 
       for (const section of sections) {
         if (section) {
           const sectionTop = section.offsetTop;
           const sectionHeight = section.offsetHeight;
-          // Check if section is within the top part of the viewport more generously
           if (scrollY >= sectionTop - navbarHeight && scrollY < sectionTop + sectionHeight - navbarHeight) {
             current = `#${section.id}`;
             break;
           }
         }
       }
-       // If no section is prominently in view based on the above, fall back to the topmost one scrolled past
       if (!current) {
         for (let i = sections.length - 1; i >= 0; i--) {
           const section = sections[i];
@@ -65,11 +51,9 @@ export function Navbar() {
           }
         }
       }
-      // Default to hero if nothing else is active or if scrolled to the very top
       if (!current || (sections.length > 0 && sections[0] && scrollY < sections[0].offsetTop - navbarHeight)) {
         current = '#hero';
       }
-
       setActiveLink(current);
     };
 
@@ -78,8 +62,31 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const renderPillNavLinks = (isMobile: boolean) => (
+    <div
+      className={cn(
+        "inline-flex bg-secondary rounded-full p-1 items-center shadow-sm",
+        isMobile ? "space-x-0.5" : "space-x-1"
+      )}
+    >
+      {navLinks.map((link) => (
+        <Link
+          key={link.label}
+          href={link.href}
+          onClick={() => setActiveLink(link.href)}
+          className={cn(
+            "block px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background",
+            isMobile ? "whitespace-nowrap" : "",
+            activeLink === link.href
+              ? 'bg-primary text-primary-foreground shadow-md'
+              : 'text-muted-foreground hover:bg-background hover:text-primary'
+          )}
+        >
+          {link.label}
+        </Link>
+      ))}
+    </div>
+  );
 
   if (!isMounted) {
     return null;
@@ -90,61 +97,20 @@ export function Navbar() {
       <div className="container flex h-16 items-center justify-between">
         <Link
           href="#hero"
-          className="text-xl font-bold text-primary hover:text-primary/90 transition-colors"
-          onClick={() => { closeMobileMenu(); setActiveLink('#hero');}}
+          className="text-xl font-bold text-primary hover:text-primary/90 transition-colors shrink-0 mr-4"
+          onClick={() => setActiveLink('#hero')}
         >
-          {ownerName}
+          {portfolioOwner.name}
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={`px-3 py-2 text-sm font-medium transition-colors duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-md ${
-                activeLink === link.href
-                  ? 'text-primary font-semibold border-b-2 border-primary'
-                  : 'text-muted-foreground hover:text-primary'
-              }`}
-              onClick={() => setActiveLink(link.href)}
-            >
-              {link.label}
-            </Link>
-          ))}
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex">
+          {renderPillNavLinks(false)}
         </nav>
 
-        <div className="md:hidden">
-          <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem asChild>
-                <Link
-                  href="#hero"
-                  className="w-full"
-                  onClick={() => { closeMobileMenu(); setActiveLink('#hero');}}
-                >
-                  {ownerName}
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              {navLinks.map((link) => (
-                <DropdownMenuItem key={link.label} asChild className="focus:bg-accent focus:text-accent-foreground">
-                  <Link
-                    href={link.href}
-                    className={`w-full ${activeLink === link.href ? 'font-semibold text-primary' : 'text-foreground'}`}
-                    onClick={() => { closeMobileMenu(); setActiveLink(link.href); }}
-                  >
-                    {link.label}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+        {/* Mobile Navigation */}
+        <div className="md:hidden overflow-x-auto scrollbar-hide whitespace-nowrap py-1" tabIndex={0}>
+          {renderPillNavLinks(true)}
         </div>
       </div>
     </header>
