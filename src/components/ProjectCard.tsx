@@ -1,128 +1,101 @@
 
-"use client";
+'use client';
 
-import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Project } from '@/types/portfolio';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface ProjectCardProps {
   project: Project;
+  isActive: boolean;
+  onActivate: () => void;
+  projectNumber: number;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
-
+export function ProjectCard({ project, isActive, onActivate, projectNumber }: ProjectCardProps) {
   return (
-    <Dialog>
-      <div
-        ref={cardRef}
+    <div
+      onClick={onActivate}
+      className={cn(
+        "relative flex-none rounded-xl overflow-hidden shadow-lg cursor-pointer transition-all duration-500 ease-in-out h-[450px] group",
+        "bg-card text-card-foreground",
+        isActive ? "w-[90vw] max-w-[600px]" : "w-20 md:w-24 hover:w-28 md:hover:w-32"
+      )}
+      aria-expanded={isActive}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onActivate();}}
+    >
+      {/* Background Image - Always present, object-fit handles scaling */}
+      <Image
+        src={project.imageUrl}
+        alt={project.title}
+        layout="fill"
+        objectFit="cover"
         className={cn(
-          "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
-          "transition-all duration-700 ease-out", // Fade-in animation classes
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          "absolute inset-0 z-0 transition-opacity duration-500",
+          isActive ? "opacity-20 dark:opacity-10" : "opacity-100 group-hover:opacity-80"
         )}
-      >
-        <DialogTrigger asChild>
-          <Card className="flex flex-col h-full overflow-hidden cursor-pointer bg-card rounded-lg">
-            <CardHeader className="p-0">
-              <div className="aspect-video relative w-full">
-                <Image
-                  src={project.imageUrl}
-                  alt={project.title}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-t-lg"
-                  data-ai-hint={project.imageHint || 'technology project'}
-                />
-              </div>
-            </CardHeader>
-            <CardContent className="flex-grow p-6">
-              <CardTitle className="text-xl font-semibold mb-2 text-primary">{project.title}</CardTitle>
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{project.description}</p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.techStack.map((tech) => (
-                  <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-                ))}
-              </div>
-            </CardContent>
-            {(project.githubUrl || project.liveUrl) && (
-              <CardFooter className="p-6 pt-0 flex justify-end gap-2">
-                {project.githubUrl && (
-                  <Button variant="outline" size="sm" asChild onClick={(e) => e.stopPropagation()}>
-                    <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" /> GitHub
-                    </Link>
-                  </Button>
-                )}
-                {project.liveUrl && (
-                  <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={(e) => e.stopPropagation()}>
-                    <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-                    </Link>
-                  </Button>
-                )}
-              </CardFooter>
-            )}
-          </Card>
-        </DialogTrigger>
-      </div>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
-        <div className="relative aspect-video w-full -mx-6 -mt-6 mb-4 shrink-0"> {/* Adjust margins for full width effect */}
-          <Image
-            src={project.imageUrl}
-            alt={project.title}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-t-md"
-            data-ai-hint={project.imageHint || 'technology project'}
-          />
+        data-ai-hint={project.imageHint || 'technology project'}
+        priority={projectNumber <= 2} // Prioritize loading images for initially visible/soon-to-be-active cards
+      />
+
+      {/* Content - Conditional rendering */}
+      {isActive ? (
+        // Expanded View
+        <div className="relative z-10 flex flex-col h-full p-6 bg-card/80 dark:bg-card/90 backdrop-blur-sm">
+          <h3 className="text-2xl font-bold text-primary mb-3">{project.title}</h3>
+          <ScrollArea className="flex-grow mb-4 pr-3">
+            <p className="text-sm text-foreground leading-relaxed">{project.description}</p>
+          </ScrollArea>
+          <div className="mb-4">
+            <h4 className="text-xs font-semibold text-muted-foreground mb-2">TECH STACK:</h4>
+            <div className="flex flex-wrap gap-2">
+              {project.techStack.map((tech) => (
+                <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
+              ))}
+            </div>
+          </div>
+          {(project.githubUrl || project.liveUrl) && (
+            <div className="flex justify-end gap-2 mt-auto pt-4 border-t border-border/20">
+              {project.githubUrl && (
+                <Button variant="outline" size="sm" asChild onClick={(e) => e.stopPropagation()}>
+                  <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                    <Github /> GitHub
+                  </Link>
+                </Button>
+              )}
+              {project.liveUrl && (
+                <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={(e) => e.stopPropagation()}>
+                  <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink /> Live Demo
+                  </Link>
+                </Button>
+              )}
+            </div>
+          )}
         </div>
-        <DialogHeader className="px-6 shrink-0">
-          <DialogTitle className="text-2xl font-semibold text-primary">{project.title}</DialogTitle>
-        </DialogHeader>
-        <div className="px-6 py-4 space-y-4 overflow-y-auto flex-grow"> {/* Scrollable content area */}
-          <p className="text-sm text-foreground leading-relaxed">{project.description}</p>
-          <div className="flex flex-wrap gap-2">
-            {project.techStack.map((tech) => (
-              <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-            ))}
+      ) : (
+        // Collapsed View
+        <div className="relative z-10 flex flex-col justify-end h-full p-3 md:p-4 bg-gradient-to-t from-black/80 via-black/50 to-transparent">
+          <div className={cn(
+            "transition-all duration-300 ease-in-out",
+            "group-hover:mb-1"
+            )}>
+            <div className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/80 text-primary-foreground text-sm md:text-base font-bold mb-1 md:mb-2 ring-2 ring-primary-foreground/50">
+              {projectNumber}
+            </div>
+            <h4 className="text-white text-xs md:text-sm font-semibold line-clamp-2 transform-gpu transition-all duration-300 ease-in-out origin-bottom opacity-0 group-hover:opacity-100 group-hover:scale-100 scale-90">
+              {project.title}
+            </h4>
           </div>
         </div>
-        {(project.githubUrl || project.liveUrl) && (
-          <DialogFooter className="px-6 pb-6 pt-4 sm:justify-end gap-2 border-t shrink-0">
-            {project.githubUrl && (
-              <Button variant="outline" size="sm" asChild>
-                <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-4 w-4" /> GitHub
-                </Link>
-              </Button>
-            )}
-            {project.liveUrl && (
-              <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-                </Link>
-              </Button>
-            )}
-          </DialogFooter>
-        )}
-      </DialogContent>
-    </Dialog>
+      )}
+    </div>
   );
 }

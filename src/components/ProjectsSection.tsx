@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { projects } from '@/lib/data';
 import { ProjectCard } from './ProjectCard';
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 export function ProjectsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const [activeIndex, setActiveIndex] = useState<number>(0); // First project active by default
 
   return (
     <section id="projects" className="bg-secondary">
@@ -24,9 +25,15 @@ export function ProjectsSection() {
         >
           My Projects
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+        <div className="flex items-stretch gap-3 md:gap-4 py-4 overflow-x-auto scrollbar-hide min-h-[500px] md:min-h-[480px]">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              projectNumber={index + 1}
+              isActive={index === activeIndex}
+              onActivate={() => setActiveIndex(index)}
+            />
           ))}
         </div>
       </div>
