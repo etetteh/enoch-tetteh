@@ -1,9 +1,11 @@
+
 import type { LucideIcon } from 'lucide-react';
 
 export interface Project {
   id: string;
   title: string;
-  description: string;
+  description: string; // Full description
+  carouselDescription: string; // Short description for carousel
   imageUrl: string;
   imageHint?: string;
   techStack: string[];
