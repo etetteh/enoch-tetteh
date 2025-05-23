@@ -30,7 +30,7 @@ export function Chatbot() {
     setIsMounted(true);
     if (typeof window !== 'undefined') {
       // Initial greeting from bot
-      setMessages([{id: 'greeting', text: "Hello! I'm your portfolio assistant. How can I help you find information on this page?", sender: 'bot'}]);
+      setMessages([{id: 'greeting', text: "Hello there! I'm Alex's portfolio assistant. I can help you find information about Alex's projects, skills, and experience on this page. What are you looking for?", sender: 'bot'}]);
     }
   }, []);
 
