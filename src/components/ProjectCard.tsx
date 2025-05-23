@@ -24,49 +24,51 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Card className="flex flex-col h-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-          <CardHeader className="p-0">
-            <div className="aspect-video relative w-full">
-              <Image
-                src={project.imageUrl}
-                alt={project.title}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-t-lg"
-                data-ai-hint={project.imageHint || 'technology project'}
-              />
-            </div>
-          </CardHeader>
-          <CardContent className="flex-grow p-6">
-            <CardTitle className="text-xl font-semibold mb-2 text-primary">{project.title}</CardTitle>
-            <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{project.description}</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.techStack.map((tech) => (
-                <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-              ))}
-            </div>
-          </CardContent>
-          {(project.githubUrl || project.liveUrl) && (
-            <CardFooter className="p-6 pt-0 flex justify-end gap-2">
-              {project.githubUrl && (
-                <Button variant="outline" size="sm" asChild onClick={(e) => e.stopPropagation()}>
-                  <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                    <Github className="mr-2 h-4 w-4" /> GitHub
-                  </Link>
-                </Button>
-              )}
-              {project.liveUrl && (
-                <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={(e) => e.stopPropagation()}>
-                  <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-                  </Link>
-                </Button>
-              )}
-            </CardFooter>
-          )}
-        </Card>
-      </DialogTrigger>
+      <div className="group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl">
+        <DialogTrigger asChild>
+          <Card className="flex flex-col h-full overflow-hidden cursor-pointer bg-card rounded-lg">
+            <CardHeader className="p-0">
+              <div className="aspect-video relative w-full">
+                <Image
+                  src={project.imageUrl}
+                  alt={project.title}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-t-lg"
+                  data-ai-hint={project.imageHint || 'technology project'}
+                />
+              </div>
+            </CardHeader>
+            <CardContent className="flex-grow p-6">
+              <CardTitle className="text-xl font-semibold mb-2 text-primary">{project.title}</CardTitle>
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{project.description}</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {project.techStack.map((tech) => (
+                  <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
+                ))}
+              </div>
+            </CardContent>
+            {(project.githubUrl || project.liveUrl) && (
+              <CardFooter className="p-6 pt-0 flex justify-end gap-2">
+                {project.githubUrl && (
+                  <Button variant="outline" size="sm" asChild onClick={(e) => e.stopPropagation()}>
+                    <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                      <Github className="mr-2 h-4 w-4" /> GitHub
+                    </Link>
+                  </Button>
+                )}
+                {project.liveUrl && (
+                  <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground" onClick={(e) => e.stopPropagation()}>
+                    <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
+                    </Link>
+                  </Button>
+                )}
+              </CardFooter>
+            )}
+          </Card>
+        </DialogTrigger>
+      </div>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col">
         <div className="relative aspect-video w-full -mx-6 -mt-6 mb-4 shrink-0"> {/* Adjust margins for full width effect */}
           <Image

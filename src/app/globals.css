@@ -105,7 +105,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300 ease-in-out;
     /* Removed explicit font-family to allow Next/Font from layout.tsx to take precedence */
   }
   section {

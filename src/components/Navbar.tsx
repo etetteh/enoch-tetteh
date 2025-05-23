@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 const navLinks = [
   { href: '#hero', label: 'Home' },
@@ -99,10 +100,14 @@ export function Navbar() {
   );
 
   if (!isMounted) {
+    // Basic skeleton loader for navbar
     return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 h-[120px] md:h-[140px]"> 
         <div className="container py-4">
-          <div className="h-7 w-1/4 bg-muted rounded mb-3"></div>
+          <div className="flex justify-between items-center mb-3">
+            <div className="h-7 w-1/4 bg-muted rounded"></div>
+            <div className="h-9 w-9 bg-muted rounded-full"></div> {/* Placeholder for ThemeSwitcher */}
+          </div>
           <div className="h-9 w-3/4 bg-secondary rounded-full mt-1 hidden md:block mx-auto"></div>
           <div className="h-9 w-full bg-secondary rounded-full mt-1 md:hidden"></div>
         </div>
@@ -113,7 +118,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container py-4"> 
-        <div className="mb-3"> 
+        <div className="flex justify-between items-center mb-3">
           <Link
             href="#hero"
             className="text-xl font-bold text-primary hover:text-primary/90 transition-colors"
@@ -121,6 +126,7 @@ export function Navbar() {
           >
             {portfolioOwner.name}
           </Link>
+          <ThemeSwitcher />
         </div>
 
         <nav className="hidden md:flex justify-center mt-1"> 
