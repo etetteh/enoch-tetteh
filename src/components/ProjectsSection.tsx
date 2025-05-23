@@ -1,7 +1,8 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef }
+  from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
@@ -63,7 +64,7 @@ export function ProjectsSection() {
 
   return (
     <section id="projects" className="bg-secondary">
-      <div className="container">
+      <div className="container mx-auto">
         <h2
           ref={titleRef}
           className={cn(
@@ -143,7 +144,8 @@ export function ProjectsSection() {
                   src={currentProject.imageUrl} 
                   alt={currentProject.title} 
                   fill
-                  className="object-cover rounded-md"
+                  style={{objectFit: 'cover'}}
+                  className="rounded-md"
                   data-ai-hint={currentProject.imageHint}
                 />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-md"></div>
@@ -154,24 +156,28 @@ export function ProjectsSection() {
           </div>
 
           {/* Navigation Arrows */}
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handlePrev}
-            className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/50 hover:bg-background text-foreground"
-            aria-label="Previous Project"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleNext}
-            className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full bg-background/50 hover:bg-background text-foreground"
-            aria-label="Next Project"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </Button>
+          <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handlePrev}
+              className="rounded-full w-full h-full bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+              aria-label="Previous Project"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+          </div>
+          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleNext}
+               className="rounded-full w-full h-full bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+              aria-label="Next Project"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </Button>
+          </div>
 
           {/* Dot Indicators */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
