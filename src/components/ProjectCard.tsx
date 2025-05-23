@@ -1,13 +1,14 @@
 
 'use client';
 
-import Image from 'next/image';
 import type { Project } from '@/types/portfolio';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRef } from 'react';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 interface ProjectCardProps {
   project: Project;
@@ -19,7 +20,8 @@ interface ProjectCardProps {
 // Helper function to highlight skills in the description
 const highlightSkillsInDescriptionInternal = (
   description: string,
-  skillsToHighlight: string[]
+  skillsToHighlight: string[],
+  currentProjectNumber: number
 ): React.ReactNode[] => {
   if (!skillsToHighlight || skillsToHighlight.length === 0) {
     return [description];
@@ -38,8 +40,7 @@ const highlightSkillsInDescriptionInternal = (
     // Check if the current part is one of the skills (case-insensitive)
     const isSkill = skillsToHighlight.some(skill => part.toLowerCase() === skill.toLowerCase());
     if (isSkill) {
-      // Use index from map as key, as it's unique among siblings here
-      return <span key={index} className="font-semibold text-accent">{part}</span>;
+      return <span key={`project-${currentProjectNumber}-skill-${part}-${index}`} className="font-semibold text-accent">{part}</span>;
     }
     return part;
   });
@@ -47,12 +48,18 @@ const highlightSkillsInDescriptionInternal = (
 
 
 export function ProjectCard({ project, isActive, onActivate, projectNumber }: ProjectCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
+
   return (
     <div
+      ref={cardRef}
       onClick={onActivate}
       className={cn(
         "relative flex-none rounded-xl overflow-hidden shadow-lg cursor-pointer transition-all duration-500 ease-in-out h-[450px] group",
         "bg-card text-card-foreground",
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
         isActive ? "w-[90vw] max-w-[600px]" : "w-20 md:w-24 hover:w-28 md:hover:w-32"
       )}
       aria-expanded={isActive}
@@ -60,19 +67,7 @@ export function ProjectCard({ project, isActive, onActivate, projectNumber }: Pr
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onActivate();}}
     >
-      <Image
-        src={project.imageUrl}
-        alt={project.title}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        style={{ objectFit: 'cover' }}
-        className={cn(
-          "absolute inset-0 z-0 transition-opacity duration-500",
-          isActive ? "opacity-20 dark:opacity-10" : "opacity-100 group-hover:opacity-80"
-        )}
-        data-ai-hint={project.imageHint || 'technology project'}
-        priority={projectNumber <= 2}
-      />
+      {/* Image component removed */}
 
       {isActive ? (
         // Expanded View
@@ -82,7 +77,8 @@ export function ProjectCard({ project, isActive, onActivate, projectNumber }: Pr
             <p className="text-sm text-foreground leading-relaxed">
               {highlightSkillsInDescriptionInternal(
                 project.description,
-                project.techStack
+                project.techStack,
+                projectNumber
               )}
             </p>
           </ScrollArea>
