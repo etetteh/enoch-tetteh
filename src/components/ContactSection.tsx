@@ -21,7 +21,6 @@ export function ContactSection() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // This ensures the code runs only on the client, after hydration
     setIsClient(true);
     setEmailHref(`mailto:${portfolioOwner.contactEmail}`);
   }, []);
@@ -29,8 +28,6 @@ export function ContactSection() {
   const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isClient) {
       e.preventDefault();
-      // Optionally, you could show a toast message here telling the user JS is needed.
-      // For example: toast({ title: "Info", description: "Please enable JavaScript to use this email link." });
     }
   };
 
@@ -74,18 +71,18 @@ export function ContactSection() {
                 </a>
               </div>
               <div className="flex gap-4 pt-4 border-t">
-                <Button variant="outline" asChild>
+                <Button variant="outline" asChild className="transform transition-transform hover:scale-105">
                   <Link href={portfolioOwner.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
                     <Linkedin className="mr-2 h-4 w-4" /> LinkedIn
                   </Link>
                 </Button>
-                <Button variant="outline" asChild>
+                <Button variant="outline" asChild className="transform transition-transform hover:scale-105">
                   <Link href={portfolioOwner.githubUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
                     <Github className="mr-2 h-4 w-4" /> GitHub
                   </Link>
                 </Button>
               </div>
-               <Button asChild size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+               <Button asChild size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105">
                 <a
                   href={emailHref}
                   onClick={handleEmailClick}

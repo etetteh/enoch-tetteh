@@ -105,8 +105,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground transition-colors duration-300 ease-in-out;
-    /* Removed explicit font-family to allow Next/Font from layout.tsx to take precedence */
+    @apply text-foreground transition-colors duration-300 ease-in-out;
+    /* Animated gradient background */
+    background: linear-gradient(-45deg, hsl(var(--background)), hsl(var(--background)), hsl(var(--secondary)), hsl(var(--background)));
+    background-size: 400% 400%;
+    animation: gradient-bg 25s ease infinite;
   }
   section {
     @apply py-12 md:py-16 lg:py-20;
@@ -114,6 +117,18 @@
   .section-title {
     @apply text-3xl font-bold tracking-tight text-center sm:text-4xl md:text-5xl mb-8 md:mb-12 text-primary;
   }
+}
+
+@keyframes gradient-bg {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 /* Scrollbar hiding utilities */

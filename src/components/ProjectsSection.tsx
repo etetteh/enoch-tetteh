@@ -1,8 +1,7 @@
 
 'use client';
 
-import { useState, useRef }
-  from 'react';
+import { useState, useRef } from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
@@ -93,7 +92,10 @@ export function ProjectsSection() {
         >
           <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 min-h-[500px] md:min-h-[450px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
-            <div className="md:w-1/2 space-y-4 text-center md:text-left">
+            <div 
+              key={currentIndex} // Re-keying to trigger animation on slide change
+              className="md:w-1/2 space-y-4 text-center md:text-left animate-in fade-in duration-500"
+            >
               <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
               <p className="text-sm md:text-base text-foreground leading-relaxed">
                 {currentProject.carouselDescription}
@@ -106,7 +108,7 @@ export function ProjectsSection() {
                         {highlightSkillsInDescriptionInternal(
                             currentProject.description,
                             currentProject.techStack,
-                            currentIndex + 1 // Using currentIndex as a unique number for the project
+                            currentIndex + 1 
                         )}
                         </p>
                     </ScrollArea>
@@ -121,14 +123,14 @@ export function ProjectsSection() {
                 </div>
                 <div className="flex gap-2 justify-center md:justify-start pt-2">
                     {currentProject.githubUrl && (
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
                         <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
                         <Github /> GitHub
                         </a>
                     </Button>
                     )}
                     {currentProject.liveUrl && (
-                    <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105">
                         <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink /> Live Demo
                         </a>
@@ -196,4 +198,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-

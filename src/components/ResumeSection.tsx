@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 export function ResumeSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const downloadBlockRef = useRef<HTMLDivElement>(null);
-  const tailorFormRef = useRef<HTMLDivElement>(null); // Ref for the div wrapping ResumeTailorForm
+  const tailorFormRef = useRef<HTMLDivElement>(null); 
 
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
   const isDownloadBlockVisible = useFadeInOnScroll(downloadBlockRef, { threshold: 0.1 });
@@ -45,8 +45,7 @@ export function ResumeSection() {
               Get a copy of my full resume to learn more about my qualifications and experience.
               Please note: you need to add your resume.pdf to the public folder.
             </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md">
-              {/* User needs to add resume.pdf to the public folder */}
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transform transition-transform hover:scale-105">
               <a href="/resume.pdf" download="AlexJohnson_Resume.pdf">
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume (PDF)

@@ -59,7 +59,7 @@ export function ResumeTailorForm() {
         title: "Suggestions Generated!",
         description: "AI has provided tailored suggestions for your resume.",
       });
-      reset(); // Reset form fields after successful submission
+      reset(); 
     } catch (err) {
       console.error("Error tailoring resume:", err);
       const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred.";
@@ -116,7 +116,7 @@ export function ResumeTailorForm() {
               {errors.jobDescription && <p className="text-sm text-destructive mt-1">{errors.jobDescription.message}</p>}
             </div>
 
-            <Button type="submit" disabled={isLoading} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button type="submit" disabled={isLoading} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105">
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
