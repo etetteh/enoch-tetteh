@@ -3,10 +3,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { portfolioChatbot, type PortfolioChatbotInput, type PortfolioChatbotOutput } from '@/ai/flows/portfolio-chatbot';
-import { suggestedQueriesFlow, type SuggestedQueriesInput, type SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow';
+import { suggestedQueriesFlow } from '@/ai/flows/suggested-queries-flow';
+import type { SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow'; // Corrected import type
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter, SheetClose, SheetTrigger } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Bot, User, Loader2, Send, MessageCircle, X, Sparkles } from 'lucide-react';
@@ -33,11 +34,8 @@ export function Chatbot() {
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const [dynamicSuggestedQueries, setDynamicSuggestedQueries] = useState<string[]>([]);
+  const [dynamicSuggestedQueries, setDynamicSuggestedQueries] = useState<string[]>(defaultSuggestedQueries);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(true);
-  const [displayedSuggestedQuery, setDisplayedSuggestedQuery] = useState("Loading suggestions...");
-  const queryIndexRef = useRef(0);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -52,16 +50,16 @@ export function Chatbot() {
         if (pageContent) {
           const suggestionsOutput: SuggestedQueriesOutput = await suggestedQueriesFlow({ portfolioContent: pageContent });
           if (suggestionsOutput.queries && suggestionsOutput.queries.length > 0) {
-            setDynamicSuggestedQueries(suggestionsOutput.queries);
+            setDynamicSuggestedQueries(suggestionsOutput.queries.slice(0, 3)); // Take up to 3
           } else {
-            setDynamicSuggestedQueries(defaultSuggestedQueries);
+            setDynamicSuggestedQueries(defaultSuggestedQueries.slice(0, 3));
           }
         } else {
-          setDynamicSuggestedQueries(defaultSuggestedQueries);
+          setDynamicSuggestedQueries(defaultSuggestedQueries.slice(0, 3));
         }
       } catch (error) {
         console.error("Failed to fetch dynamic suggestions:", error);
-        setDynamicSuggestedQueries(defaultSuggestedQueries);
+        setDynamicSuggestedQueries(defaultSuggestedQueries.slice(0, 3));
          toast({
           title: "Suggestion Error",
           description: "Could not load AI-powered suggestions, using defaults.",
@@ -73,40 +71,12 @@ export function Chatbot() {
     };
 
     fetchSuggestions();
-  }, [toast]); // Added toast to dependency array as it's used inside.
+  }, [toast]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   
-  useEffect(() => {
-    if (!isMounted || isLoadingSuggestions || dynamicSuggestedQueries.length === 0) return;
-
-    const queriesToCycle = dynamicSuggestedQueries.length > 0 ? dynamicSuggestedQueries : defaultSuggestedQueries;
-
-    const cycleQuery = () => {
-      queryIndexRef.current = (queryIndexRef.current + 1) % queriesToCycle.length;
-      setDisplayedSuggestedQuery(queriesToCycle[queryIndexRef.current]);
-    };
-
-    if (!isOpen) {
-      setDisplayedSuggestedQuery(queriesToCycle[queryIndexRef.current]); 
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      intervalRef.current = setInterval(cycleQuery, 3000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isOpen, isMounted, isLoadingSuggestions, dynamicSuggestedQueries]);
-
   const extractPageContent = () => {
     if (typeof document !== 'undefined') {
       const mainElement = document.querySelector('main');
@@ -153,17 +123,12 @@ export function Chatbot() {
     e.preventDefault();
     processQuery(query);
   };
-
-  const handleSingleSuggestionClick = async () => {
-    setIsOpen(true); 
-    // Ensure the query being processed is not "Loading suggestions..."
-    const currentQuery = (isLoadingSuggestions || dynamicSuggestedQueries.length === 0) 
-        ? defaultSuggestedQueries[0] // Fallback if still loading or empty
-        : displayedSuggestedQuery;
-
-    // Wait for sheet to potentially open and for messages to re-render if needed
-    await new Promise(resolve => setTimeout(resolve, 50));
-    processQuery(currentQuery);
+  
+  const handleSuggestionClick = async (suggestion: string) => {
+    setIsOpen(true);
+    // Wait for sheet to potentially open
+    await new Promise(resolve => setTimeout(resolve, 50)); 
+    processQuery(suggestion);
   };
   
   if (!isMounted) {
@@ -173,26 +138,32 @@ export function Chatbot() {
   return (
     <>
       {isMounted && !isOpen && (
-        <div className="fixed bottom-24 right-6 flex flex-col items-end z-40">
-           <Button
-            variant="outline"
-            size="sm"
-            onClick={handleSingleSuggestionClick}
-            disabled={isLoadingSuggestions && dynamicSuggestedQueries.length === 0}
-            className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95"
-          >
-            {isLoadingSuggestions && dynamicSuggestedQueries.length === 0 ? (
-              <>
+        <div className="fixed bottom-24 right-6 flex flex-col items-end gap-2 z-40">
+           {isLoadingSuggestions ? (
+             <Button
+                variant="outline"
+                size="sm"
+                disabled
+                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95"
+              >
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Loading suggestions...
-              </>
-            ) : (
-              <>
+            </Button>
+           ) : (
+            dynamicSuggestedQueries.map((suggestion, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                size="sm"
+                onClick={() => handleSuggestionClick(suggestion)}
+                style={{ animationDelay: `${index * 100}ms` }}
+                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95 slide-in-from-bottom-5"
+              >
                 <Sparkles className="mr-2 h-4 w-4 text-accent" />
-                {displayedSuggestedQuery}
-              </>
-            )}
-          </Button>
+                {suggestion}
+              </Button>
+            ))
+           )}
         </div>
       )}
 
