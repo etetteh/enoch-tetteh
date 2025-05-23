@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Linkedin, Github } from "lucide-react";
@@ -16,6 +16,23 @@ export function ContactSection() {
 
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
   const isCardVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
+
+  const [emailHref, setEmailHref] = useState<string>('#');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // This ensures the code runs only on the client, after hydration
+    setIsClient(true);
+    setEmailHref(`mailto:${portfolioOwner.contactEmail}`);
+  }, []);
+
+  const handleEmailClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isClient) {
+      e.preventDefault();
+      // Optionally, you could show a toast message here telling the user JS is needed.
+      // For example: toast({ title: "Info", description: "Please enable JavaScript to use this email link." });
+    }
+  };
 
   return (
     <section id="contact">
@@ -48,7 +65,11 @@ export function ContactSection() {
             <CardContent className="space-y-6">
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-accent" />
-                <a href={`mailto:${portfolioOwner.contactEmail}`} className="text-foreground hover:text-primary transition-colors">
+                <a
+                  href={emailHref}
+                  onClick={handleEmailClick}
+                  className="text-foreground hover:text-primary transition-colors"
+                >
                   {portfolioOwner.contactEmail}
                 </a>
               </div>
@@ -65,7 +86,10 @@ export function ContactSection() {
                 </Button>
               </div>
                <Button asChild size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                <a href={`mailto:${portfolioOwner.contactEmail}`}>
+                <a
+                  href={emailHref}
+                  onClick={handleEmailClick}
+                >
                   <Mail className="mr-2 h-5 w-5" /> Send an Email
                 </a>
               </Button>
