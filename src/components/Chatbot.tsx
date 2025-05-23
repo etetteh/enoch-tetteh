@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -6,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger, SheetFooter, SheetClose } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Bot, User, Loader2, Send, MessageCircle, X } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
@@ -15,6 +16,12 @@ interface Message {
   text: string;
   sender: 'user' | 'bot';
 }
+
+const suggestedQueries = [
+  "What are Alex's key skills?",
+  "Tell me about Alex's latest project.",
+  "Alex's experience with GCP?",
+];
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +36,6 @@ export function Chatbot() {
   useEffect(() => {
     setIsMounted(true);
     if (typeof window !== 'undefined') {
-      // Initial greeting from bot
       setMessages([{id: 'greeting', text: "Hello there! I'm Alex's portfolio assistant. I can help you find information about Alex's projects, skills, and experience on this page. What are you looking for?", sender: 'bot'}]);
     }
   }, []);
@@ -38,30 +44,27 @@ export function Chatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   
-  // Function to extract text content from the page
   const extractPageContent = () => {
     if (typeof document !== 'undefined') {
-      // Attempt to get main content, otherwise full body. This is a simple heuristic.
       const mainElement = document.querySelector('main');
       return mainElement ? mainElement.innerText : document.body.innerText;
     }
     return '';
   };
 
+  const processQuery = async (queryString: string) => {
+    if (!queryString.trim() || isLoading) return;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim() || isLoading) return;
-
-    const userMessage: Message = { id: Date.now().toString(), text: query, sender: 'user' };
+    const userMessage: Message = { id: Date.now().toString(), text: queryString, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
-    setQuery('');
+    
+    if (queryString === query) { // If it's from the input field, clear it
+      setQuery('');
+    }
     setIsLoading(true);
 
-    // Extract fresh page content on each query for dynamic pages (though this portfolio is mostly static)
     const currentPortfolioContent = extractPageContent();
     setPortfolioContent(currentPortfolioContent);
-
 
     try {
       const input: PortfolioChatbotInput = {
@@ -83,21 +86,52 @@ export function Chatbot() {
       });
     } finally {
       setIsLoading(false);
+      setQuery(''); // Ensure query is cleared after processing, regardless of source
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    processQuery(query);
+  };
+
+  const handleSuggestionClick = async (suggestion: string) => {
+    setIsOpen(true); 
+    // Wait for sheet to potentially open if triggered by suggestion
+    await new Promise(resolve => setTimeout(resolve, 50));
+    processQuery(suggestion);
+  };
+
   if (!isMounted) {
-    return null; // Don't render chatbot button until client-side hydration
+    return null; 
   }
 
   return (
     <>
+      {/* Suggested Queries */}
+      {isMounted && !isOpen && (
+        <div className="fixed bottom-24 right-6 space-y-2 flex flex-col items-end z-40">
+          {suggestedQueries.map((sq, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              size="sm"
+              onClick={() => handleSuggestionClick(sq)}
+              className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card transition-all duration-150 ease-in-out animate-in fade-in zoom-in-95"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              {sq}
+            </Button>
+          ))}
+        </div>
+      )}
+
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button
             variant="default"
             size="icon"
-            className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-xl bg-accent hover:bg-accent/90 text-accent-foreground"
+            className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-xl bg-accent hover:bg-accent/90 text-accent-foreground z-50"
             aria-label="Open Chatbot"
           >
             <MessageCircle className="h-7 w-7" />
