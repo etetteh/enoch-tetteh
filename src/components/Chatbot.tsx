@@ -169,7 +169,7 @@ export function Chatbot() {
                 variant="outline"
                 size="sm"
                 disabled
-                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90"
+                className="bg-background/60 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
               >
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Loading suggestions...
@@ -180,7 +180,7 @@ export function Chatbot() {
                 variant="outline"
                 size="sm" 
                 onClick={handleSingleSuggestionClick}
-                className="bg-background/80 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
+                className="bg-background/60 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
               >
                 <Sparkles className="mr-2 h-4 w-4 text-accent flex-shrink-0" />
                 <span>{displayedSuggestedQuery}</span>
@@ -273,3 +273,4 @@ export function Chatbot() {
     </>
   );
 }
+
