@@ -4,9 +4,15 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetClose } from '@/components/ui/sheet';
-import { Menu, X } from 'lucide-react'; 
-import { portfolioOwner } from '@/lib/data'; 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Menu } from 'lucide-react';
+import { portfolioOwner } from '@/lib/data';
 
 const navLinks = [
   { href: '#hero', label: 'Home' },
@@ -19,27 +25,33 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [isMounted, setIsMounted] = useState(false);
   const [ownerName, setOwnerName] = useState('');
 
   useEffect(() => {
-    setIsMounted(true); 
-    setOwnerName(portfolioOwner.name); 
+    setIsMounted(true);
+    setOwnerName(portfolioOwner.name);
 
     const handleScroll = () => {
-      const sections = navLinks.map(link => document.getElementById(link.href.substring(1)));
-      let current = ''; 
-      // Adjusted to find the section that is currently most visible or at the top
+      const sections = navLinks.map(link => {
+        const id = link.href.substring(1);
+        return id ? document.getElementById(id) : null;
+      });
+      let current = '';
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const navbarHeight = 80; // Approximate height of the navbar + some offset
+
       for (const section of sections) {
         if (section) {
           const sectionTop = section.offsetTop;
           const sectionHeight = section.offsetHeight;
           // Check if section is within the top part of the viewport more generously
-          if (window.scrollY >= sectionTop - 80 && window.scrollY < sectionTop + sectionHeight - 80) {
+          if (scrollY >= sectionTop - navbarHeight && scrollY < sectionTop + sectionHeight - navbarHeight) {
             current = `#${section.id}`;
-            break; 
+            break;
           }
         }
       }
@@ -47,53 +59,52 @@ export function Navbar() {
       if (!current) {
         for (let i = sections.length - 1; i >= 0; i--) {
           const section = sections[i];
-          if (section && window.scrollY >= section.offsetTop - 80) {
+          if (section && scrollY >= section.offsetTop - navbarHeight) {
             current = `#${section.id}`;
             break;
           }
         }
       }
-      // Default to hero if nothing else is active
-      if (!current && sections.length > 0 && sections[0] && window.scrollY < sections[0].offsetTop - 80) {
+      // Default to hero if nothing else is active or if scrolled to the very top
+      if (!current || (sections.length > 0 && sections[0] && scrollY < sections[0].offsetTop - navbarHeight)) {
         current = '#hero';
       }
 
-
-      setActiveLink(current || '#hero');
+      setActiveLink(current);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); 
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial call
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
 
-  const closeSheet = () => setIsSheetOpen(false);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   if (!isMounted) {
-    return null; 
+    return null;
   }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <Link 
-          href="#hero" // Changed from "/" to "#hero" to also set active link
-          className="text-xl font-bold text-primary hover:text-primary/90 transition-colors" 
-          onClick={() => { closeSheet(); setActiveLink('#hero');}}
+        <Link
+          href="#hero"
+          className="text-xl font-bold text-primary hover:text-primary/90 transition-colors"
+          onClick={() => { closeMobileMenu(); setActiveLink('#hero');}}
         >
           {ownerName}
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center space-x-1">
           {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className={`pb-1 text-sm font-medium transition-colors duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                activeLink === link.href 
-                  ? 'text-primary font-semibold border-b-2 border-primary' 
-                  : 'text-muted-foreground hover:text-primary' 
+              className={`px-3 py-2 text-sm font-medium transition-colors duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-md ${
+                activeLink === link.href
+                  ? 'text-primary font-semibold border-b-2 border-primary'
+                  : 'text-muted-foreground hover:text-primary'
               }`}
               onClick={() => setActiveLink(link.href)}
             >
@@ -103,51 +114,37 @@ export function Navbar() {
         </nav>
 
         <div className="md:hidden">
-          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild>
+          <DropdownMenu open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open menu</span>
               </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-xs sm:max-w-sm p-0">
-              <SheetHeader className="p-6 pb-4 border-b">
-                <div className="flex items-center justify-between">
-                   <Link 
-                    href="#hero" 
-                    className="text-lg font-bold text-primary"
-                    onClick={() => { closeSheet(); setActiveLink('#hero');}}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem asChild>
+                <Link
+                  href="#hero"
+                  className="w-full"
+                  onClick={() => { closeMobileMenu(); setActiveLink('#hero');}}
+                >
+                  {ownerName}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {navLinks.map((link) => (
+                <DropdownMenuItem key={link.label} asChild className="focus:bg-accent focus:text-accent-foreground">
+                  <Link
+                    href={link.href}
+                    className={`w-full ${activeLink === link.href ? 'font-semibold text-primary' : 'text-foreground'}`}
+                    onClick={() => { closeMobileMenu(); setActiveLink(link.href); }}
                   >
-                    {ownerName}
+                    {link.label}
                   </Link>
-                  <SheetClose asChild>
-                    <Button variant="ghost" size="icon" className="text-muted-foreground">
-                      <X className="h-5 w-5" />
-                      <span className="sr-only">Close menu</span>
-                    </Button>
-                  </SheetClose>
-                </div>
-                 <SheetTitle className="text-base font-medium text-muted-foreground pt-1">Menu</SheetTitle>
-              </SheetHeader>
-              
-              <div className="p-6">
-                <nav className="flex flex-col gap-4">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.label}
-                      href={link.href}
-                      className={`text-base font-medium transition-colors hover:text-primary ${
-                        activeLink === link.href ? 'text-primary font-semibold' : 'text-muted-foreground'
-                      }`}
-                      onClick={() => { closeSheet(); setActiveLink(link.href); }}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </nav>
-              </div>
-            </SheetContent>
-          </Sheet>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
