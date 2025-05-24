@@ -22,7 +22,7 @@ export function SkillsSection() {
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const scrollContainerRef = useRef<HTMLDivElement>(null); 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, skillCategories.length);
@@ -43,7 +43,7 @@ export function SkillsSection() {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
-  
+
   useEffect(() => {
     const activeCard = cardRefs.current[currentIndex];
     const container = scrollContainerRef.current;
@@ -52,9 +52,9 @@ export function SkillsSection() {
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
       const containerWidth = container.offsetWidth;
-      
+
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
-      
+
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
       container.scrollTo({
@@ -71,7 +71,7 @@ export function SkillsSection() {
     if (!isPaused && skillCategories.length > 1) {
       intervalIdRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex === skillCategories.length - 1 ? 0 : prevIndex + 1));
-      }, 9000); 
+      }, 9000);
     }
     return () => {
       if (intervalIdRef.current) {
@@ -100,7 +100,7 @@ export function SkillsSection() {
         <div
           ref={carouselContainerRef}
           className={cn(
-            "relative transition-all duration-700 ease-out delay-200", 
+            "relative transition-all duration-700 ease-out delay-200",
             isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
           onMouseEnter={handleMouseEnter}
@@ -108,7 +108,7 @@ export function SkillsSection() {
         >
           <div className="flex items-center justify-center px-4 sm:px-0">
             <div
-              ref={scrollContainerRef} 
+              ref={scrollContainerRef}
               className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl"
             >
               {skillCategories.map((category, index) => {
@@ -137,12 +137,12 @@ export function SkillsSection() {
                     )}>
                       <category.icon className={cn(
                         "transition-all duration-500 text-primary opacity-100 scale-100",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2",
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100", // Ensure icon is visible on inactive cards
                         isActive && "animate-in fade-in-0 zoom-in-90 delay-200 duration-500"
                       )} />
                       <CardTitle className={cn(
-                        "transition-all duration-500 text-primary opacity-100",
-                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium",
+                        "transition-all duration-500 text-primary", // Removed opacity-0 for inactive title
+                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100", // Ensure title is visible on inactive cards
                          isActive && "animate-in fade-in-0 delay-300 duration-500"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
@@ -151,11 +151,11 @@ export function SkillsSection() {
                         <ScrollArea className="h-36 sm:h-40">
                            <div className="flex flex-wrap gap-2 justify-center">
                             {category.skills.map((skill, skillIndex) => (
-                              <Badge 
-                                key={skill} 
-                                variant="secondary" 
+                              <Badge
+                                key={skill}
+                                variant="secondary"
                                 className={cn(
-                                  "text-xs sm:text-sm py-1 px-2 sm:px-3 opacity-0 animate-in fade-in-0 zoom-in-90 duration-300",
+                                  "text-xs sm:text-sm py-1 px-2 sm:px-3 animate-in fade-in-0 zoom-in-90 duration-300" // Removed explicit opacity-0
                                 )}
                                 style={{ animationDelay: `${400 + skillIndex * 50}ms` }}
                               >
@@ -198,7 +198,7 @@ export function SkillsSection() {
             </div>
           </div>
         </div>
-        
+
         {/* Dot Indicators */}
         <div className="flex justify-center items-center space-x-2 py-6">
           {skillCategories.map((_, index) => (
@@ -216,7 +216,7 @@ export function SkillsSection() {
             >
               {currentIndex === index && (
                 <div
-                  key={currentIndex} 
+                  key={currentIndex}
                   className="h-full bg-primary rounded-full"
                   style={{ animation: 'progress-fill 9s linear forwards' }}
                 />
@@ -228,5 +228,3 @@ export function SkillsSection() {
     </section>
   );
 }
-
-    
