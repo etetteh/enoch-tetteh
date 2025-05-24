@@ -255,34 +255,35 @@ export function ProjectsSection() {
               <ChevronRight className="h-6 w-6" />
             </Button>
           </div>
-
-          {/* Dot Indicators */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-            {projects.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={cn(
-                  "h-2 rounded-full transition-all duration-300 ease-in-out",
-                  currentIndex === index
-                    ? "w-6 bg-primary/30 relative overflow-hidden" // Active dot: wider, track color, relative for inner progress
-                    : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" // Inactive dot
-                )}
-                aria-label={`Go to project ${index + 1}`}
-                aria-current={currentIndex === index ? "true" : "false"}
-              >
-                {currentIndex === index && (
-                  <div
-                    key={currentIndex} // Reset animation when currentIndex changes
-                    className="h-full bg-primary rounded-full"
-                    style={{ animation: 'progress-fill 9s linear forwards' }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
+        </div>
+        
+        {/* Dot Indicators - Moved outside of the main carousel div */}
+        <div className="flex justify-center items-center space-x-2 py-6">
+          {projects.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={cn(
+                "h-2 rounded-full transition-all duration-300 ease-in-out",
+                currentIndex === index
+                  ? "w-6 bg-primary/30 relative overflow-hidden" // Active dot: wider, track color, relative for inner progress
+                  : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" // Inactive dot
+              )}
+              aria-label={`Go to project ${index + 1}`}
+              aria-current={currentIndex === index ? "true" : "false"}
+            >
+              {currentIndex === index && (
+                <div
+                  key={currentIndex} // Reset animation when currentIndex changes
+                  className="h-full bg-primary rounded-full"
+                  style={{ animation: 'progress-fill 9s linear forwards' }}
+                />
+              )}
+            </button>
+          ))}
         </div>
       </div>
     </section>
   );
 }
+

@@ -89,13 +89,13 @@ export function SkillsSection() {
         <div
           ref={carouselContainerRef}
           className={cn(
-            "relative transition-all duration-700 ease-out delay-200",
+            "relative transition-all duration-700 ease-out delay-200", // Keep main container relative for arrows
             isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="flex items-center justify-center px-4 sm:px-0">
+          <div className="flex items-center justify-center px-4 sm:px-0"> {/* This can remain for centering the card scroll area */}
             <div
               className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl"
             >
@@ -125,12 +125,12 @@ export function SkillsSection() {
                     )}>
                       <category.icon className={cn(
                         "transition-all duration-500 text-primary",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100 scale-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100", // Ensure visible when inactive
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100 scale-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100",
                         isActive && "animate-in fade-in-0 zoom-in-90 delay-200 duration-500"
                       )} />
                       <CardTitle className={cn(
                         "transition-all duration-500 text-primary",
-                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100", // Ensure visible when inactive
+                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100",
                          isActive && "animate-in fade-in-0 delay-300 duration-500"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
@@ -188,34 +188,35 @@ export function SkillsSection() {
                 </Button>
             </div>
           </div>
-
-          {/* Dot Indicators */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-center space-x-2 py-4">
-            {skillCategories.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={cn(
-                  "h-2 rounded-full transition-all duration-300 ease-in-out",
-                  currentIndex === index
-                    ? "w-6 bg-primary/30 relative overflow-hidden"
-                    : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30"
-                )}
-                aria-label={`Go to skill category ${index + 1}`}
-                aria-current={currentIndex === index ? "true" : "false"}
-              >
-                {currentIndex === index && (
-                  <div
-                    key={currentIndex} 
-                    className="h-full bg-primary rounded-full"
-                    style={{ animation: 'progress-fill 9s linear forwards' }}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
+        </div>
+        
+        {/* Dot Indicators - Moved outside and below the main carousel container */}
+        <div className="flex justify-center items-center space-x-2 py-6">
+          {skillCategories.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={cn(
+                "h-2 rounded-full transition-all duration-300 ease-in-out",
+                currentIndex === index
+                  ? "w-6 bg-primary/30 relative overflow-hidden"
+                  : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30"
+              )}
+              aria-label={`Go to skill category ${index + 1}`}
+              aria-current={currentIndex === index ? "true" : "false"}
+            >
+              {currentIndex === index && (
+                <div
+                  key={currentIndex} 
+                  className="h-full bg-primary rounded-full"
+                  style={{ animation: 'progress-fill 9s linear forwards' }}
+                />
+              )}
+            </button>
+          ))}
         </div>
       </div>
     </section>
   );
 }
+
