@@ -121,17 +121,16 @@ export function SkillsSection() {
                   >
                     <CardHeader className={cn(
                       "flex flex-col items-center text-center p-4 transition-all duration-300",
-                       // Add key to re-trigger animation on active card change
                       isActive ? "pt-6" : "pt-4"
                     )}>
                       <category.icon className={cn(
                         "transition-all duration-500 text-primary",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100 scale-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-0 scale-90",
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100 scale-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100", // Ensure visible when inactive
                         isActive && "animate-in fade-in-0 zoom-in-90 delay-200 duration-500"
                       )} />
                       <CardTitle className={cn(
                         "transition-all duration-500 text-primary",
-                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-0",
+                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100", // Ensure visible when inactive
                          isActive && "animate-in fade-in-0 delay-300 duration-500"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
