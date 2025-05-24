@@ -10,7 +10,7 @@ export const projects: Project[] = [
     description: "Developed a comprehensive synthetic data generation platform that combines advanced LLM capabilities with enterprise-grade engineering practices. The system utilizes Google's Gemini models through LangChain to create diverse training datasets for various NLP tasks including question-answering, textual entailment, and semantic similarity. Implemented sophisticated duplicate detection using hashing algorithms to ensure data uniqueness, while incorporating incremental batch processing to handle large-scale generation efficiently. The modular architecture employs dependency injection and strategy patterns for maintainability, featuring comprehensive error handling with exponential backoff retry logic for API resilience. Built robust data pipeline supporting document context integration, automated query refinement, and flexible output formatting. Achieved significant performance optimizations including 60% memory usage reduction for large datasets and configurable generation parameters for optimal model performance. The system includes extensive testing suite with pytest, comprehensive logging infrastructure, and production-ready CLI interface supporting various deployment scenarios.",
     imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
     imageHint: 'synthetic data',
-    techStack: ['Python 3.12', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'JSON Schema', 'Parquet', 'tqdm', 'python-dotenv'],
+    techStack: ['Python', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'Parquet'],
     githubUrl: '#',
     liveUrl: '#',
   },
@@ -21,7 +21,7 @@ export const projects: Project[] = [
     carouselDescription: "Engineered enterprise-grade image classification framework achieving 100% validation accuracy across 18 SOTA models with comprehensive MLOps pipeline, supporting distributed training and real-time inference deployment.",
     imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Google Green
     imageHint: 'vision system',
-    techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python 3.10+'],
+    techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python'],
     githubUrl: '#',
     liveUrl: '#',
   },
@@ -43,7 +43,7 @@ export const projects: Project[] = [
     description: "This advanced medical AI system addresses a critical challenge in healthcare AI: ensuring model reliability across different hospital systems and imaging equipment. The project implements a novel multi-domain balanced sampling strategy that significantly improves out-of-distribution generalization compared to traditional merged dataset approaches. The system processes chest X-rays from four major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) to predict four key pathologies: Cardiomegaly, Effusion, Edema, and Consolidation. Key innovations include custom weighted loss functions for handling medical data imbalance, sophisticated domain adaptation through balanced mini-batch sampling, and comprehensive leave-one-out cross-validation across medical institutions. The production pipeline features automated experiment tracking, robust checkpoint management, and quantization-aware training for deployment in resource-constrained clinical environments. Performance optimization includes cosine annealing learning rate scheduling with warmup, advanced data augmentation strategies, and efficient GPU/CPU inference modes. The system achieved publication at Medical Imaging meets NeurIPS 2021, demonstrating both research excellence and practical clinical applicability with deployment-ready model variants that maintain high accuracy.",
     imageUrl: 'https://placehold.co/600x400/4285F4/FFFFFF.png', // Google Blue
     imageHint: 'medical AI',
-    techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'DenseNet-121/ResNet-50', 'CUDA/CPU Optimization', 'Quantization', 'Medical Imaging'],
+    techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'CUDA/CPU Optimization', 'Quantization', 'Medical Imaging'],
     githubUrl: 'https://github.com/etetteh/OoD_Gen-Chest_Xray',
     liveUrl: 'https://arxiv.org/abs/2112.13734',
   }
@@ -53,19 +53,19 @@ export const skillCategories: SkillCategory[] = [
   {
     name: 'Programming Languages',
     icon: Code,
-    skills: ['Python (3.10+, 3.12)', 'JavaScript', 'TypeScript', 'Java', 'SQL', 'Go'],
+    skills: ['Python', 'JavaScript', 'TypeScript', 'SQL'],
   },
   {
     name: 'AI/ML & Generative AI',
     icon: Brain,
     skills: [
-      'Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning',
-      'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform',
+      'Natural Language Processing', 'Computer Vision', 'Deep Learning',
+      'PyTorch', 'Scikit-learn', 'Vertex AI', 'Google AI Platform',
       'TorchXRayVision', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation',
       'TIMM', 'TorchMetrics', 'HuggingFace Accelerate', 'Model Pruning', 'Adversarial Training', 'CutMix/MixUp Augmentation',
       'Sentence-Transformers', 'Hugging Face (Transformers/Datasets/PEFT)', 'FAISS', 'LoRA adaptation',
-      'Hard Negative Mining', 'Contrastive Learning', 'Mixed-Precision Training',
-      'LangChain', 'Google Gemini API', 'Prompt Engineering', 'JSON Schema'
+      'Hard Negative Mining', 'Mixed-Precision Training',
+      'LangChain', 'Google Gemini API', 'Prompt Engineering'
     ],
   },
   {
@@ -76,16 +76,16 @@ export const skillCategories: SkillCategory[] = [
   {
     name: 'Web Technologies & Distributed Systems',
     icon: AppWindow,
-    skills: ['React', 'Next.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs', 'GraphQL', 'gRPC', 'FastAPI', 'ONNX'],
+    skills: ['React', 'Next.js', 'Node.js', 'Flask', 'REST APIs', 'FastAPI', 'ONNX'],
   },
   {
     name: 'Cloud, MLOps & DevOps',
     icon: Cloud,
     skills: [
-      'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML',
+      'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'Azure ML',
       'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform',
       'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training',
-      'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions', 'tqdm', 'python-dotenv'
+      'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions'
     ],
   },
 ];
@@ -103,19 +103,6 @@ export const experiences: Experience[] = [
       "Engineered scalable data processing pipeline with comprehensive logging, input validation, and automated testing suite using pytest, delivering robust document loading capabilities and flexible CLI interface supporting batch sizes up to 1000 samples with configurable retry mechanisms."
     ],
     icon: ToyBrick,
-  },
-  {
-    id: 'cv-framework-architect-exp',
-    role: 'Senior Computer Vision Engineer',
-    company: 'VisionAI Labs',
-    period: '2019 - 2021',
-    description: [
-      "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
-      "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
-      "Implemented advanced training optimization techniques including Exponential Moving Average (EMA), checkpoint averaging across top-5 models, and hyperparameter tuning with Ray Tune Population-Based Training, achieving robust model performance and automated model selection.",
-      "Built comprehensive model interpretability framework using SHAP explainability analysis with automated confusion matrix and ROC curve generation, enabling production model monitoring and validation across multi-class classification tasks."
-    ],
-    icon: Settings2,
   },
   {
     id: 'ml-framework-architect-exp',
@@ -142,6 +129,19 @@ export const experiences: Experience[] = [
       "Engineered domain adaptation methodology using balanced mini-batch sampling strategy that outperformed baseline merged dataset approaches, implementing leave-one-out cross-validation across medical institutions to ensure robust generalization for real-world clinical deployment scenarios."
     ],
     icon: Microscope,
+  },
+    {
+    id: 'cv-framework-architect-exp',
+    role: 'Senior Computer Vision Engineer',
+    company: 'VisionAI Labs',
+    period: '2019 - 2021', // This was previously id: '2'
+    description: [
+      "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
+      "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
+      "Implemented advanced training optimization techniques including Exponential Moving Average (EMA), checkpoint averaging across top-5 models, and hyperparameter tuning with Ray Tune Population-Based Training, achieving robust model performance and automated model selection.",
+      "Built comprehensive model interpretability framework using SHAP explainability analysis with automated confusion matrix and ROC curve generation, enabling production model monitoring and validation across multi-class classification tasks."
+    ],
+    icon: Settings2,
   },
 ];
 
