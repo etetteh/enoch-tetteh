@@ -11,17 +11,19 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import type { ReactNode } from 'react';
 
-// Helper function to highlight skills - kept internal to this file if not used elsewhere
+// Helper function to highlight skills - kept internal to this file
 const highlightSkillsInDescriptionInternal = (
   description: string,
   skillsToHighlight: string[],
-  currentProjectNumber: number
-): React.ReactNode[] => {
-  if (!skillsToHighlight || skillsToHighlight.length === 0) {
+  uniquePrefix: string // For generating unique keys
+): ReactNode[] => {
+  if (!skillsToHighlight || skillsToHighlight.length === 0 || !description) {
     return [description];
   }
 
+  // Escape special characters for regex and ensure whole word match, case insensitive
   const pattern = skillsToHighlight
     .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
     .join('|');
@@ -32,7 +34,7 @@ const highlightSkillsInDescriptionInternal = (
   return parts.map((part, index) => {
     const isSkill = skillsToHighlight.some(skill => part.toLowerCase() === skill.toLowerCase());
     if (isSkill) {
-      return <span key={`project-${currentProjectNumber}-skill-${part}-${index}`} className="font-semibold text-accent">{part}</span>;
+      return <span key={`${uniquePrefix}-skill-${part.toLowerCase().replace(/\s+/g, '-')}-${index}`} className="font-semibold text-accent">{part}</span>;
     }
     return part;
   });
@@ -60,6 +62,11 @@ export function ProjectsSection() {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  // Animation for text content when slide changes
+  const textContentRef = useRef<HTMLDivElement>(null);
+  const isTextContentVisible = useFadeInOnScroll(textContentRef, { threshold: 0.1, rootMargin: "-50px 0px -50px 0px" });
+
 
   return (
     <section id="projects" className="bg-secondary">
@@ -93,12 +100,17 @@ export function ProjectsSection() {
           <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 min-h-[500px] md:min-h-[450px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
             <div 
+              ref={textContentRef}
               key={currentIndex} // Re-keying to trigger animation on slide change
-              className="md:w-1/2 space-y-4 text-center md:text-left animate-in fade-in duration-500"
+              className={cn(
+                "md:w-1/2 space-y-4 text-center md:text-left",
+                "transition-all duration-500 ease-in-out",
+                isTextContentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+              )}
             >
               <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
               <p className="text-sm md:text-base text-foreground leading-relaxed">
-                {currentProject.carouselDescription}
+                {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
               </p>
                <div className="mt-auto space-y-3 pt-4">
                  <div>
@@ -108,7 +120,7 @@ export function ProjectsSection() {
                         {highlightSkillsInDescriptionInternal(
                             currentProject.description,
                             currentProject.techStack,
-                            currentIndex + 1 
+                            `project-${currentIndex}-desc`
                         )}
                         </p>
                     </ScrollArea>
@@ -152,13 +164,13 @@ export function ProjectsSection() {
                 />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-md"></div>
               <p className="text-lg font-semibold text-background/80 z-10 p-4 text-center bg-black/30 rounded backdrop-blur-sm">
-                Project Visual for {currentProject.title}
+                Visual for {currentProject.title}
               </p>
             </div>
           </div>
 
           {/* Navigation Arrows */}
-          <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+           <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
             <Button
               variant="outline"
               onClick={handlePrev}

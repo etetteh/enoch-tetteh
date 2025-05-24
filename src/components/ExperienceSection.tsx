@@ -2,12 +2,47 @@
 'use client';
 
 import { useRef } from 'react';
+import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
+import type { ReactNode } from 'react';
 
-const ExperienceCard = ({ exp }: { exp: typeof experiences[0] }) => {
+const professionalKeywords = [
+  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Achieved", 
+  "Reduced", "Improved", "Scaled", "Spearheaded", "Led", "Managed", "Designed", 
+  "Automated", "Built", "Deployed", "Integrated", "Researched", "Analyzed",
+  "enterprise-grade", "production-ready", "scalable", "robust", "efficient", 
+  "high-performance", "state-of-the-art", "MLOps", "CI/CD", "data pipeline", 
+  "real-time", "algorithm", "framework", "optimization", "generalization", 
+  "accuracy", "performance", "cross-validation", "distributed training", 
+  "parameter-efficient", "fine-tuning", "hard negative mining", "model pruning",
+  "adversarial training", "interpretability", "quantization", "LLMs", "NLP", "Computer Vision"
+];
+
+const highlightExperienceKeywords = (
+  text: string,
+  uniquePrefix: string // For generating unique keys
+): ReactNode[] => {
+  if (!text) return [text];
+
+  const pattern = professionalKeywords
+    .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
+    .join('|');
+  const regex = new RegExp(`(${pattern})`, 'gi');
+  const parts = text.split(regex);
+
+  return parts.map((part, index) => {
+    const isKeyword = professionalKeywords.some(keyword => part.toLowerCase() === keyword.toLowerCase());
+    if (isKeyword) {
+      return <span key={`${uniquePrefix}-kw-${part.toLowerCase().replace(/\s+/g, '-')}-${index}`} className="font-semibold text-accent">{part}</span>;
+    }
+    return part;
+  });
+};
+
+const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
 
@@ -32,8 +67,10 @@ const ExperienceCard = ({ exp }: { exp: typeof experiences[0] }) => {
         </CardHeader>
         <CardContent>
           <ul className="list-disc list-inside space-y-1 text-sm text-foreground">
-            {exp.description.map((desc, index) => (
-              <li key={index}>{desc}</li>
+            {exp.description.map((desc, bulletIndex) => (
+              <li key={bulletIndex}>
+                {highlightExperienceKeywords(desc, `exp-${expIndex}-bullet-${bulletIndex}`)}
+              </li>
             ))}
           </ul>
         </CardContent>
@@ -60,8 +97,8 @@ export function ExperienceSection() {
           Professional Experience
         </h2>
         <div className="space-y-8">
-          {experiences.map((exp) => (
-            <ExperienceCard key={exp.id} exp={exp} />
+          {experiences.map((exp, index) => (
+            <ExperienceCard key={exp.id} exp={exp} expIndex={index} />
           ))}
         </div>
       </div>
