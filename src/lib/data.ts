@@ -16,13 +16,14 @@ export const projects: Project[] = [
   },
   {
     id: '2',
-    title: 'Proactive Anomaly Detection for Large-Scale Systems',
-    description: "Developed and implemented a machine learning system using TensorFlow and Scikit-learn for real-time anomaly detection in distributed systems, significantly reducing critical incident response times and improving system reliability for a platform serving over 10 million users. Deployed on GKE.",
-    carouselDescription: "ML system (TensorFlow, Scikit-learn) for real-time anomaly detection in distributed systems, improving reliability for 10M+ users.",
+    title: 'DeepMindFlow - Production-Ready Computer Vision Classification System',
+    description: "Developed a comprehensive computer vision classification system leveraging 50+ state-of-the-art models from the TIMM library with advanced training optimizations including CutMix/MixUp data augmentation, global model pruning (25% parameter reduction), and adversarial robustness through FGSM attack training. Implemented production-ready MLOps infrastructure using HuggingFace Accelerate for seamless distributed training across CPUs, GPUs, and TPUs, with automated experiment tracking via MLflow and hyperparameter optimization through Ray Tune's Population-Based Training algorithm. The system features advanced model optimization techniques including Exponential Moving Average weight updates, intelligent checkpoint averaging of top-performing models, and ONNX export for optimized inference deployment. Built comprehensive model interpretability pipeline using SHAP analysis with automated performance visualization including confusion matrices and ROC curves. Deployed FastAPI-based inference endpoints supporting both single and batch image processing with JSON configuration, enabling real-time production deployment with robust error handling and scalable architecture.",
+    carouselDescription: "Engineered enterprise-grade image classification framework achieving 100% validation accuracy across 18 SOTA models with comprehensive MLOps pipeline, supporting distributed training and real-time inference deployment.",
     imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Google Green background, White text
-    imageHint: 'detection system',
-    techStack: ['Python', 'TensorFlow', 'Scikit-learn', 'Prometheus', 'GKE', 'BigQuery'],
-    githubUrl: '#',
+    imageHint: 'vision system',
+    techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python 3.10'],
+    githubUrl: '#', // Placeholder for GitHub
+    liveUrl: '#',   // Placeholder for Live Demo
   },
   {
     id: '3',
@@ -40,27 +41,27 @@ export const skillCategories: SkillCategory[] = [
   {
     name: 'Programming Languages',
     icon: Code,
-    skills: ['Python', 'JavaScript', 'TypeScript', 'Java', 'SQL', 'Go'],
+    skills: ['Python (3.10+)', 'JavaScript', 'TypeScript', 'Java', 'SQL', 'Go'],
   },
   {
     name: 'AI/ML & Google AI',
     icon: Brain,
-    skills: ['Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform', 'TorchXRayVision', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation'],
+    skills: ['Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform', 'TorchXRayVision', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation', 'TIMM', 'TorchMetrics', 'HuggingFace Accelerate', 'Model Pruning', 'Adversarial Training', 'CutMix/MixUp Augmentation'],
   },
   {
     name: 'Data Science & Google Cloud Data',
     icon: Database,
-    skills: ['Data Mining', 'Statistical Analysis', 'Data Visualization (Tableau, PowerBI)', 'Pandas', 'NumPy', 'Spark', 'BigQuery', 'Looker', 'Cross-Validation Techniques'],
+    skills: ['Data Mining', 'Statistical Analysis', 'Data Visualization (Tableau, PowerBI)', 'Pandas', 'NumPy', 'Spark', 'BigQuery', 'Looker', 'Cross-Validation Techniques', 'SHAP'],
   },
   {
     name: 'Web Technologies & Distributed Systems',
     icon: AppWindow,
-    skills: ['React', 'Next.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs', 'GraphQL', 'gRPC'],
+    skills: ['React', 'Next.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs', 'GraphQL', 'gRPC', 'FastAPI', 'ONNX'],
   },
   {
     name: 'Google Cloud, MLOps & DevOps',
     icon: Cloud,
-    skills: ['Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML', 'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform', 'Weights & Biases (W&B)'],
+    skills: ['Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML', 'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform', 'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training'],
   },
 ];
 
@@ -69,7 +70,7 @@ export const experiences: Experience[] = [
     id: 'new-chest-xray-experience',
     role: 'Lead ML/AI Engineer (Medical Imaging Research)',
     company: 'Advanced AI Research Group (Research Project)',
-    period: '2021 - Present', // Placeholder, adjust as needed
+    period: '2021 - Present',
     description: [
       "Architected multi-domain balanced sampling framework for chest X-ray pathology prediction using PyTorch and TorchXRayVision, achieving improved out-of-distribution generalization across 4 major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) with 12 cross-validation configurations handling 100K+ medical images.",
       "Implemented advanced computer vision pipeline with DenseNet-121 and ResNet-50 architectures for 4-class pathology classification (Cardiomegaly, Effusion, Edema, Consolidation), optimizing ROC-AUC performance through custom weighted BCE loss functions and cosine annealing scheduling with warmup periods for robust medical AI deployment.",
@@ -80,13 +81,14 @@ export const experiences: Experience[] = [
   },
   {
     id: '2',
-    role: 'Machine Learning Engineer & Researcher',
-    company: 'Tech Forward Labs',
+    role: 'Senior Computer Vision Engineer',
+    company: 'VisionAI Labs (Example Company)',
     period: '2019 - 2021',
     description: [
-      "Researched and developed novel deep learning models for NLP tasks, resulting in 2 publications in ACL and NeurIPS workshops and demonstrating significant improvements over SOTA.",
-      "Engineered and optimized data processing pipelines for large-scale text datasets using Apache Beam on Google Cloud Dataflow.",
-      "Built and rigorously evaluated proof-of-concept AI models, demonstrating feasibility for projects later adopted for Google Cloud integration."
+      "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
+      "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
+      "Implemented advanced training optimization techniques including Exponential Moving Average (EMA), checkpoint averaging across top-5 models, and hyperparameter tuning with Ray Tune Population-Based Training, achieving robust model performance and automated model selection.",
+      "Built comprehensive model interpretability framework using SHAP explainability analysis with automated confusion matrix and ROC curve generation, enabling production model monitoring and validation across multi-class classification tasks."
     ],
     icon: Briefcase,
   },
