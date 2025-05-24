@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data';
 import { ThemeSwitcher } from './ThemeSwitcher';
+import { Button } from './ui/button'; // Keep for ThemeSwitcher
+// Removed Sheet related imports as they are no longer used for mobile nav
+
 
 const navLinks = [
   { href: '#hero', label: 'Home' },
@@ -30,8 +33,13 @@ export function Navbar() {
         return id ? document.getElementById(id) : null;
       });
       let current = '';
+      
+      // More robust way to get navbar height
       const navbarElement = document.querySelector('header');
-      const navbarHeight = navbarElement ? navbarElement.offsetHeight + 20 : 140;
+      let navbarHeight = 70; // Default offset
+      if (navbarElement) {
+        navbarHeight = navbarElement.offsetHeight + 20; // Add a bit of buffer
+      }
 
       const scrollY = window.scrollY;
 
@@ -50,6 +58,7 @@ export function Navbar() {
         if (sections.length > 0 && sections[0] && scrollY < sections[0].offsetTop - navbarHeight) {
           current = navLinks[0].href;
         } else {
+          // If no section is perfectly matched, check which section top is closest above the current scroll position
           for (let i = sections.length - 1; i >= 0; i--) {
             const section = sections[i];
             if (section && scrollY >= section.offsetTop - navbarHeight) {
@@ -60,6 +69,7 @@ export function Navbar() {
         }
       }
       
+      // Final fallback if no section is matched at all (e.g. very top of page before first section)
       if (!current && navLinks.length > 0) {
         current = navLinks[0].href;
       }
@@ -68,7 +78,7 @@ export function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    handleScroll(); // Call on mount to set initial active link
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -77,7 +87,7 @@ export function Navbar() {
     <div
       className={cn(
         "inline-flex bg-secondary rounded-full p-1 items-center shadow-sm",
-        isMobile ? "space-x-0.5" : "space-x-1"
+        isMobile ? "space-x-0.5" : "space-x-1" 
       )}
     >
       {navLinks.map((link) => (
@@ -163,3 +173,5 @@ export function Navbar() {
     </header>
   );
 }
+
+    

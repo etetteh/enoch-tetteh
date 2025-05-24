@@ -29,9 +29,9 @@ const generateQueriesPrompt = ai.definePrompt({
   name: 'suggestedQueriesPrompt',
   input: {schema: SuggestedQueriesInputSchema},
   output: {schema: SuggestedQueriesOutputSchema},
-  prompt: `You are an AI assistant tasked with generating 3 to 5 engaging and relevant suggested questions a user might ask a chatbot about Alex Johnson's professional portfolio.
+  prompt: `You are an AI assistant tasked with generating 3 to 5 engaging and relevant suggested questions a user might ask a chatbot about Enoch Tetteh's professional portfolio.
 The portfolio content is provided below.
-Based *only* on this content, generate diverse questions that highlight key aspects like Alex's skills, projects, experience, or education.
+Based *only* on this content, generate diverse questions that highlight key aspects like Enoch's skills, projects, experience, or education.
 Ensure the questions are concise and phrased as if a user is asking them.
 
 Portfolio Content:
@@ -40,9 +40,9 @@ Portfolio Content:
 Output the questions as a JSON array of strings. For example:
 {
   "queries": [
-    "What are Alex's main skills?",
-    "Tell me about Alex's most recent project.",
-    "What experience does Alex have with Google Cloud?"
+    "What are Enoch's main skills?",
+    "Tell me about Enoch's most recent project.",
+    "What experience does Enoch have with Google Cloud?"
   ]
 }`,
   safetySettings: [
@@ -63,7 +63,7 @@ const _internalSuggestedQueriesFlow = ai.defineFlow(
     const {output} = await generateQueriesPrompt(flowInput);
     if (!output || !output.queries || output.queries.length === 0) {
       // Fallback if AI fails to generate queries or returns an empty/invalid structure
-      return { queries: ["What are Alex's key skills?", "Tell me about a recent project.", "What is Alex's experience?"] };
+      return { queries: ["What are Enoch's key skills?", "Tell me about a recent project.", "What is Enoch's experience?"] };
     }
     // Ensure we always return an object matching SuggestedQueriesOutputSchema, even if AI provides extra fields
     return { queries: output.queries };
@@ -74,3 +74,4 @@ export async function suggestedQueriesFlow(input: SuggestedQueriesInput): Promis
   return _internalSuggestedQueriesFlow(input);
 }
 
+    

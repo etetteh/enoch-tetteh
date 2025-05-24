@@ -8,6 +8,7 @@ import Link from "next/link";
 import { ResumeTailorForm } from "./ResumeTailorForm";
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
+import { portfolioOwner } from '@/lib/data'; // Import portfolioOwner
 
 export function ResumeSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -17,6 +18,10 @@ export function ResumeSection() {
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
   const isDownloadBlockVisible = useFadeInOnScroll(downloadBlockRef, { threshold: 0.1 });
   const isTailorFormVisible = useFadeInOnScroll(tailorFormRef, { threshold: 0.1 });
+
+  // Sanitize the name for use in a filename
+  const sanitizedName = portfolioOwner.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  const resumeFilename = `${sanitizedName}_resume.pdf`;
 
   return (
     <section id="resume-tailor" className="bg-secondary">
@@ -46,7 +51,7 @@ export function ResumeSection() {
               Please note: you need to add your resume.pdf to the public folder.
             </p>
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transform transition-transform hover:scale-105">
-              <a href="/resume.pdf" download="AlexJohnson_Resume.pdf">
+              <a href="/resume.pdf" download={resumeFilename}>
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume (PDF)
               </a>
@@ -70,3 +75,5 @@ export function ResumeSection() {
     </section>
   );
 }
+
+    

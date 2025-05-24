@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -18,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Alex Johnson | AI Engineer & Google Cloud Portfolio | Seeking Roles at Google',
-  description: 'Portfolio of Alex Johnson, an AI Engineer specializing in Google Cloud, TensorFlow, and scalable machine learning solutions. Showcasing projects and expertise relevant for opportunities at Google.',
+  title: 'Enoch Tetteh | AI Engineer & Google Cloud Portfolio | Seeking Roles at Google',
+  description: 'Portfolio of Enoch Tetteh, an AI Engineer specializing in Google Cloud, TensorFlow, and scalable machine learning solutions. Showcasing projects and expertise relevant for opportunities at Google.',
 };
 
 export default function RootLayout({
@@ -48,3 +49,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+    

@@ -11,6 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Bot, User, Loader2, Send, MessageCircle, X, Sparkles } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { portfolioOwner } from '@/lib/data'; // Import portfolioOwner
 
 interface Message {
   id: string;
@@ -19,9 +20,9 @@ interface Message {
 }
 
 const defaultSuggestedQueries = [
-  "What are Alex's key skills?",
-  "Tell me about Alex's latest project.",
-  "Alex's experience with GCP?",
+  `What are ${portfolioOwner.name.split(' ')[0]}'s key skills?`, // Use first name
+  `Tell me about ${portfolioOwner.name.split(' ')[0]}'s latest project.`,
+  `${portfolioOwner.name.split(' ')[0]}'s experience with GCP?`,
 ];
 
 export function Chatbot() {
@@ -43,7 +44,7 @@ export function Chatbot() {
   useEffect(() => {
     setIsMounted(true);
     if (typeof window !== 'undefined') {
-      setMessages([{id: 'greeting', text: "Hello there! I'm Alex's portfolio assistant. How can I help you learn more about Alex's projects, skills, or experience today?", sender: 'bot'}]);
+      setMessages([{id: 'greeting', text: `Hello there! I'm ${portfolioOwner.name.split(' ')[0]}'s portfolio assistant. How can I help you learn more about ${portfolioOwner.name.split(' ')[0]}'s projects, skills, or experience today?`, sender: 'bot'}]);
     }
 
     const fetchSuggestions = async () => {
@@ -54,7 +55,6 @@ export function Chatbot() {
           const input: SuggestedQueriesInput = { portfolioContent: pageContent };
           const suggestionsOutput: SuggestedQueriesOutput = await suggestedQueriesFlow(input);
           if (suggestionsOutput.queries && suggestionsOutput.queries.length > 0) {
-            // Filter out any potentially empty strings from AI
             const validQueries = suggestionsOutput.queries.filter(q => q && q.trim() !== '');
             setDynamicSuggestedQueries(validQueries.length > 0 ? validQueries : defaultSuggestedQueries);
           } else {
@@ -169,7 +169,7 @@ export function Chatbot() {
                 variant="outline"
                 size="sm"
                 disabled
-                className="bg-background/60 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
+                className="bg-background/60 hover:text-card-foreground backdrop-blur-sm shadow-lg hover:bg-card transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
               >
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Loading suggestions...
@@ -180,7 +180,7 @@ export function Chatbot() {
                 variant="outline"
                 size="sm" 
                 onClick={handleSingleSuggestionClick}
-                className="bg-background/60 backdrop-blur-sm shadow-lg hover:bg-card hover:text-card-foreground transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
+                className="bg-background/60 hover:text-card-foreground backdrop-blur-sm shadow-lg hover:bg-card transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
               >
                 <Sparkles className="mr-2 h-4 w-4 text-accent flex-shrink-0" />
                 <span>{displayedSuggestedQuery}</span>
@@ -274,3 +274,4 @@ export function Chatbot() {
   );
 }
 
+    

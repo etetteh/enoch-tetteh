@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Github, Linkedin } from 'lucide-react';
 import { portfolioOwner } from '@/lib/data';
@@ -23,3 +24,5 @@ export function Footer() {
     </footer>
   );
 }
+
+    

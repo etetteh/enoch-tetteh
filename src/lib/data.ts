@@ -102,20 +102,20 @@ export const experiences: Experience[] = [
       "Implemented advanced NLP data generation system supporting 5 predefined formats (QA pairs, textual entailment, semantic similarity) and custom JSON schema definitions, with automated query refinement and document context integration achieving 40% improvement in data quality over baseline approaches.",
       "Engineered scalable data processing pipeline with comprehensive logging, input validation, and automated testing suite using pytest, delivering robust document loading capabilities and flexible CLI interface supporting batch sizes up to 1000 samples with configurable retry mechanisms."
     ],
-    icon: Cog, // Changed icon
+    icon: Cog,
   },
   {
-    id: 'cv-engineer-exp', // Changed ID
-    role: 'Senior Computer Vision Engineer',
-    company: 'VisionAI Labs',
+    id: 'ml-framework-architect-exp',
+    role: 'ML Framework Architect',
+    company: 'EmbedLLM Innovations',
     period: '2019 - 2021',
     description: [
-      "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
-      "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
-      "Implemented advanced training optimization techniques including Exponential Moving Average (EMA), checkpoint averaging across top-5 models, and hyperparameter tuning with Ray Tune Population-Based Training, achieving robust model performance and automated model selection.",
-      "Built comprehensive model interpretability framework using SHAP explainability analysis with automated confusion matrix and ROC curve generation, enabling production model monitoring and validation across multi-class classification tasks."
+      "Architected modular sentence embedding fine-tuning framework supporting 4 dataset formats (triplet, pair, pair-score, pair-class) with automated loss function selection, enabling parameter-efficient training via LoRA adaptation and hard negative mining for contrastive learning optimization.",
+      "Implemented production-ready MLOps pipeline with comprehensive configuration management using Pydantic validation, supporting both Hugging Face Hub and local dataset integration with automated train/validation/test splitting and FP16/BF16 mixed-precision training for enhanced performance.",
+      "Developed advanced hard negative mining system with FAISS-accelerated similarity search for pair datasets, incorporating configurable sampling strategies and margin-based negative selection to improve contrastive learning effectiveness by up to 2x training efficiency.",
+      "Engineered robust CI/CD workflow with automated testing, linting, and type checking using pytest, flake8, mypy, and GitHub Actions, ensuring code quality standards and reproducible model training across CUDA/MPS/CPU environments."
     ],
-    icon: Microscope, // Changed icon
+    icon: Palette, 
   },
 ];
 
@@ -139,10 +139,13 @@ export const education: Education[] = [
 ];
 
 export const portfolioOwner = {
-  name: "Alex Johnson",
+  name: "Enoch Tetteh",
   title: "Innovative AI Engineer & Google Cloud Specialist",
   bio: "Driven AI Engineer with a proven track record of developing scalable, high-impact machine learning solutions. Expertise in Google Cloud Platform, TensorFlow, and building production-grade AI systems. Passionate about tackling complex challenges and eager to contribute to Google's mission of organizing the world's information and making it universally accessible and useful.",
-  contactEmail: "alex.johnson.ai@example.com",
-  linkedinUrl: "https://www.linkedin.com/in/example",
-  githubUrl: "https://github.com/example",
+  contactEmail: "alex.johnson.ai@example.com", // You'll want to update this email
+  linkedinUrl: "https://www.linkedin.com/in/example", // And this
+  githubUrl: "https://github.com/example", // And this
 };
+
+
+    
