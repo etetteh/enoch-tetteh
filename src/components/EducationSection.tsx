@@ -32,11 +32,17 @@ const EducationCard = ({ edu }: { edu: typeof education[0] }) => {
         </CardHeader>
         {edu.description && edu.description.length > 0 && (
           <CardContent className="space-y-1">
-            {edu.description.map((line, index) => (
-              <p key={index} className="text-sm text-foreground">
-                {line}
-              </p>
-            ))}
+            {edu.description.map((line, index) => {
+              const isThesisLine = line.toLowerCase().startsWith('thesis:');
+              return (
+                <p key={index} className={cn(
+                  "text-sm text-foreground",
+                  isThesisLine ? "text-accent font-medium" : ""
+                )}>
+                  {line}
+                </p>
+              );
+            })}
           </CardContent>
         )}
       </Card>
