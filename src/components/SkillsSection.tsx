@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area'; // Added import
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
@@ -19,6 +19,8 @@ export function SkillsSection() {
   const isCarouselVisible = useFadeInOnScroll(carouselContainerRef, { threshold: 0.1, rootMargin: "0px 0px -100px 0px" });
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -41,7 +43,6 @@ export function SkillsSection() {
     setCurrentIndex(index);
   };
   
-  // Scroll to active card
   useEffect(() => {
     if (cardRefs.current[currentIndex]) {
       cardRefs.current[currentIndex]?.scrollIntoView({
@@ -52,6 +53,24 @@ export function SkillsSection() {
     }
   }, [currentIndex]);
 
+  useEffect(() => {
+    if (intervalIdRef.current) {
+      clearInterval(intervalIdRef.current);
+    }
+    if (!isPaused && skillCategories.length > 1) {
+      intervalIdRef.current = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex === skillCategories.length - 1 ? 0 : prevIndex + 1));
+      }, 9000); // 9 second interval
+    }
+    return () => {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+      }
+    };
+  }, [currentIndex, isPaused, skillCategories.length]);
+
+  const handleMouseEnter = () => setIsPaused(true);
+  const handleMouseLeave = () => setIsPaused(false);
 
   return (
     <section id="skills">
@@ -73,10 +92,12 @@ export function SkillsSection() {
             "relative transition-all duration-700 ease-out delay-200",
             isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          <div className="flex items-center justify-center px-4 sm:px-0"> {/* Centering wrapper for cards */}
+          <div className="flex items-center justify-center px-4 sm:px-0">
             <div
-              className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-center snap-x snap-mandatory w-full max-w-5xl"
+              className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl"
             >
               {skillCategories.map((category, index) => {
                 const isActive = index === currentIndex;
@@ -86,7 +107,7 @@ export function SkillsSection() {
                     ref={el => cardRefs.current[index] = el}
                     onClick={() => setCurrentIndex(index)}
                     className={cn(
-                      "transition-all duration-300 ease-in-out transform flex-shrink-0 snap-center rounded-xl overflow-hidden",
+                      "transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center rounded-xl overflow-hidden",
                       "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                       isActive
                         ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-card border-2 border-primary"
@@ -100,26 +121,38 @@ export function SkillsSection() {
                   >
                     <CardHeader className={cn(
                       "flex flex-col items-center text-center p-4 transition-all duration-300",
+                       // Add key to re-trigger animation on active card change
                       isActive ? "pt-6" : "pt-4"
                     )}>
                       <category.icon className={cn(
-                        "transition-all duration-300 text-primary",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2"
+                        "transition-all duration-500 text-primary",
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100 scale-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-0 scale-90",
+                        isActive && "animate-in fade-in-0 zoom-in-90 delay-200 duration-500"
                       )} />
                       <CardTitle className={cn(
-                        "transition-all duration-300 text-primary",
-                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium"
+                        "transition-all duration-500 text-primary",
+                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-0",
+                         isActive && "animate-in fade-in-0 delay-300 duration-500"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
                     <CardContent className={cn(
                       "p-3 sm:p-4 transition-opacity duration-300",
-                       isActive ? "opacity-100" : "opacity-0 max-h-0 overflow-hidden" // Hide content on inactive cards for simplicity
+                       isActive ? "opacity-100" : "opacity-0 max-h-0 overflow-hidden"
                     )}>
-                      {isActive && ( // Only render badges if active to save performance and simplify inactive view
+                      {isActive && (
                         <ScrollArea className="h-36 sm:h-40">
                            <div className="flex flex-wrap gap-2 justify-center">
-                            {category.skills.map((skill) => (
-                              <Badge key={skill} variant="secondary" className="text-xs sm:text-sm py-1 px-2 sm:px-3">{skill}</Badge>
+                            {category.skills.map((skill, skillIndex) => (
+                              <Badge 
+                                key={skill} 
+                                variant="secondary" 
+                                className={cn(
+                                  "text-xs sm:text-sm py-1 px-2 sm:px-3 opacity-0 animate-in fade-in-0 zoom-in-90 duration-300",
+                                )}
+                                style={{ animationDelay: `${400 + skillIndex * 50}ms` }}
+                              >
+                                {skill}
+                              </Badge>
                             ))}
                           </div>
                         </ScrollArea>
@@ -132,7 +165,7 @@ export function SkillsSection() {
           </div>
 
           {/* Navigation Arrows */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
+          <div className="absolute left-0 sm:-left-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
              <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
                 <Button
                 variant="outline"
@@ -144,7 +177,7 @@ export function SkillsSection() {
                 </Button>
             </div>
           </div>
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
+          <div className="absolute right-0 sm:-right-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
                 <Button
                 variant="outline"
@@ -166,12 +199,20 @@ export function SkillsSection() {
                 className={cn(
                   "h-2 rounded-full transition-all duration-300 ease-in-out",
                   currentIndex === index
-                    ? "w-6 bg-primary"
+                    ? "w-6 bg-primary/30 relative overflow-hidden"
                     : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30"
                 )}
                 aria-label={`Go to skill category ${index + 1}`}
                 aria-current={currentIndex === index ? "true" : "false"}
-              />
+              >
+                {currentIndex === index && (
+                  <div
+                    key={currentIndex} 
+                    className="h-full bg-primary rounded-full"
+                    style={{ animation: 'progress-fill 9s linear forwards' }}
+                  />
+                )}
+              </button>
             ))}
           </div>
         </div>
