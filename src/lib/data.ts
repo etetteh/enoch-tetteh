@@ -134,7 +134,7 @@ export const experiences: Experience[] = [
     id: 'cv-framework-architect-exp',
     role: 'Senior Computer Vision Engineer',
     company: 'VisionAI Labs',
-    period: '2019 - 2021', // This was previously id: '2'
+    period: '2019 - 2021', 
     description: [
       "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
       "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
@@ -168,7 +168,7 @@ export const portfolioOwner = {
   name: "Enoch Tetteh",
   title: "Innovative AI Engineer & MLOps Expert",
   bio: "Highly accomplished and results-oriented AI/ML Engineer specializing in the architecture and deployment of enterprise-grade solutions in Natural Language Processing, Computer Vision, and Generative AI. Proven expertise in production-ready MLOps, advanced model optimization (LoRA, quantization, pruning), and leveraging cutting-edge technologies like Google Gemini and LangChain. Consistently delivers impactful results, including significant model size reduction (75%), data quality improvements (40%), and enhanced out-of-distribution generalization for large-scale systems.",
-  contactEmail: "enoch.tetteh.ai@example.com",
+  contactEmail: "enoch.tetteh.2099@gmail.com",
   linkedinUrl: "https://www.linkedin.com/in/enochtetteh",
   githubUrl: "https://github.com/etetteh",
 };
