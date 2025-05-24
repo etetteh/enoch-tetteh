@@ -102,7 +102,7 @@ export const experiences: Experience[] = [
       "Implemented advanced NLP data generation system supporting 5 predefined formats (QA pairs, textual entailment, semantic similarity) and custom JSON schema definitions, with automated query refinement and document context integration achieving 40% improvement in data quality over baseline approaches.",
       "Engineered scalable data processing pipeline with comprehensive logging, input validation, and automated testing suite using pytest, delivering robust document loading capabilities and flexible CLI interface supporting batch sizes up to 1000 samples with configurable retry mechanisms."
     ],
-    icon: ToyBrick, 
+    icon: ToyBrick,
   },
   {
     id: 'ml-framework-architect-exp',
@@ -115,7 +115,7 @@ export const experiences: Experience[] = [
       "Developed advanced hard negative mining system with FAISS-accelerated similarity search for pair datasets, incorporating configurable sampling strategies and margin-based negative selection to improve contrastive learning effectiveness by up to 2x training efficiency.",
       "Engineered robust CI/CD workflow with automated testing, linting, and type checking using pytest, flake8, mypy, and GitHub Actions, ensuring code quality standards and reproducible model training across CUDA/MPS/CPU environments."
     ],
-    icon: Palette, 
+    icon: Palette,
   },
   {
     id: 'xray-ood-exp',
@@ -154,8 +154,10 @@ export const education: Education[] = [
 export const portfolioOwner = {
   name: "Enoch Tetteh",
   title: "Innovative AI Engineer & Google Cloud Specialist",
-  bio: "Driven AI Engineer with a proven track record of developing scalable, high-impact machine learning solutions. Expertise in Google Cloud Platform, TensorFlow, and building production-grade AI systems. Passionate about tackling complex challenges and eager to contribute to Google's mission of organizing the world's information and making it universally accessible and useful.",
-  contactEmail: "enoch.tetteh.ai@example.com", 
-  linkedinUrl: "https://www.linkedin.com/in/enochtetteh", 
-  githubUrl: "https://github.com/etetteh", 
+  bio: "Highly accomplished and results-oriented AI/ML Engineer specializing in the architecture and deployment of enterprise-grade solutions in Natural Language Processing, Computer Vision, and Generative AI. Proven expertise in production-ready MLOps, advanced model optimization (LoRA, quantization, pruning), and leveraging cutting-edge technologies like Google Gemini and LangChain. Consistently delivers impactful results, including significant model size reduction (75%), data quality improvements (40%), and enhanced out-of-distribution generalization for large-scale systems.",
+  contactEmail: "enoch.tetteh.ai@example.com",
+  linkedinUrl: "https://www.linkedin.com/in/enochtetteh",
+  githubUrl: "https://github.com/etetteh",
 };
+
+    
