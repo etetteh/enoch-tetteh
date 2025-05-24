@@ -13,18 +13,45 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import type { ReactNode } from 'react';
 
+const mlAiKeywords = [
+  // Core ML/AI Concepts
+  "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI", 
+  "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering", 
+  "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity", 
+  "Textual Entailment", "Question Answering",
+  // ML Techniques & Processes
+  "Fine-tuning", "Pre-trained Model", "Transfer Learning", "Data Augmentation", "CutMix", "MixUp", 
+  "Model Pruning", "Quantization", "Adversarial Training", "Hard Negative Mining", "Parameter-Efficient", 
+  "LoRA", "Optimization", "Algorithm", "Generalization", "Accuracy", "Performance", 
+  "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
+  // MLOps & Production
+  "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient", 
+  "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control",
+  // Action Verbs (more common in experience but can appear in project descriptions)
+  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated", 
+  "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
+  // Impact/Quality Descriptors
+  "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
+  // Specific tools are handled by project.techStack
+];
+
 // Helper function to highlight skills - kept internal to this file
 const highlightSkillsInDescriptionInternal = (
   description: string,
-  skillsToHighlight: string[],
+  projectTechStack: string[], // Specific tech stack for the current project
   uniquePrefix: string // For generating unique keys
 ): ReactNode[] => {
-  if (!skillsToHighlight || skillsToHighlight.length === 0 || !description) {
+  if (!description) return [description];
+
+  // Combine project-specific tech stack with general ML/AI keywords
+  const allKeywordsToHighlight = [...new Set([...projectTechStack, ...mlAiKeywords])];
+
+  if (!allKeywordsToHighlight || allKeywordsToHighlight.length === 0) {
     return [description];
   }
 
   // Escape special characters for regex and ensure whole word match, case insensitive
-  const pattern = skillsToHighlight
+  const pattern = allKeywordsToHighlight
     .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
@@ -32,8 +59,8 @@ const highlightSkillsInDescriptionInternal = (
   const parts = description.split(regex);
 
   return parts.map((part, index) => {
-    const isSkill = skillsToHighlight.some(skill => part.toLowerCase() === skill.toLowerCase());
-    if (isSkill) {
+    const isKeyword = allKeywordsToHighlight.some(skill => part.toLowerCase() === skill.toLowerCase());
+    if (isKeyword) {
       return <span key={`${uniquePrefix}-skill-${part.toLowerCase().replace(/\s+/g, '-')}-${index}`} className="font-semibold text-accent">{part}</span>;
     }
     return part;

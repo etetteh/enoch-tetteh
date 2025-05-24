@@ -9,16 +9,30 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
 
-const professionalKeywords = [
-  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Achieved", 
-  "Reduced", "Improved", "Scaled", "Spearheaded", "Led", "Managed", "Designed", 
-  "Automated", "Built", "Deployed", "Integrated", "Researched", "Analyzed",
-  "enterprise-grade", "production-ready", "scalable", "robust", "efficient", 
-  "high-performance", "state-of-the-art", "MLOps", "CI/CD", "data pipeline", 
-  "real-time", "algorithm", "framework", "optimization", "generalization", 
-  "accuracy", "performance", "cross-validation", "distributed training", 
-  "parameter-efficient", "fine-tuning", "hard negative mining", "model pruning",
-  "adversarial training", "interpretability", "quantization", "LLMs", "NLP", "Computer Vision"
+const mlAiProfessionalKeywords = [
+  // Core ML/AI Concepts
+  "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI", 
+  "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering", 
+  "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity", 
+  "Textual Entailment", "Question Answering",
+  // ML Techniques & Processes
+  "Fine-tuning", "Pre-trained Model", "Transfer Learning", "Data Augmentation", "CutMix", "MixUp", 
+  "Model Pruning", "Quantization", "Adversarial Training", "Hard Negative Mining", "Parameter-Efficient", 
+  "LoRA", "Optimization", "Algorithm", "Generalization", "Accuracy", "Performance", 
+  "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
+  // MLOps & Production
+  "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient", 
+  "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control",
+  // Tools & Frameworks (examples, as tech stack is often separate)
+  "PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "Hugging Face", "Transformers", "Datasets", 
+  "Accelerate", "PEFT", "TIMM", "Sentence-Transformers", "FAISS", "Vertex AI", "Google Gemini API", 
+  "MLflow", "Ray Tune", "Weights & Biases", "ONNX", "FastAPI", "Docker", "Kubernetes", "GCP", 
+  "Google Cloud Platform", "BigQuery",
+  // Action Verbs
+  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated", 
+  "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
+  // Impact/Quality Descriptors
+  "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
 ];
 
 const highlightExperienceKeywords = (
@@ -27,14 +41,14 @@ const highlightExperienceKeywords = (
 ): ReactNode[] => {
   if (!text) return [text];
 
-  const pattern = professionalKeywords
+  const pattern = mlAiProfessionalKeywords
     .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
   const parts = text.split(regex);
 
   return parts.map((part, index) => {
-    const isKeyword = professionalKeywords.some(keyword => part.toLowerCase() === keyword.toLowerCase());
+    const isKeyword = mlAiProfessionalKeywords.some(keyword => part.toLowerCase() === keyword.toLowerCase());
     if (isKeyword) {
       return <span key={`${uniquePrefix}-kw-${part.toLowerCase().replace(/\s+/g, '-')}-${index}`} className="font-semibold text-accent">{part}</span>;
     }
