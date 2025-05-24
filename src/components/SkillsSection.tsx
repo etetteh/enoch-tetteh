@@ -10,13 +10,10 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function SkillsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
   const carouselContainerRef = useRef<HTMLDivElement>(null);
-  const isCarouselVisible = useFadeInOnScroll(carouselContainerRef, { threshold: 0.1, rootMargin: "0px 0px -100px 0px" });
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -54,7 +51,6 @@ export function SkillsSection() {
       const containerWidth = container.offsetWidth;
 
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
-
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
       container.scrollTo({
@@ -88,21 +84,14 @@ export function SkillsSection() {
       <div className="container">
         <h2
           ref={titleRef}
-          className={cn(
-            "section-title",
-            "transition-all duration-700 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          )}
+          className="section-title"
         >
           Skills & Expertise
         </h2>
 
         <div
           ref={carouselContainerRef}
-          className={cn(
-            "relative transition-all duration-700 ease-out delay-200",
-            isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          )}
+          className="relative"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -137,27 +126,22 @@ export function SkillsSection() {
                     )}>
                       <category.icon className={cn(
                         "transition-all duration-500 text-primary opacity-100 scale-100",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100", // Ensure icon is visible on inactive cards
-                        isActive && "animate-in fade-in-0 zoom-in-90 delay-200 duration-500"
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100"
                       )} />
                       <CardTitle className={cn(
-                        "transition-all duration-500 text-primary", // Removed opacity-0 for inactive title
-                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100", // Ensure title is visible on inactive cards
-                         isActive && "animate-in fade-in-0 delay-300 duration-500"
+                        "transition-all duration-500 text-primary",
+                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
                     {isActive && (
                       <CardContent className="p-3 sm:p-4 transition-opacity duration-300 opacity-100">
                         <ScrollArea className="h-36 sm:h-40">
                            <div className="flex flex-wrap gap-2 justify-center">
-                            {category.skills.map((skill, skillIndex) => (
+                            {category.skills.map((skill) => (
                               <Badge
                                 key={skill}
                                 variant="secondary"
-                                className={cn(
-                                  "text-xs sm:text-sm py-1 px-2 sm:px-3 animate-in fade-in-0 zoom-in-90 duration-300" // Removed explicit opacity-0
-                                )}
-                                style={{ animationDelay: `${400 + skillIndex * 50}ms` }}
+                                className="text-xs sm:text-sm py-1 px-2 sm:px-3"
                               >
                                 {skill}
                               </Badge>
