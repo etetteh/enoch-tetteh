@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Bot, User, Loader2, Send, MessageCircle, X, Sparkles } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { portfolioOwner } from '@/lib/data'; // Import portfolioOwner
+import { cn } from '@/lib/utils';
 
 interface Message {
   id: string;
@@ -20,7 +21,7 @@ interface Message {
 }
 
 const defaultSuggestedQueries = [
-  `What are ${portfolioOwner.name.split(' ')[0]}'s key skills?`, // Use first name
+  `What are ${portfolioOwner.name.split(' ')[0]}'s key skills?`,
   `Tell me about ${portfolioOwner.name.split(' ')[0]}'s latest project.`,
   `${portfolioOwner.name.split(' ')[0]}'s experience with GCP?`,
 ];
@@ -76,27 +77,34 @@ export function Chatbot() {
       }
     };
 
-    fetchSuggestions();
+    if (typeof window !== 'undefined') {
+        fetchSuggestions();
+    }
   }, [toast]); 
   
   useEffect(() => {
-    if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0) {
-      if (!isOpen && isMounted) {
-        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current % dynamicSuggestedQueries.length]); 
-        intervalRef.current = setInterval(() => {
-          queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
-          setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
-        }, 3000);
-      } else if (intervalRef.current) {
+    if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
+      // Initialize displayed query immediately
+      if(!displayedSuggestedQuery) {
+        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current % dynamicSuggestedQueries.length]);
+      }
+      
+      // Clear any existing interval before setting a new one
+      if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
+
+      intervalRef.current = setInterval(() => {
+        queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
+        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+      }, 3000);
     }
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isOpen, isMounted, dynamicSuggestedQueries, isLoadingSuggestions]);
+  }, [isMounted, dynamicSuggestedQueries, isLoadingSuggestions, displayedSuggestedQuery]);
 
 
   useEffect(() => {
@@ -149,56 +157,41 @@ export function Chatbot() {
     e.preventDefault();
     processQuery(query);
   };
-  
-  const handleSingleSuggestionClick = async () => {
-    if (!displayedSuggestedQuery || isLoading) return;
-    setIsOpen(true); 
-    processQuery(displayedSuggestedQuery);
-  };
-  
+    
   if (!isMounted) {
     return null; 
   }
 
   return (
     <>
-      {isMounted && !isOpen && (
-        <div className="fixed bottom-24 right-6 flex flex-col items-end z-40">
-           {isLoadingSuggestions ? (
-             <Button
-                variant="outline"
-                size="sm"
-                disabled
-                className="bg-background/60 hover:text-card-foreground backdrop-blur-sm shadow-lg hover:bg-card transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
-              >
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Loading suggestions...
-            </Button>
-           ) : (
-            displayedSuggestedQuery && (
-              <Button
-                variant="outline"
-                size="sm" 
-                onClick={handleSingleSuggestionClick}
-                className="bg-background/60 hover:text-card-foreground backdrop-blur-sm shadow-lg hover:bg-card transition-all duration-150 ease-in-out animate-in fade-in zoom-in-90 whitespace-normal h-auto px-3 py-1.5 text-left max-w-[180px]"
-              >
-                <Sparkles className="mr-2 h-4 w-4 text-accent flex-shrink-0" />
-                <span>{displayedSuggestedQuery}</span>
-              </Button>
-            )
-           )}
-        </div>
-      )}
-
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button
-            variant="default"
-            size="icon"
-            className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-xl bg-accent hover:bg-accent/90 text-accent-foreground z-50"
-            aria-label="Open Chatbot"
+            onClick={() => {
+              if (displayedSuggestedQuery && !isOpen) { // Only process if not already open to avoid double processing
+                processQuery(displayedSuggestedQuery);
+              }
+            }}
+            className={cn(
+              "fixed bottom-6 left-1/2 -translate-x-1/2",
+              "w-11/12 max-w-lg h-14 px-4 py-3",
+              "bg-neutral-700 hover:bg-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-700",
+              "text-neutral-200 dark:text-neutral-300",
+              "rounded-full shadow-xl",
+              "flex items-center justify-between z-50"
+            )}
+            aria-label="Open Chatbot with suggested query"
           >
-            <MessageCircle className="h-7 w-7" />
+            <div className="flex items-center gap-2 overflow-hidden flex-grow">
+              <Sparkles className="h-5 w-5 text-accent flex-shrink-0" />
+              <span className="truncate text-sm">
+                {isLoadingSuggestions ? "Loading suggestions..." : displayedSuggestedQuery || "Ask about Enoch's portfolio..."}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 pl-2 flex-shrink-0">
+              <span className="text-sm font-medium">Chat</span>
+              <MessageCircle className="h-5 w-5" />
+            </div>
           </Button>
         </SheetTrigger>
         <SheetContent className="w-full max-w-md flex flex-col p-0">
@@ -273,5 +266,3 @@ export function Chatbot() {
     </>
   );
 }
-
-    
