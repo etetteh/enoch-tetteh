@@ -139,3 +139,9 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Keyframes for progress fill animation */
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: 100%; }
+}

@@ -49,7 +49,7 @@ const highlightSkillsInDescriptionInternal = (
   }
 
   const pattern = allKeywordsToHighlight
-    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
+    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
 
@@ -265,12 +265,20 @@ export function ProjectsSection() {
                 className={cn(
                   "h-2 rounded-full transition-all duration-300 ease-in-out",
                   currentIndex === index
-                    ? "w-6 bg-primary" // Active dot: wider, filled
-                    : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" // Inactive dot: hollow circle
+                    ? "w-6 bg-primary/30 relative overflow-hidden" // Active dot: wider, track color, relative for inner progress
+                    : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" // Inactive dot
                 )}
                 aria-label={`Go to project ${index + 1}`}
                 aria-current={currentIndex === index ? "true" : "false"}
-              />
+              >
+                {currentIndex === index && (
+                  <div
+                    key={currentIndex} // Reset animation when currentIndex changes
+                    className="h-full bg-primary rounded-full"
+                    style={{ animation: 'progress-fill 9s linear forwards' }}
+                  />
+                )}
+              </button>
             ))}
           </div>
         </div>
