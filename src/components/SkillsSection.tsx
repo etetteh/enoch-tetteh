@@ -22,6 +22,7 @@ export function SkillsSection() {
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const scrollContainerRef = useRef<HTMLDivElement>(null); // Ref for the scrollable container
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, skillCategories.length);
@@ -44,11 +45,22 @@ export function SkillsSection() {
   };
   
   useEffect(() => {
-    if (cardRefs.current[currentIndex]) {
-      cardRefs.current[currentIndex]?.scrollIntoView({
+    const activeCard = cardRefs.current[currentIndex];
+    const container = scrollContainerRef.current;
+
+    if (activeCard && container) {
+      const cardLeft = activeCard.offsetLeft;
+      const cardWidth = activeCard.offsetWidth;
+      const containerWidth = container.offsetWidth;
+      
+      let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+      
+      // Ensure targetScrollLeft is within bounds
+      targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
+
+      container.scrollTo({
+        left: targetScrollLeft,
         behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
       });
     }
   }, [currentIndex]);
@@ -89,14 +101,15 @@ export function SkillsSection() {
         <div
           ref={carouselContainerRef}
           className={cn(
-            "relative transition-all duration-700 ease-out delay-200", // Keep main container relative for arrows
+            "relative transition-all duration-700 ease-out delay-200", 
             isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="flex items-center justify-center px-4 sm:px-0"> {/* This can remain for centering the card scroll area */}
+          <div className="flex items-center justify-center px-4 sm:px-0">
             <div
+              ref={scrollContainerRef} // Attach ref here
               className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl"
             >
               {skillCategories.map((category, index) => {
@@ -165,26 +178,26 @@ export function SkillsSection() {
 
           {/* Navigation Arrows */}
           <div className="absolute left-0 sm:-left-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary h-10 w-10">
                 <Button
-                variant="outline"
-                onClick={handlePrev}
-                className="rounded-full h-10 w-10 p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
-                aria-label="Previous skill category"
+                  variant="outline"
+                  onClick={handlePrev}
+                  className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+                  aria-label="Previous skill category"
                 >
-                <ChevronLeft className="h-6 w-6" />
+                  <ChevronLeft className="h-6 w-6" />
                 </Button>
             </div>
           </div>
           <div className="absolute right-0 sm:-right-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary h-10 w-10">
                 <Button
-                variant="outline"
-                onClick={handleNext}
-                className="rounded-full h-10 w-10 p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
-                aria-label="Next skill category"
+                  variant="outline"
+                  onClick={handleNext}
+                  className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+                  aria-label="Next skill category"
                 >
-                <ChevronRight className="h-6 w-6" />
+                  <ChevronRight className="h-6 w-6" />
                 </Button>
             </div>
           </div>
@@ -219,4 +232,3 @@ export function SkillsSection() {
     </section>
   );
 }
-
