@@ -56,7 +56,7 @@ export const skillCategories: SkillCategory[] = [
     skills: ['Python (3.10+, 3.12)', 'JavaScript', 'TypeScript', 'Java', 'SQL', 'Go'],
   },
   {
-    name: 'AI/ML & Google AI',
+    name: 'AI/ML & Generative AI',
     icon: Brain,
     skills: [
       'Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning',
@@ -69,7 +69,7 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    name: 'Data Science & Google Cloud Data',
+    name: 'Data Science & Analytics',
     icon: Database,
     skills: ['Data Mining', 'Statistical Analysis', 'Data Visualization (Tableau, PowerBI)', 'Pandas', 'NumPy', 'Spark', 'BigQuery', 'Looker', 'Cross-Validation Techniques', 'SHAP', 'Parquet'],
   },
@@ -79,7 +79,7 @@ export const skillCategories: SkillCategory[] = [
     skills: ['React', 'Next.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs', 'GraphQL', 'gRPC', 'FastAPI', 'ONNX'],
   },
   {
-    name: 'Google Cloud, MLOps & DevOps',
+    name: 'Cloud, MLOps & DevOps',
     icon: Cloud,
     skills: [
       'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML',
@@ -103,6 +103,19 @@ export const experiences: Experience[] = [
       "Engineered scalable data processing pipeline with comprehensive logging, input validation, and automated testing suite using pytest, delivering robust document loading capabilities and flexible CLI interface supporting batch sizes up to 1000 samples with configurable retry mechanisms."
     ],
     icon: ToyBrick,
+  },
+  {
+    id: 'cv-framework-architect-exp',
+    role: 'Senior Computer Vision Engineer',
+    company: 'VisionAI Labs',
+    period: '2019 - 2021',
+    description: [
+      "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
+      "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
+      "Implemented advanced training optimization techniques including Exponential Moving Average (EMA), checkpoint averaging across top-5 models, and hyperparameter tuning with Ray Tune Population-Based Training, achieving robust model performance and automated model selection.",
+      "Built comprehensive model interpretability framework using SHAP explainability analysis with automated confusion matrix and ROC curve generation, enabling production model monitoring and validation across multi-class classification tasks."
+    ],
+    icon: Settings2,
   },
   {
     id: 'ml-framework-architect-exp',
@@ -153,7 +166,7 @@ export const education: Education[] = [
 
 export const portfolioOwner = {
   name: "Enoch Tetteh",
-  title: "Innovative AI Engineer & Google Cloud Specialist",
+  title: "Innovative AI Engineer & MLOps Expert",
   bio: "Highly accomplished and results-oriented AI/ML Engineer specializing in the architecture and deployment of enterprise-grade solutions in Natural Language Processing, Computer Vision, and Generative AI. Proven expertise in production-ready MLOps, advanced model optimization (LoRA, quantization, pruning), and leveraging cutting-edge technologies like Google Gemini and LangChain. Consistently delivers impactful results, including significant model size reduction (75%), data quality improvements (40%), and enhanced out-of-distribution generalization for large-scale systems.",
   contactEmail: "enoch.tetteh.ai@example.com",
   linkedinUrl: "https://www.linkedin.com/in/enochtetteh",

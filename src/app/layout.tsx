@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Enoch Tetteh | AI Engineer & Google Cloud Portfolio | Seeking Roles at Google',
-  description: 'Portfolio of Enoch Tetteh, an AI Engineer specializing in Google Cloud, TensorFlow, and scalable machine learning solutions. Showcasing projects and expertise relevant for opportunities at Google.',
+  title: 'Enoch Tetteh | AI Engineer Portfolio | Seeking Roles at Google',
+  description: 'Portfolio of Enoch Tetteh, an AI Engineer showcasing expertise in MLOps, Deep Learning, NLP, Computer Vision, and scalable AI solutions. Relevant for opportunities at Google.',
 };
 
 export default function RootLayout({
