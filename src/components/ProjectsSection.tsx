@@ -15,42 +15,39 @@ import type { ReactNode } from 'react';
 
 const mlAiKeywords = [
   // Core ML/AI Concepts
-  "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI", 
-  "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering", 
-  "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity", 
-  "Textual Entailment", "Question Answering",
+  "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
+  "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering",
+  "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity",
+  "Textual Entailment", "Question Answering", "Fine-tuning", "Pre-trained Model", "Transfer Learning",
   // ML Techniques & Processes
-  "Fine-tuning", "Pre-trained Model", "Transfer Learning", "Data Augmentation", "CutMix", "MixUp", 
-  "Model Pruning", "Quantization", "Adversarial Training", "Hard Negative Mining", "Parameter-Efficient", 
-  "LoRA", "Optimization", "Algorithm", "Generalization", "Accuracy", "Performance", 
-  "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
+  "Data Augmentation", "CutMix", "MixUp", "Model Pruning", "Quantization", "Adversarial Training",
+  "Hard Negative Mining", "Parameter-Efficient", "LoRA", "Optimization", "Algorithm", "Generalization",
+  "Accuracy", "Performance", "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
   // MLOps & Production
-  "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient", 
+  "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient",
   "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control",
-  // Action Verbs (more common in experience but can appear in project descriptions)
-  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated", 
+  // Action Verbs
+  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated",
   "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
   // Impact/Quality Descriptors
   "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
   // Specific tools are handled by project.techStack
 ];
 
-// Helper function to highlight skills - kept internal to this file
+// Helper function to highlight skills
 const highlightSkillsInDescriptionInternal = (
   description: string,
-  projectTechStack: string[], // Specific tech stack for the current project
-  uniquePrefix: string // For generating unique keys
+  projectTechStack: string[],
+  uniquePrefix: string
 ): ReactNode[] => {
   if (!description) return [description];
 
-  // Combine project-specific tech stack with general ML/AI keywords
   const allKeywordsToHighlight = [...new Set([...projectTechStack, ...mlAiKeywords])];
 
   if (!allKeywordsToHighlight || allKeywordsToHighlight.length === 0) {
     return [description];
   }
 
-  // Escape special characters for regex and ensure whole word match, case insensitive
   const pattern = allKeywordsToHighlight
     .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
     .join('|');
@@ -73,10 +70,11 @@ export function ProjectsSection() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
   const isCarouselVisible = useFadeInOnScroll(carouselRef, { threshold: 0.1 });
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+  const textContentRef = useRef<HTMLDivElement>(null); // Ref for text content animation
 
   const currentProject = projects[currentIndex];
 
@@ -92,28 +90,43 @@ export function ProjectsSection() {
     setCurrentIndex(index);
   };
 
-  // Animation for text content when slide changes
-  const textContentRef = useRef<HTMLDivElement>(null);
-  const isTextContentVisible = useFadeInOnScroll(textContentRef, { threshold: 0.1, rootMargin: "-50px 0px -50px 0px" });
-
+  // Effect for auto-sliding and text animation
   useEffect(() => {
+    // Text content animation trigger
+    if (textContentRef.current) {
+      textContentRef.current.classList.remove('opacity-0', 'translate-y-5');
+      textContentRef.current.classList.add('opacity-100', 'translate-y-0');
+      // Re-trigger animation on currentIndex change by briefly making it non-visible
+      setTimeout(() => {
+        if (textContentRef.current) {
+           textContentRef.current.classList.add('opacity-0', 'translate-y-5');
+           setTimeout(() => {
+            if (textContentRef.current) {
+              textContentRef.current.classList.remove('opacity-0', 'translate-y-5');
+              textContentRef.current.classList.add('opacity-100', 'translate-y-0');
+            }
+           }, 50); // Small delay to allow CSS to re-apply
+        }
+      }, 0);
+    }
+
+    // Auto-sliding logic
     if (intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
     }
 
     if (!isPaused) {
       intervalIdRef.current = setInterval(() => {
-        // Directly use setCurrentIndex to avoid closure issues with handleNext if it's not memoized
         setCurrentIndex((prevIndex) => (prevIndex === projects.length - 1 ? 0 : prevIndex + 1));
       }, 9000); // Change slide every 9 seconds
     }
 
-    return () => { // Cleanup function
+    return () => {
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current);
       }
     };
-  }, [currentIndex, isPaused, projects.length]); // Re-run effect if currentIndex, isPaused, or projects.length changes
+  }, [currentIndex, isPaused, projects.length]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
@@ -131,7 +144,7 @@ export function ProjectsSection() {
         >
           Featured Projects
         </h2>
-        <p 
+        <p
           className={cn(
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto transition-all duration-700 ease-out delay-100",
             isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -151,13 +164,12 @@ export function ProjectsSection() {
         >
           <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 min-h-[500px] md:min-h-[450px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
-            <div 
+            <div
               ref={textContentRef}
               key={currentIndex} // Re-keying to trigger animation on slide change
               className={cn(
                 "md:w-1/2 space-y-4 text-center md:text-left",
-                "transition-all duration-500 ease-in-out",
-                isTextContentVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+                "transition-all duration-500 ease-in-out opacity-0 translate-y-5" // Initial animation state
               )}
             >
               <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
@@ -206,13 +218,14 @@ export function ProjectsSection() {
 
             {/* Right Pane: Visual Placeholder */}
             <div className="md:w-1/2 w-full h-64 md:h-auto md:min-h-[350px] bg-muted rounded-md flex items-center justify-center p-4 relative aspect-video">
-               <Image 
-                  src={currentProject.imageUrl} 
-                  alt={currentProject.title} 
+               <Image
+                  src={currentProject.imageUrl}
+                  alt={currentProject.title}
                   fill
                   style={{objectFit: 'cover'}}
                   className="rounded-md"
                   data-ai-hint={currentProject.imageHint}
+                  priority={currentIndex === 0} // Prioritize loading the first image
                 />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-md"></div>
               <p className="text-lg font-semibold text-background/80 z-10 p-4 text-center bg-black/30 rounded backdrop-blur-sm">
@@ -244,16 +257,19 @@ export function ProjectsSection() {
           </div>
 
           {/* Dot Indicators */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center space-x-2">
             {projects.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={cn(
-                  "h-2 w-2 rounded-full transition-colors",
-                  currentIndex === index ? "bg-primary" : "bg-muted-foreground/50 hover:bg-muted-foreground"
+                  "h-2 rounded-full transition-all duration-300 ease-in-out",
+                  currentIndex === index
+                    ? "w-6 bg-primary" // Active dot: wider, filled
+                    : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" // Inactive dot: hollow circle
                 )}
                 aria-label={`Go to project ${index + 1}`}
+                aria-current={currentIndex === index ? "true" : "false"}
               />
             ))}
           </div>
