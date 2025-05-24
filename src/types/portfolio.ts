@@ -38,6 +38,6 @@ export interface Education {
   degree: string;
   institution: string;
   period: string;
-  description?: string;
+  description?: string[]; // Changed from string to string[]
   icon: LucideIcon;
 }

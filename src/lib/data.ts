@@ -151,7 +151,10 @@ export const education: Education[] = [
     degree: "Master's Degree in Machine Intelligence",
     institution: 'African Institute for Mathematical Sciences, Rwanda',
     period: '2018 - 2019',
-    description: "African Masters in Machine Intelligence (AMMI). Major Courses: Machine Learning, Deep Learning, Reinforcement Learning. Thesis: Out-of-Distribution Generalization of Chest Pathologies Prediction.",
+    description: [
+      "African Masters in Machine Intelligence (AMMI). Major Courses: Machine Learning, Deep Learning, Reinforcement Learning.",
+      "Thesis: Out-of-Distribution Generalization of Chest Pathologies Prediction."
+    ],
     icon: GraduationCap,
   },
   {
@@ -159,7 +162,10 @@ export const education: Education[] = [
     degree: "Bachelor's Degree in Mathematics",
     institution: 'Kwame Nkrumah University of Science and Technology (KNUST), Ghana',
     period: '2012 - 2016',
-    description: "Bachelor of Science Mathematics. Minor Courses: Micro & Macro Economics, DBMS with Microsoft Access. Thesis: Function Approximation Using Artificial Neural Networks.",
+    description: [
+      "Bachelor of Science Mathematics. Minor Courses: Micro & Macro Economics, DBMS with Microsoft Access.",
+      "Thesis: Function Approximation Using Artificial Neural Networks."
+    ],
     icon: GraduationCap,
   },
 ];
@@ -172,5 +178,3 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
-
-    

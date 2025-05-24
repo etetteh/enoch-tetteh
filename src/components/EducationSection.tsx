@@ -30,9 +30,13 @@ const EducationCard = ({ edu }: { edu: typeof education[0] }) => {
               <edu.icon className="h-10 w-10 text-primary flex-shrink-0 mt-1" />
             </div>
         </CardHeader>
-        {edu.description && (
-          <CardContent>
-            <p className="text-sm text-foreground">{edu.description}</p>
+        {edu.description && edu.description.length > 0 && (
+          <CardContent className="space-y-1">
+            {edu.description.map((line, index) => (
+              <p key={index} className="text-sm text-foreground">
+                {line}
+              </p>
+            ))}
           </CardContent>
         )}
       </Card>
