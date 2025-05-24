@@ -8,8 +8,8 @@ export const projects: Project[] = [
     title: 'Scalable Document Intelligence Platform (GCP)',
     description: "Architected and deployed an AI-powered platform on Google Cloud (Vertex AI, Document AI) to extract and analyze insights from millions of documents, boosting data processing efficiency by over 45% and enabling new data-driven business decisions.",
     carouselDescription: "AI platform on GCP (Vertex AI, Document AI) for processing millions of documents, boosting efficiency by 45%.",
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'cloud data platform',
+    imageUrl: 'https://placehold.co/600x400/4285F4/FFFFFF.png', // Google Blue background, White text
+    imageHint: 'cloud data',
     techStack: ['Google Cloud Platform', 'Vertex AI', 'Document AI', 'Python', 'TensorFlow', 'Kubernetes', 'React'],
     githubUrl: '#',
     liveUrl: '#',
@@ -19,8 +19,8 @@ export const projects: Project[] = [
     title: 'Proactive Anomaly Detection for Large-Scale Systems',
     description: "Developed and implemented a machine learning system using TensorFlow and Scikit-learn for real-time anomaly detection in distributed systems, significantly reducing critical incident response times and improving system reliability for a platform serving over 10 million users. Deployed on GKE.",
     carouselDescription: "ML system (TensorFlow, Scikit-learn) for real-time anomaly detection in distributed systems, improving reliability for 10M+ users.",
-    imageUrl: 'https://placehold.co/600x400.png',
-    imageHint: 'anomaly detection system',
+    imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Google Green background, White text
+    imageHint: 'detection system',
     techStack: ['Python', 'TensorFlow', 'Scikit-learn', 'Prometheus', 'GKE', 'BigQuery'],
     githubUrl: '#',
   },
@@ -29,7 +29,7 @@ export const projects: Project[] = [
     title: 'Next-Generation Recommendation Engine (TensorFlow Recommenders)',
     description: "Engineered a high-performance recommendation system leveraging TensorFlow Recommenders (TFRS) and deployed on Google Cloud. Achieved a 25% uplift in user engagement and a 15% increase in conversion rates for a major e-commerce client by delivering highly personalized content suggestions.",
     carouselDescription: "Recommendation engine using TFRS on GCP, achieving 25% user engagement uplift for an e-commerce client.",
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://placehold.co/600x400/FBBC05/000000.png', // Google Yellow background, Black text
     imageHint: 'recommendation engine',
     techStack: ['TensorFlow Recommenders', 'Python', 'Google Cloud AI Platform', 'BigQuery', 'Next.js'],
     liveUrl: '#',
@@ -118,3 +118,4 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/example",
   githubUrl: "https://github.com/example",
 };
+
