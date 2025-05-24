@@ -75,6 +75,8 @@ export function ProjectsSection() {
   const isCarouselVisible = useFadeInOnScroll(carouselRef, { threshold: 0.1 });
   
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
   const currentProject = projects[currentIndex];
 
@@ -95,13 +97,26 @@ export function ProjectsSection() {
   const isTextContentVisible = useFadeInOnScroll(textContentRef, { threshold: 0.1, rootMargin: "-50px 0px -50px 0px" });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 9000); // Change slide every 9 seconds
+    if (intervalIdRef.current) {
+      clearInterval(intervalIdRef.current);
+    }
 
-    return () => clearInterval(interval); // Clear interval on component unmount
-  }, [currentIndex]); // Re-run effect if currentIndex changes, to reset interval if needed
+    if (!isPaused) {
+      intervalIdRef.current = setInterval(() => {
+        // Directly use setCurrentIndex to avoid closure issues with handleNext if it's not memoized
+        setCurrentIndex((prevIndex) => (prevIndex === projects.length - 1 ? 0 : prevIndex + 1));
+      }, 9000); // Change slide every 9 seconds
+    }
 
+    return () => { // Cleanup function
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+      }
+    };
+  }, [currentIndex, isPaused, projects.length]); // Re-run effect if currentIndex, isPaused, or projects.length changes
+
+  const handleMouseEnter = () => setIsPaused(true);
+  const handleMouseLeave = () => setIsPaused(false);
 
   return (
     <section id="projects" className="bg-secondary">
@@ -131,6 +146,8 @@ export function ProjectsSection() {
             "relative transition-all duration-700 ease-out delay-200",
             isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 min-h-[500px] md:min-h-[450px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
@@ -245,4 +262,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-
