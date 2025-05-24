@@ -82,7 +82,7 @@ export const skillCategories: SkillCategory[] = [
     name: 'Cloud, MLOps & DevOps',
     icon: Cloud,
     skills: [
-      'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'Azure ML',
+      'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run',
       'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform',
       'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training',
       'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions'
@@ -148,18 +148,18 @@ export const experiences: Experience[] = [
 export const education: Education[] = [
   {
     id: '1',
-    degree: 'M.S. in Artificial Intelligence',
-    institution: 'Stanford University',
-    period: '2017 - 2019',
-    description: "Specialized in Deep Learning and Natural Language Processing. Thesis: 'Scalable Neural Machine Translation with Attention Mechanisms on Distributed TensorFlow'. Contributed to open-source TensorFlow projects.",
+    degree: "Master's Degree in Machine Intelligence",
+    institution: 'African Institute for Mathematical Sciences, Rwanda',
+    period: '2018 - 2019',
+    description: "African Masters in Machine Intelligence (AMMI). Major Courses: Machine Learning, Deep Learning, Reinforcement Learning. Thesis: Out-of-Distribution Generalization of Chest Pathologies Prediction.",
     icon: GraduationCap,
   },
   {
     id: '2',
-    degree: 'B.S. in Computer Science',
-    institution: 'Massachusetts Institute of Technology (MIT)',
-    period: '2013 - 2017',
-    description: "Graduated with high honors. Focus on algorithms, distributed systems, and software engineering. Capstone: 'AI-Powered Search Optimization using Reinforcement Learning', deployed on a simulated large-scale environment.",
+    degree: "Bachelor's Degree in Mathematics",
+    institution: 'Kwame Nkrumah University of Science and Technology (KNUST), Ghana',
+    period: '2012 - 2016',
+    description: "Bachelor of Science Mathematics. Minor Courses: Micro & Macro Economics, DBMS with Microsoft Access. Thesis: Function Approximation Using Artificial Neural Networks.",
     icon: GraduationCap,
   },
 ];
