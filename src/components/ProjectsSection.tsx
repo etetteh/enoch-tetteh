@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
@@ -93,6 +93,14 @@ export function ProjectsSection() {
   // Animation for text content when slide changes
   const textContentRef = useRef<HTMLDivElement>(null);
   const isTextContentVisible = useFadeInOnScroll(textContentRef, { threshold: 0.1, rootMargin: "-50px 0px -50px 0px" });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, [currentIndex]); // Re-run effect if currentIndex changes, to reset interval if needed (though typically not for auto-slide)
 
 
   return (
