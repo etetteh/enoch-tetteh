@@ -8,7 +8,7 @@ export const projects: Project[] = [
     title: 'Enterprise Synthetic NLP Data Generation Platform',
     carouselDescription: "Production-ready Python application leveraging Google Gemini LLMs to generate diverse, high-quality synthetic training datasets for NLP tasks, processing 5000+ samples with 95%+ uniqueness and supporting multiple data formats through modular architecture.",
     description: "Developed a comprehensive synthetic data generation platform that combines advanced LLM capabilities with enterprise-grade engineering practices. The system utilizes Google's Gemini models through LangChain to create diverse training datasets for various NLP tasks including question-answering, textual entailment, and semantic similarity. Implemented sophisticated duplicate detection using hashing algorithms to ensure data uniqueness, while incorporating incremental batch processing to handle large-scale generation efficiently. The modular architecture employs dependency injection and strategy patterns for maintainability, featuring comprehensive error handling with exponential backoff retry logic for API resilience. Built robust data pipeline supporting document context integration, automated query refinement, and flexible output formatting. Achieved significant performance optimizations including 60% memory usage reduction for large datasets and configurable generation parameters for optimal model performance. The system includes extensive testing suite with pytest, comprehensive logging infrastructure, and production-ready CLI interface supporting various deployment scenarios.",
-    imageUrl: 'https://placehold.co/600x400/009688/FFFFFF.png', // Teal accent color
+    imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
     imageHint: 'synthetic data',
     techStack: ['Python 3.12', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'JSON Schema', 'Parquet', 'tqdm', 'python-dotenv'],
     githubUrl: '#',
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     title: 'Multi-Domain Medical AI - Advanced Chest X-ray Pathology Detection System',
     carouselDescription: "Published research achieving state-of-the-art out-of-distribution generalization for chest X-ray pathology prediction across multiple hospital systems, with 4%+ improvement in cross-domain performance and deployment-ready quantized model variants.",
     description: "This advanced medical AI system addresses a critical challenge in healthcare AI: ensuring model reliability across different hospital systems and imaging equipment. The project implements a novel multi-domain balanced sampling strategy that significantly improves out-of-distribution generalization compared to traditional merged dataset approaches. The system processes chest X-rays from four major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) to predict four key pathologies: Cardiomegaly, Effusion, Edema, and Consolidation. Key innovations include custom weighted loss functions for handling medical data imbalance, sophisticated domain adaptation through balanced mini-batch sampling, and comprehensive leave-one-out cross-validation across medical institutions. The production pipeline features automated experiment tracking, robust checkpoint management, and quantization-aware training for deployment in resource-constrained clinical environments. Performance optimization includes cosine annealing learning rate scheduling with warmup, advanced data augmentation strategies, and efficient GPU/CPU inference modes. The system achieved publication at Medical Imaging meets NeurIPS 2021, demonstrating both research excellence and practical clinical applicability with deployment-ready model variants that maintain high accuracy.",
-    imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
+    imageUrl: 'https://placehold.co/600x400/4285F4/FFFFFF.png', // Google Blue
     imageHint: 'medical AI',
     techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'DenseNet-121/ResNet-50', 'CUDA/CPU Optimization', 'Quantization', 'Medical Imaging'],
     githubUrl: 'https://github.com/etetteh/OoD_Gen-Chest_Xray',
@@ -102,7 +102,7 @@ export const experiences: Experience[] = [
       "Implemented advanced NLP data generation system supporting 5 predefined formats (QA pairs, textual entailment, semantic similarity) and custom JSON schema definitions, with automated query refinement and document context integration achieving 40% improvement in data quality over baseline approaches.",
       "Engineered scalable data processing pipeline with comprehensive logging, input validation, and automated testing suite using pytest, delivering robust document loading capabilities and flexible CLI interface supporting batch sizes up to 1000 samples with configurable retry mechanisms."
     ],
-    icon: Cog,
+    icon: ToyBrick, 
   },
   {
     id: 'ml-framework-architect-exp',
@@ -116,6 +116,19 @@ export const experiences: Experience[] = [
       "Engineered robust CI/CD workflow with automated testing, linting, and type checking using pytest, flake8, mypy, and GitHub Actions, ensuring code quality standards and reproducible model training across CUDA/MPS/CPU environments."
     ],
     icon: Palette, 
+  },
+  {
+    id: 'xray-ood-exp',
+    role: 'AI Research Scientist (Medical Imaging)',
+    company: 'Clinical AI Research Group',
+    period: '2020 - 2021',
+    description: [
+      "Architected multi-domain balanced sampling framework for chest X-ray pathology prediction using PyTorch and TorchXRayVision, achieving improved out-of-distribution generalization across 4 major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) with 12 cross-validation configurations handling 100K+ medical images.",
+      "Implemented advanced computer vision pipeline with DenseNet-121 and ResNet-50 architectures for 4-class pathology classification (Cardiomegaly, Effusion, Edema, Consolidation), optimizing ROC-AUC performance through custom weighted BCE loss functions and cosine annealing scheduling with warmup periods for robust medical AI deployment.",
+      "Developed production-ready MLOps infrastructure with comprehensive experiment tracking via W&B, automated checkpoint management, and quantization-aware training for CPU deployment, reducing model size by 75% while maintaining clinical-grade accuracy for resource-constrained environments.",
+      "Engineered domain adaptation methodology using balanced mini-batch sampling strategy that outperformed baseline merged dataset approaches, implementing leave-one-out cross-validation across medical institutions to ensure robust generalization for real-world clinical deployment scenarios."
+    ],
+    icon: Microscope,
   },
 ];
 
@@ -142,10 +155,7 @@ export const portfolioOwner = {
   name: "Enoch Tetteh",
   title: "Innovative AI Engineer & Google Cloud Specialist",
   bio: "Driven AI Engineer with a proven track record of developing scalable, high-impact machine learning solutions. Expertise in Google Cloud Platform, TensorFlow, and building production-grade AI systems. Passionate about tackling complex challenges and eager to contribute to Google's mission of organizing the world's information and making it universally accessible and useful.",
-  contactEmail: "alex.johnson.ai@example.com", // You'll want to update this email
-  linkedinUrl: "https://www.linkedin.com/in/example", // And this
-  githubUrl: "https://github.com/example", // And this
+  contactEmail: "enoch.tetteh.ai@example.com", 
+  linkedinUrl: "https://www.linkedin.com/in/enochtetteh", 
+  githubUrl: "https://github.com/etetteh", 
 };
-
-
-    
