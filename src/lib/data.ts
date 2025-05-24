@@ -10,7 +10,7 @@ export const projects: Project[] = [
     carouselDescription: "Published research achieving state-of-the-art out-of-distribution generalization for chest X-ray pathology prediction across multiple hospital systems, with 4%+ improvement in cross-domain performance and deployment-ready quantized model variants.",
     imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
     imageHint: 'medical AI',
-    techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'DenseNet-121', 'ResNet-50', 'CUDA Optimization', 'CPU Optimization', 'Model Quantization', 'Medical Imaging'],
+    techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'DenseNet-121', 'ResNet-50', 'CUDA Optimization', 'CPU Optimization', 'Model Quantization', 'Medical Imaging', 'Domain Adaptation', 'Data Augmentation'],
     githubUrl: 'https://github.com/etetteh/OoD_Gen-Chest_Xray',
     liveUrl: 'https://arxiv.org/abs/2112.13734',
   },
@@ -19,21 +19,22 @@ export const projects: Project[] = [
     title: 'DeepMindFlow - Production-Ready Computer Vision Classification System',
     description: "Developed a comprehensive computer vision classification system leveraging 50+ state-of-the-art models from the TIMM library with advanced training optimizations including CutMix/MixUp data augmentation, global model pruning (25% parameter reduction), and adversarial robustness through FGSM attack training. Implemented production-ready MLOps infrastructure using HuggingFace Accelerate for seamless distributed training across CPUs, GPUs, and TPUs, with automated experiment tracking via MLflow and hyperparameter optimization through Ray Tune's Population-Based Training algorithm. The system features advanced model optimization techniques including Exponential Moving Average weight updates, intelligent checkpoint averaging of top-performing models, and ONNX export for optimized inference deployment. Built comprehensive model interpretability pipeline using SHAP analysis with automated performance visualization including confusion matrices and ROC curves. Deployed FastAPI-based inference endpoints supporting both single and batch image processing with JSON configuration, enabling real-time production deployment with robust error handling and scalable architecture.",
     carouselDescription: "Engineered enterprise-grade image classification framework achieving 100% validation accuracy across 18 SOTA models with comprehensive MLOps pipeline, supporting distributed training and real-time inference deployment.",
-    imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Google Green background, White text
+    imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Google Green
     imageHint: 'vision system',
-    techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python 3.10'],
-    githubUrl: '#', // Placeholder for GitHub
-    liveUrl: '#',   // Placeholder for Live Demo
+    techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python 3.10+', 'Model Pruning', 'Adversarial Training', 'CutMix/MixUp Augmentation'],
+    githubUrl: '#',
+    liveUrl: '#',
   },
   {
     id: '3',
-    title: 'Next-Generation Recommendation Engine (TensorFlow Recommenders)',
-    description: "Engineered a high-performance recommendation system leveraging TensorFlow Recommenders (TFRS) and deployed on Google Cloud. Achieved a 25% uplift in user engagement and a 15% increase in conversion rates for a major e-commerce client by delivering highly personalized content suggestions.",
-    carouselDescription: "Recommendation engine using TFRS on GCP, achieving 25% user engagement uplift for an e-commerce client.",
-    imageUrl: 'https://placehold.co/600x400/FBBC05/000000.png', // Google Yellow background, Black text
-    imageHint: 'recommendation engine',
-    techStack: ['TensorFlow Recommenders', 'Python', 'Google Cloud AI Platform', 'BigQuery', 'Next.js'],
-    liveUrl: '#',
+    title: 'Production-Ready Sentence Embedding Fine-Tuning Framework',
+    carouselDescription: "Comprehensive MLOps solution for fine-tuning pre-trained sentence transformers on custom datasets, featuring parameter-efficient LoRA adaptation and intelligent hard negative mining for enhanced semantic similarity tasks.",
+    description: "Built an enterprise-grade framework for fine-tuning sentence embedding models from the sentence-transformers library, supporting multiple downstream tasks including semantic similarity, classification, and information retrieval. The system features a modular architecture with automated dataset preprocessing, intelligent loss function selection based on data format, and advanced hard negative mining using FAISS for efficient similarity search. Implemented parameter-efficient fine-tuning through LoRA (Low-Rank Adaptation) integration, enabling resource-efficient training while maintaining model performance. The framework includes comprehensive configuration management via Pydantic models, supports mixed-precision training (FP16/BF16), and provides flexible evaluation metrics. Production-ready features include automated device detection (CUDA/MPS/CPU), reproducible training through seed management, configurable logging, and integration with popular ML tracking platforms like Weights & Biases and TensorBoard.",
+    imageUrl: 'https://placehold.co/600x400/FBBC05/000000.png', // Google Yellow
+    imageHint: 'embedding framework',
+    techStack: ['PyTorch', 'Sentence-Transformers', 'Hugging Face (Transformers/Datasets/PEFT)', 'Python', 'FAISS', 'Pydantic', 'pytest', 'GitHub Actions', 'Docker', 'Mixed-Precision Training', 'LoRA adaptation'],
+    githubUrl: '#', // Placeholder
+    liveUrl: '#',   // Placeholder
   },
 ];
 
@@ -46,7 +47,14 @@ export const skillCategories: SkillCategory[] = [
   {
     name: 'AI/ML & Google AI',
     icon: Brain,
-    skills: ['Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform', 'TorchXRayVision', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation', 'TIMM', 'TorchMetrics', 'HuggingFace Accelerate', 'Model Pruning', 'Adversarial Training', 'CutMix/MixUp Augmentation'],
+    skills: [
+      'Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning',
+      'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform',
+      'TorchXRayVision', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation',
+      'TIMM', 'TorchMetrics', 'HuggingFace Accelerate', 'Model Pruning', 'Adversarial Training', 'CutMix/MixUp Augmentation',
+      'Sentence-Transformers', 'Hugging Face (Transformers/Datasets/PEFT)', 'FAISS', 'LoRA adaptation',
+      'Hard Negative Mining', 'Contrastive Learning', 'Mixed-Precision Training'
+    ],
   },
   {
     name: 'Data Science & Google Cloud Data',
@@ -61,7 +69,12 @@ export const skillCategories: SkillCategory[] = [
   {
     name: 'Google Cloud, MLOps & DevOps',
     icon: Cloud,
-    skills: ['Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML', 'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform', 'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training'],
+    skills: [
+      'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML',
+      'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform',
+      'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training',
+      'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions'
+    ],
   },
 ];
 
@@ -81,14 +94,14 @@ export const experiences: Experience[] = [
   },
   {
     id: '2',
-    role: 'Senior Computer Vision Engineer',
-    company: 'VisionAI Labs (Example Company)',
+    role: 'ML Framework Architect',
+    company: 'EmbedLLM Innovations (Example Company)',
     period: '2019 - 2021',
     description: [
-      "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
-      "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
-      "Implemented advanced training optimization techniques including Exponential Moving Average (EMA), checkpoint averaging across top-5 models, and hyperparameter tuning with Ray Tune Population-Based Training, achieving robust model performance and automated model selection.",
-      "Built comprehensive model interpretability framework using SHAP explainability analysis with automated confusion matrix and ROC curve generation, enabling production model monitoring and validation across multi-class classification tasks."
+      "Architected modular sentence embedding fine-tuning framework supporting 4 dataset formats (triplet, pair, pair-score, pair-class) with automated loss function selection, enabling parameter-efficient training via LoRA adaptation and hard negative mining for contrastive learning optimization.",
+      "Implemented production-ready MLOps pipeline with comprehensive configuration management using Pydantic validation, supporting both Hugging Face Hub and local dataset integration with automated train/validation/test splitting and FP16/BF16 mixed-precision training for enhanced performance.",
+      "Developed advanced hard negative mining system with FAISS-accelerated similarity search for pair datasets, incorporating configurable sampling strategies and margin-based negative selection to improve contrastive learning effectiveness by up to 2x training efficiency.",
+      "Engineered robust CI/CD workflow with automated testing, linting, and type checking using pytest, flake8, mypy, and GitHub Actions, ensuring code quality standards and reproducible model training across CUDA/MPS/CPU environments."
     ],
     icon: Briefcase,
   },
