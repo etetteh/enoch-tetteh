@@ -169,7 +169,7 @@ export const portfolioOwner = {
   title: "Innovative AI Engineer & MLOps Expert",
   bio: "Highly accomplished and results-oriented AI/ML Engineer specializing in the architecture and deployment of enterprise-grade solutions in Natural Language Processing, Computer Vision, and Generative AI. Proven expertise in production-ready MLOps, advanced model optimization (LoRA, quantization, pruning), and leveraging cutting-edge technologies like Google Gemini and LangChain. Consistently delivers impactful results, including significant model size reduction (75%), data quality improvements (40%), and enhanced out-of-distribution generalization for large-scale systems.",
   contactEmail: "enoch.tetteh.2099@gmail.com",
-  linkedinUrl: "https://www.linkedin.com/in/enochtetteh",
+  linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
 
