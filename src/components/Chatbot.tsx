@@ -1,17 +1,17 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { portfolioChatbot, type PortfolioChatbotInput, type PortfolioChatbotOutput } from '@/ai/flows/portfolio-chatbot';
 import { suggestedQueriesFlow, type SuggestedQueriesInput, type SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter, SheetClose, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter, SheetClose } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bot, User, Loader2, Send, MessageCircle, X, Sparkles } from 'lucide-react';
+import { Bot, User, Loader2, Send, Sparkles, X } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { portfolioOwner } from '@/lib/data'; // Import portfolioOwner
+import { portfolioOwner } from '@/lib/data';
 import { cn } from '@/lib/utils';
 
 interface Message {
@@ -28,12 +28,13 @@ const defaultSuggestedQueries = [
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(''); // Used for input in bottom bar AND inside sheet
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const bottomInputRef = useRef<HTMLInputElement>(null);
 
   const [dynamicSuggestedQueries, setDynamicSuggestedQueries] = useState<string[]>(defaultSuggestedQueries);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(true);
@@ -55,9 +56,9 @@ export function Chatbot() {
         if (pageContent) {
           const input: SuggestedQueriesInput = { portfolioContent: pageContent };
           const suggestionsOutput: SuggestedQueriesOutput = await suggestedQueriesFlow(input);
-          if (suggestionsOutput.queries && suggestionsOutput.queries.length > 0) {
-            const validQueries = suggestionsOutput.queries.filter(q => q && q.trim() !== '');
-            setDynamicSuggestedQueries(validQueries.length > 0 ? validQueries : defaultSuggestedQueries);
+          const validQueries = suggestionsOutput.queries?.filter(q => q && q.trim() !== '');
+          if (validQueries && validQueries.length > 0) {
+            setDynamicSuggestedQueries(validQueries);
           } else {
             setDynamicSuggestedQueries(defaultSuggestedQueries);
           }
@@ -80,31 +81,34 @@ export function Chatbot() {
     if (typeof window !== 'undefined') {
         fetchSuggestions();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toast]); 
   
   useEffect(() => {
     if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
-      // Initialize displayed query immediately
       if(!displayedSuggestedQuery) {
         setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current % dynamicSuggestedQueries.length]);
       }
       
-      // Clear any existing interval before setting a new one
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
 
-      intervalRef.current = setInterval(() => {
-        queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
-        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
-      }, 3000);
+      // Only cycle suggestions if the sheet is closed and the input is not focused/empty
+      const isBottomInputFocused = bottomInputRef.current === document.activeElement;
+      if (!isOpen && !isBottomInputFocused && !query) {
+        intervalRef.current = setInterval(() => {
+          queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
+          setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+        }, 3000);
+      }
     }
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isMounted, dynamicSuggestedQueries, isLoadingSuggestions, displayedSuggestedQuery]);
+  }, [isMounted, dynamicSuggestedQueries, isLoadingSuggestions, displayedSuggestedQuery, isOpen, query]);
 
 
   useEffect(() => {
@@ -120,7 +124,7 @@ export function Chatbot() {
   };
 
   const processQuery = async (queryString: string) => {
-    if (!queryString.trim() || isLoading) return;
+    if (!queryString.trim()) return; 
 
     const userMessage: Message = { id: Date.now().toString(), text: queryString, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
@@ -149,51 +153,105 @@ export function Chatbot() {
       });
     } finally {
       setIsLoading(false);
-      setQuery(''); 
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleBottomBarSubmit = async (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    if (!query.trim() || isLoading) {
+      // If query is empty, but there's a suggestion, use that.
+      if (displayedSuggestedQuery && !isLoading) {
+        await processQuery(displayedSuggestedQuery);
+        setIsOpen(true);
+        return;
+      }
+      return;
+    }
+    await processQuery(query);
+    setQuery(''); 
+    setIsOpen(true); 
+  };
+
+  const handleSheetFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    processQuery(query);
+    if (!query.trim() || isLoading) return;
+    await processQuery(query);
+    setQuery(''); 
   };
     
   if (!isMounted) {
     return null; 
   }
 
+  const currentPlaceholder = isLoadingSuggestions ? "Loading suggestions..." : displayedSuggestedQuery || `Ask about ${portfolioOwner.name.split(' ')[0]}'s portfolio...`;
+
   return (
     <>
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button
-            onClick={() => {
-              if (displayedSuggestedQuery && !isOpen) { // Only process if not already open to avoid double processing
-                processQuery(displayedSuggestedQuery);
+      {!isOpen && (
+        <form
+          onSubmit={handleBottomBarSubmit}
+          className={cn(
+            "fixed bottom-6 left-1/2 -translate-x-1/2",
+            "w-11/12 max-w-lg h-14 px-3 py-2",
+            "bg-neutral-700 dark:bg-neutral-800",
+            "rounded-full shadow-xl",
+            "flex items-center justify-between gap-2 z-50 group"
+          )}
+        >
+          <Sparkles className="h-5 w-5 text-accent flex-shrink-0 ml-1 group-focus-within:text-primary transition-colors" />
+          <Input
+            ref={bottomInputRef}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={currentPlaceholder}
+            className={cn(
+              "flex-grow h-full bg-transparent border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0",
+              "text-neutral-200 dark:text-neutral-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-sm",
+              "transition-all duration-300 ease-in-out"
+            )}
+            onFocus={() => {
+              if (intervalRef.current) clearInterval(intervalRef.current);
+            }}
+            onBlur={() => {
+              // Restart interval if query is empty and sheet is not open
+              if (!query && !isOpen && !isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
+                if (intervalRef.current) clearInterval(intervalRef.current);
+                intervalRef.current = setInterval(() => {
+                  queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
+                  setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+                }, 3000);
               }
             }}
-            className={cn(
-              "fixed bottom-6 left-1/2 -translate-x-1/2",
-              "w-11/12 max-w-lg h-14 px-4 py-3",
-              "bg-neutral-700 hover:bg-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-700",
-              "text-neutral-200 dark:text-neutral-300",
-              "rounded-full shadow-xl",
-              "flex items-center justify-between z-50"
-            )}
-            aria-label="Open Chatbot with suggested query"
+          />
+          <Button 
+            type="submit" 
+            size="icon" 
+            variant="ghost" 
+            disabled={isLoading && !!query.trim()} // Disable only if loading AND query has text. Allow submit if query is empty to use suggestion.
+            className="h-9 w-9 p-0 text-neutral-300 hover:text-accent disabled:text-neutral-500 transition-colors"
+            aria-label="Send message or use suggestion"
           >
-            <div className="flex items-center gap-2 overflow-hidden flex-grow">
-              <Sparkles className="h-5 w-5 text-accent flex-shrink-0" />
-              <span className="truncate text-sm">
-                {isLoadingSuggestions ? "Loading suggestions..." : displayedSuggestedQuery || "Ask about Enoch's portfolio..."}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 pl-2 flex-shrink-0">
-              <span className="text-sm font-medium">Chat</span>
-              <MessageCircle className="h-5 w-5" />
-            </div>
+            {(isLoading && query.trim()) ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </Button>
-        </SheetTrigger>
+        </form>
+      )}
+
+      <Sheet open={isOpen} onOpenChange={(open) => {
+          setIsOpen(open);
+          if (!open) {
+            setQuery(''); // Clear query when sheet closes
+             // Restart suggestion cycling if applicable
+            if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
+                if (intervalRef.current) clearInterval(intervalRef.current);
+                intervalRef.current = setInterval(() => {
+                queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
+                setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+                }, 3000);
+            }
+          }
+        }}
+      >
         <SheetContent className="w-full max-w-md flex flex-col p-0">
           <SheetHeader className="p-6 pb-2 border-b">
             <div className="flex items-center justify-between">
@@ -245,7 +303,7 @@ export function Chatbot() {
           </ScrollArea>
 
           <SheetFooter className="p-4 border-t">
-            <form onSubmit={handleSubmit} className="flex w-full items-center space-x-2">
+            <form onSubmit={handleSheetFormSubmit} className="flex w-full items-center space-x-2">
               <Input
                 type="text"
                 value={query}
@@ -266,3 +324,4 @@ export function Chatbot() {
     </>
   );
 }
+
