@@ -97,10 +97,10 @@ export function ProjectsSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
-    }, 3000); // Change slide every 3 seconds
+    }, 9000); // Change slide every 9 seconds
 
     return () => clearInterval(interval); // Clear interval on component unmount
-  }, [currentIndex]); // Re-run effect if currentIndex changes, to reset interval if needed (though typically not for auto-slide)
+  }, [currentIndex]); // Re-run effect if currentIndex changes, to reset interval if needed
 
 
   return (
@@ -245,3 +245,4 @@ export function ProjectsSection() {
     </section>
   );
 }
+
