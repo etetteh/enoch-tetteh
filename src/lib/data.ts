@@ -1,18 +1,18 @@
 
 import type { Project, SkillCategory, Experience, Education } from '@/types/portfolio';
-import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow } from 'lucide-react';
+import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle } from 'lucide-react';
 
 export const projects: Project[] = [
   {
-    id: '1',
-    title: 'Scalable Document Intelligence Platform (GCP)',
-    description: "Architected and deployed an AI-powered platform on Google Cloud (Vertex AI, Document AI) to extract and analyze insights from millions of documents, boosting data processing efficiency by over 45% and enabling new data-driven business decisions.",
-    carouselDescription: "AI platform on GCP (Vertex AI, Document AI) for processing millions of documents, boosting efficiency by 45%.",
-    imageUrl: 'https://placehold.co/600x400/4285F4/FFFFFF.png', // Google Blue background, White text
-    imageHint: 'cloud data',
-    techStack: ['Google Cloud Platform', 'Vertex AI', 'Document AI', 'Python', 'TensorFlow', 'Kubernetes', 'React'],
-    githubUrl: '#',
-    liveUrl: '#',
+    id: 'new-chest-xray-project',
+    title: 'Multi-Domain Medical AI - Advanced Chest X-ray Pathology Detection System',
+    description: "This advanced medical AI system addresses a critical challenge in healthcare AI: ensuring model reliability across different hospital systems and imaging equipment. The project implements a novel multi-domain balanced sampling strategy that significantly improves out-of-distribution generalization compared to traditional merged dataset approaches. The system processes chest X-rays from four major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) to predict four key pathologies: Cardiomegaly, Effusion, Edema, and Consolidation. Key innovations include custom weighted loss functions for handling medical data imbalance, sophisticated domain adaptation through balanced mini-batch sampling, and comprehensive leave-one-out cross-validation across medical institutions. The production pipeline features automated experiment tracking, robust checkpoint management, and quantization-aware training for deployment in resource-constrained clinical environments. Performance optimization includes cosine annealing learning rate scheduling with warmup, advanced data augmentation strategies, and efficient GPU/CPU inference modes. The system achieved publication at Medical Imaging meets NeurIPS 2021, demonstrating both research excellence and practical clinical applicability with deployment-ready model variants that maintain high accuracy.",
+    carouselDescription: "Published research achieving state-of-the-art out-of-distribution generalization for chest X-ray pathology prediction across multiple hospital systems, with 4%+ improvement in cross-domain performance and deployment-ready quantized model variants.",
+    imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
+    imageHint: 'medical AI',
+    techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'DenseNet-121', 'ResNet-50', 'CUDA Optimization', 'CPU Optimization', 'Model Quantization', 'Medical Imaging'],
+    githubUrl: 'https://github.com/etetteh/OoD_Gen-Chest_Xray',
+    liveUrl: 'https://arxiv.org/abs/2112.13734',
   },
   {
     id: '2',
@@ -45,12 +45,12 @@ export const skillCategories: SkillCategory[] = [
   {
     name: 'AI/ML & Google AI',
     icon: Brain,
-    skills: ['Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform'],
+    skills: ['Natural Language Processing', 'Computer Vision', 'Deep Learning', 'Reinforcement Learning', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'JAX', 'Vertex AI', 'Google AI Platform', 'TorchXRayVision', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation'],
   },
   {
     name: 'Data Science & Google Cloud Data',
     icon: Database,
-    skills: ['Data Mining', 'Statistical Analysis', 'Data Visualization (Tableau, PowerBI)', 'Pandas', 'NumPy', 'Spark', 'BigQuery', 'Looker'],
+    skills: ['Data Mining', 'Statistical Analysis', 'Data Visualization (Tableau, PowerBI)', 'Pandas', 'NumPy', 'Spark', 'BigQuery', 'Looker', 'Cross-Validation Techniques'],
   },
   {
     name: 'Web Technologies & Distributed Systems',
@@ -58,22 +58,23 @@ export const skillCategories: SkillCategory[] = [
     skills: ['React', 'Next.js', 'Node.js', 'Express.js', 'Django', 'Flask', 'REST APIs', 'GraphQL', 'gRPC'],
   },
   {
-    name: 'Google Cloud & DevOps',
+    name: 'Google Cloud, MLOps & DevOps',
     icon: Cloud,
-    skills: ['Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML', 'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform'],
+    skills: ['Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'AWS', 'Azure ML', 'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform', 'Weights & Biases (W&B)'],
   },
 ];
 
 export const experiences: Experience[] = [
   {
-    id: '1',
-    role: 'Lead AI Engineer (Google Cloud Focus)',
-    company: 'Innovatech Solutions',
-    period: '2021 - Present',
+    id: 'new-chest-xray-experience',
+    role: 'Lead ML/AI Engineer (Medical Imaging Research)',
+    company: 'Advanced AI Research Group (Research Project)',
+    period: '2021 - Present', // Placeholder, adjust as needed
     description: [
-      "Led a team of 5 engineers in designing and deploying AI solutions on Google Cloud Platform, directly contributing to a 20% YOY revenue growth from AI products.",
-      "Pioneered the use of Vertex AI pipelines for MLOps, reducing model deployment times by 60% and improving model monitoring.",
-      "Drove cross-functional collaboration with product and infrastructure teams to integrate cutting-edge AI, like large language models (LLMs), into flagship products, enhancing user experience for 1M+ active users."
+      "Architected multi-domain balanced sampling framework for chest X-ray pathology prediction using PyTorch and TorchXRayVision, achieving improved out-of-distribution generalization across 4 major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) with 12 cross-validation configurations handling 100K+ medical images.",
+      "Implemented advanced computer vision pipeline with DenseNet-121 and ResNet-50 architectures for 4-class pathology classification (Cardiomegaly, Effusion, Edema, Consolidation), optimizing ROC-AUC performance through custom weighted BCE loss functions and cosine annealing scheduling with warmup periods for robust medical AI deployment.",
+      "Developed production-ready MLOps infrastructure with comprehensive experiment tracking via W&B, automated checkpoint management, and quantization-aware training for CPU deployment, reducing model size by 75% while maintaining clinical-grade accuracy for resource-constrained environments.",
+      "Engineered domain adaptation methodology using balanced mini-batch sampling strategy that outperformed baseline merged dataset approaches, implementing leave-one-out cross-validation across medical institutions to ensure robust generalization for real-world clinical deployment scenarios."
     ],
     icon: Briefcase,
   },
@@ -119,3 +120,4 @@ export const portfolioOwner = {
   githubUrl: "https://github.com/example",
 };
 
+    
