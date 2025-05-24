@@ -1,6 +1,6 @@
 
-import type { Project, SkillCategory, Experience, Education } from '@/types/portfolio';
-import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog } from 'lucide-react';
+import type { Project, SkillCategory, Experience, Education, Publication } from '@/types/portfolio';
+import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText } from 'lucide-react';
 
 export const projects: Project[] = [
   {
@@ -8,7 +8,7 @@ export const projects: Project[] = [
     title: 'Enterprise Synthetic NLP Data Generation Platform',
     carouselDescription: "Production-ready Python application leveraging Google Gemini LLMs to generate diverse, high-quality synthetic training datasets for NLP tasks, processing 5000+ samples with 95%+ uniqueness and supporting multiple data formats through modular architecture.",
     description: "Developed a comprehensive synthetic data generation platform that combines advanced LLM capabilities with enterprise-grade engineering practices. The system utilizes Google's Gemini models through LangChain to create diverse training datasets for various NLP tasks including question-answering, textual entailment, and semantic similarity. Implemented sophisticated duplicate detection using hashing algorithms to ensure data uniqueness, while incorporating incremental batch processing to handle large-scale generation efficiently. The modular architecture employs dependency injection and strategy patterns for maintainability, featuring comprehensive error handling with exponential backoff retry logic for API resilience. Built robust data pipeline supporting document context integration, automated query refinement, and flexible output formatting. Achieved significant performance optimizations including 60% memory usage reduction for large datasets and configurable generation parameters for optimal model performance. The system includes extensive testing suite with pytest, comprehensive logging infrastructure, and production-ready CLI interface supporting various deployment scenarios.",
-    imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
+    imageUrl: 'https://placehold.co/600x400/009688/FFFFFF.png', // Teal for variety
     imageHint: 'synthetic data',
     techStack: ['Python', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'Parquet'],
     githubUrl: '#',
@@ -134,7 +134,7 @@ export const experiences: Experience[] = [
     id: 'cv-framework-architect-exp',
     role: 'Senior Computer Vision Engineer',
     company: 'VisionAI Labs',
-    period: '2019 - 2021', 
+    period: '2019 - 2021',
     description: [
       "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
       "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
@@ -167,6 +167,18 @@ export const education: Education[] = [
       "Thesis: Function Approximation Using Artificial Neural Networks."
     ],
     icon: GraduationCap,
+  },
+];
+
+export const publications: Publication[] = [
+  {
+    id: 'med-neurips-2021',
+    title: 'Multi-Domain Balanced Sampling Improves Out-of-Distribution Generalization of Chest X-ray Pathology Prediction Models.',
+    authors: 'E. Tetteh, J. Viviano, Y. Bengio, D. Krueger, J.P. Cohen',
+    conference: 'Medical Imaging meets NeurIPS (Med-NeurIPS 2021)',
+    githubUrl: 'https://github.com/etetteh/OoD_Gen-Chest_Xray',
+    paperUrl: 'https://arxiv.org/abs/2112.13734',
+    icon: FileText,
   },
 ];
 

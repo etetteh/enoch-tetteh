@@ -38,6 +38,16 @@ export interface Education {
   degree: string;
   institution: string;
   period: string;
-  description?: string[]; // Changed from string to string[]
+  description?: string[];
+  icon: LucideIcon;
+}
+
+export interface Publication {
+  id: string;
+  title: string;
+  authors: string;
+  conference: string;
+  githubUrl?: string;
+  paperUrl?: string;
   icon: LucideIcon;
 }

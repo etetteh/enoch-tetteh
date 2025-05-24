@@ -2,12 +2,11 @@
 "use client";
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data';
 import { ThemeSwitcher } from './ThemeSwitcher';
-import { Button } from './ui/button'; // Keep for ThemeSwitcher
-// Removed Sheet related imports as they are no longer used for mobile nav
+import { Button } from './ui/button';
 
 
 const navLinks = [
@@ -16,6 +15,7 @@ const navLinks = [
   { href: '#skills', label: 'Skills' },
   { href: '#experience', label: 'Experience' },
   { href: '#education', label: 'Education' },
+  { href: '#publications', label: 'Publications' },
   { href: '#resume-tailor', label: 'Resume Tailor' },
   { href: '#contact', label: 'Contact' },
 ];
@@ -23,64 +23,66 @@ const navLinks = [
 export function Navbar() {
   const [activeLink, setActiveLink] = useState('');
   const [isMounted, setIsMounted] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
 
     const handleScroll = () => {
-      const sections = navLinks.map(link => {
-        const id = link.href.substring(1);
-        return id ? document.getElementById(id) : null;
-      });
       let current = '';
-      
-      // More robust way to get navbar height
-      const navbarElement = document.querySelector('header');
       let navbarHeight = 70; // Default offset
-      if (navbarElement) {
-        navbarHeight = navbarElement.offsetHeight + 20; // Add a bit of buffer
+      if (headerRef.current) {
+        navbarHeight = headerRef.current.offsetHeight + 20;
       }
-
       const scrollY = window.scrollY;
 
-      for (const section of sections) {
+      for (const link of navLinks) {
+        const id = link.href.substring(1);
+        const section = id ? document.getElementById(id) : null;
         if (section) {
           const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          if (scrollY >= sectionTop - navbarHeight && scrollY < sectionTop + sectionHeight - navbarHeight) {
-            current = `#${section.id}`;
+          if (scrollY >= sectionTop - navbarHeight) {
+            current = link.href; // Keep assigning as we scroll down
+          } else {
+            // If we scrolled up past the sectionTop, this section is no longer the 'current' one.
+            // We break here, so 'current' remains the last valid section.
+            // If it's the first section, and we are above it, it might become blank
+            // but the fallback logic handles that.
             break;
           }
         }
       }
       
-      if (!current) {
-        if (sections.length > 0 && sections[0] && scrollY < sections[0].offsetTop - navbarHeight) {
-          current = navLinks[0].href;
+      // Fallback if no section is matched (e.g. top of page) or after scrolling past the last section
+      if (!current && navLinks.length > 0) {
+        if (scrollY < (document.getElementById(navLinks[0].href.substring(1))?.offsetTop || 0) - navbarHeight) {
+             current = navLinks[0].href; // Default to first link if above all sections
         } else {
-          // If no section is perfectly matched, check which section top is closest above the current scroll position
-          for (let i = sections.length - 1; i >= 0; i--) {
-            const section = sections[i];
-            if (section && scrollY >= section.offsetTop - navbarHeight) {
-              current = `#${section.id}`;
-              break;
-            }
-          }
+            // If scrolled past all sections, keep the last one active
+            // This can happen if the footer is very tall or page is short
+             const lastSectionId = navLinks[navLinks.length - 1].href.substring(1);
+             const lastSection = document.getElementById(lastSectionId);
+             if(lastSection && scrollY >= lastSection.offsetTop - navbarHeight) {
+                current = navLinks[navLinks.length - 1].href;
+             } else {
+                // Default if still no match (should be rare)
+                current = navLinks[0].href;
+             }
         }
       }
-      
-      // Final fallback if no section is matched at all (e.g. very top of page before first section)
-      if (!current && navLinks.length > 0) {
-        current = navLinks[0].href;
+       // Ensure if we are very near the top, the first link is active
+      if (scrollY < navbarHeight && navLinks.length > 0) {
+          current = navLinks[0].href;
       }
+
 
       setActiveLink(current);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Call on mount to set initial active link
+    handleScroll(); // Call on mount
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isMounted]);
 
 
   const renderPillNavLinks = (isMobile: boolean) => (
@@ -94,7 +96,15 @@ export function Navbar() {
         <Link
           key={link.label}
           href={link.href}
-          onClick={() => setActiveLink(link.href)}
+          onClick={(e) => {
+            setActiveLink(link.href);
+            // Optional: Smooth scroll for browsers that don't support scroll-behavior: smooth via CSS
+            // const section = document.getElementById(link.href.substring(1));
+            // if (section) {
+            //   e.preventDefault();
+            //   section.scrollIntoView({ behavior: 'smooth' });
+            // }
+          }}
           className={cn(
             "block px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background",
             isMobile ? "whitespace-nowrap" : "",
@@ -112,7 +122,7 @@ export function Navbar() {
   if (!isMounted) {
     // Basic skeleton loader for navbar
     return (
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 h-[76px] md:h-[68px]"> {/* Adjusted height example */}
+      <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 h-[76px] md:h-[68px]">
         <div className="container py-4">
           {/* Desktop Skeleton */}
           <div className="hidden md:flex justify-between items-center">
@@ -134,7 +144,7 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container py-4">
         {/* Desktop Layout: Name - Nav Pills - ThemeSwitcher */}
         <div className="hidden md:flex justify-between items-center">
@@ -145,7 +155,7 @@ export function Navbar() {
           >
             {portfolioOwner.name}
           </Link>
-          <nav> {/* Desktop Nav Pills are directly rendered here */}
+          <nav>
             {renderPillNavLinks(false)}
           </nav>
           <ThemeSwitcher />
@@ -153,7 +163,6 @@ export function Navbar() {
 
         {/* Mobile Layout */}
         <div className="md:hidden">
-          {/* Row 1: Name and ThemeSwitcher */}
           <div className="flex justify-between items-center mb-3">
             <Link
               href="#hero"
@@ -164,7 +173,6 @@ export function Navbar() {
             </Link>
             <ThemeSwitcher />
           </div>
-          {/* Row 2: Scrollable Navigation Pills */}
           <div className="mt-1 w-full overflow-x-auto scrollbar-hide flex justify-start py-1" tabIndex={0}>
             {renderPillNavLinks(true)}
           </div>
@@ -173,5 +181,3 @@ export function Navbar() {
     </header>
   );
 }
-
-    
