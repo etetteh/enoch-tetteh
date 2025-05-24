@@ -22,7 +22,7 @@ export function SkillsSection() {
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const scrollContainerRef = useRef<HTMLDivElement>(null); // Ref for the scrollable container
+  const scrollContainerRef = useRef<HTMLDivElement>(null); 
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, skillCategories.length);
@@ -55,7 +55,6 @@ export function SkillsSection() {
       
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
       
-      // Ensure targetScrollLeft is within bounds
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
       container.scrollTo({
@@ -72,7 +71,7 @@ export function SkillsSection() {
     if (!isPaused && skillCategories.length > 1) {
       intervalIdRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex === skillCategories.length - 1 ? 0 : prevIndex + 1));
-      }, 9000); // 9 second interval
+      }, 9000); 
     }
     return () => {
       if (intervalIdRef.current) {
@@ -109,7 +108,7 @@ export function SkillsSection() {
         >
           <div className="flex items-center justify-center px-4 sm:px-0">
             <div
-              ref={scrollContainerRef} // Attach ref here
+              ref={scrollContainerRef} 
               className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl"
             >
               {skillCategories.map((category, index) => {
@@ -137,21 +136,18 @@ export function SkillsSection() {
                       isActive ? "pt-6" : "pt-4"
                     )}>
                       <category.icon className={cn(
-                        "transition-all duration-500 text-primary",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100 scale-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100",
+                        "transition-all duration-500 text-primary opacity-100 scale-100",
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2",
                         isActive && "animate-in fade-in-0 zoom-in-90 delay-200 duration-500"
                       )} />
                       <CardTitle className={cn(
-                        "transition-all duration-500 text-primary",
-                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100",
+                        "transition-all duration-500 text-primary opacity-100",
+                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium",
                          isActive && "animate-in fade-in-0 delay-300 duration-500"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
-                    <CardContent className={cn(
-                      "p-3 sm:p-4 transition-opacity duration-300",
-                       isActive ? "opacity-100" : "opacity-0 max-h-0 overflow-hidden"
-                    )}>
-                      {isActive && (
+                    {isActive && (
+                      <CardContent className="p-3 sm:p-4 transition-opacity duration-300 opacity-100">
                         <ScrollArea className="h-36 sm:h-40">
                            <div className="flex flex-wrap gap-2 justify-center">
                             {category.skills.map((skill, skillIndex) => (
@@ -168,8 +164,8 @@ export function SkillsSection() {
                             ))}
                           </div>
                         </ScrollArea>
-                      )}
-                    </CardContent>
+                      </CardContent>
+                    )}
                   </div>
                 );
               })}
@@ -203,7 +199,7 @@ export function SkillsSection() {
           </div>
         </div>
         
-        {/* Dot Indicators - Moved outside and below the main carousel container */}
+        {/* Dot Indicators */}
         <div className="flex justify-center items-center space-x-2 py-6">
           {skillCategories.map((_, index) => (
             <button
@@ -232,3 +228,5 @@ export function SkillsSection() {
     </section>
   );
 }
+
+    
