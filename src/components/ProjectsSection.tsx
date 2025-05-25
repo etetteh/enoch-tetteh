@@ -111,7 +111,7 @@ export function ProjectsSection() {
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex, isPaused]);
+  }, [currentIndex, isPaused, projects.length]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
@@ -156,15 +156,15 @@ export function ProjectsSection() {
                        <Button 
                         variant="default" 
                         size="sm" 
-                        className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2"
+                        className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2 text-primary-foreground hover:bg-primary/90"
                       >
                         See more
-                        <span className="bg-primary-foreground group-hover:bg-muted rounded-full p-1 transition-colors">
+                        <span className="bg-primary-foreground group-hover:bg-primary-foreground/80 rounded-full p-1 transition-colors">
                           <ArrowRight className="h-3 w-3 text-primary" />
                         </span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-2xl max-h-[80vh] flex flex-col p-0">
+                    <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-y-auto">
                       <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <div className="flex items-start justify-between">
                           <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
@@ -172,7 +172,7 @@ export function ProjectsSection() {
                         </div>
                       </DialogHeader>
                       <ScrollArea className="flex-grow my-4 px-6">
-                        <div className="text-sm text-foreground leading-relaxed">
+                        <div className="text-xs sm:text-sm text-foreground leading-relaxed">
                            {highlightSkillsInDescriptionInternal(
                               currentProject.description,
                               currentProject.techStack,
@@ -277,5 +277,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-
-    
