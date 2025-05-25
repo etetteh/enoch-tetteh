@@ -5,7 +5,8 @@ import { useState, useRef, useEffect, type ReactNode } from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Github, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +17,7 @@ const mlAiKeywords = [
   // Core ML/AI Concepts
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
   "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering",
-  "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity",
+  "Anomaly Detection", "Recommendation System", "Semantic Similarity",
   "Textual Entailment", "Question Answering", "Fine-tuning", "Pre-trained Model", "Transfer Learning",
   // ML Techniques & Processes
   "Data Augmentation", "CutMix", "MixUp", "Model Pruning", "Quantization", "Adversarial Training",
@@ -24,7 +25,7 @@ const mlAiKeywords = [
   "Accuracy", "Performance", "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
   // MLOps & Production
   "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient",
-  "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control",
+  "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control", "LLMOps",
   // Action Verbs
   "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated",
   "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
@@ -111,6 +112,7 @@ export function ProjectsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPaused]);
 
   const handleMouseEnter = () => setIsPaused(true);
@@ -125,7 +127,7 @@ export function ProjectsSection() {
           Featured Projects
         </h2>
         <p
-          className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto"
+          className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-xs sm:text-sm"
         >
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
@@ -144,22 +146,46 @@ export function ProjectsSection() {
               className="md:w-1/2 w-full h-full flex flex-col animate-in fade-in-0 duration-500"
             >
               <ScrollArea className="flex-grow">
-                <div className="p-1 space-y-3 text-center md:text-left">
+                <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
                   <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed">
                     {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
                   </p>
-                  <div>
-                      <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Full Description:</h4>
-                      <div className="max-h-40 overflow-y-auto border rounded-md p-2 bg-background/50 text-xs text-foreground leading-normal scrollbar-hide">
+                  
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button 
+                        variant="default" 
+                        size="sm" 
+                        className="bg-neutral-800 dark:bg-neutral-700 text-blue-400 hover:bg-neutral-700 dark:hover:bg-neutral-600 hover:text-blue-300 rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2"
+                      >
+                        See more
+                        <span className="bg-blue-500 group-hover:bg-blue-600 rounded-full p-1 transition-colors">
+                          <ArrowRight className="h-3 w-3 text-white" />
+                        </span>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-2xl max-h-[80vh] flex flex-col">
+                      <DialogHeader className="shrink-0">
+                        <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
+                         <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                            <X className="h-4 w-4" />
+                            <span className="sr-only">Close</span>
+                        </DialogClose>
+                      </DialogHeader>
+                      <ScrollArea className="flex-grow my-4">
+                        <div className="pr-4 text-sm text-foreground leading-relaxed">
                           {highlightSkillsInDescriptionInternal(
                               currentProject.description,
                               currentProject.techStack,
-                              `project-${currentIndex}-desc`
+                              `project-${currentIndex}-desc-dialog`
                           )}
-                      </div>
-                  </div>
-                  <div>
+                        </div>
+                      </ScrollArea>
+                    </DialogContent>
+                  </Dialog>
+
+                  <div className="pt-3">
                     <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
                     <div className="flex flex-wrap gap-1 justify-center md:justify-start">
                       {currentProject.techStack.map((tech) => (
@@ -169,7 +195,7 @@ export function ProjectsSection() {
                   </div>
                 </div>
               </ScrollArea>
-              <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto">
+              <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto p-1 md:p-2 lg:p-4">
                   {currentProject.githubUrl && (
                   <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
                       <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
@@ -188,7 +214,7 @@ export function ProjectsSection() {
             </div>
 
             {/* Right Pane: Visual Placeholder */}
-            <div className="md:w-1/2 w-full h-64 md:h-auto md:min-h-[350px] bg-muted rounded-md flex items-center justify-center p-4 relative aspect-video">
+            <div className="md:w-1/2 w-full h-64 md:h-full bg-muted rounded-md flex items-center justify-center p-4 relative aspect-video md:aspect-auto">
                <Image
                   src={currentProject.imageUrl}
                   alt={currentProject.title}
@@ -198,10 +224,7 @@ export function ProjectsSection() {
                   data-ai-hint={currentProject.imageHint}
                   priority={currentIndex === 0} 
                 />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-md"></div>
-              <p className="text-lg font-semibold text-background/80 z-10 p-4 text-center bg-black/30 rounded backdrop-blur-sm">
-                Visual for {currentProject.title}
-              </p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-md"></div>
             </div>
           </div>
 
@@ -256,3 +279,4 @@ export function ProjectsSection() {
     </section>
   );
 }
+
