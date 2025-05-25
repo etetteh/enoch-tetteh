@@ -89,10 +89,9 @@ export function ProjectsSection() {
 
   useEffect(() => {
     if (textContentRef.current) {
-      // Force re-trigger animation by changing key or class
-      textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'slide-in-from-bottom-5', 'duration-500');
-      void textContentRef.current.offsetWidth; // Trigger reflow
-      textContentRef.current.classList.add('animate-in', 'fade-in-0', 'slide-in-from-bottom-5', 'duration-500');
+      textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'duration-500');
+      void textContentRef.current.offsetWidth; 
+      textContentRef.current.classList.add('animate-in', 'fade-in-0', 'duration-500');
     }
   }, [currentIndex]);
 
@@ -113,7 +112,7 @@ export function ProjectsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
-  }, [currentIndex, isPaused, projects.length]);
+  }, [currentIndex, isPaused]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
@@ -144,49 +143,49 @@ export function ProjectsSection() {
             <div
               ref={textContentRef}
               key={currentIndex} 
-              className="md:w-1/2 space-y-4 text-center md:text-left animate-in fade-in-0 slide-in-from-bottom-5 duration-500"
+              className="md:w-1/2 w-full h-full flex flex-col animate-in fade-in-0 duration-500"
             >
-              <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
-              <p className="text-sm md:text-base text-foreground leading-relaxed">
-                {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
-              </p>
-               <div className="mt-auto space-y-3 pt-4">
-                 <div>
-                    <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Full Description:</h4>
-                     <ScrollArea className="h-[100px] pr-2 border rounded-md p-2 bg-background/50">
-                        <p className="text-xs text-foreground leading-normal">
-                        {highlightSkillsInDescriptionInternal(
-                            currentProject.description,
-                            currentProject.techStack,
-                            `project-${currentIndex}-desc`
-                        )}
-                        </p>
-                    </ScrollArea>
-                 </div>
-                <div>
-                  <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
-                  <div className="flex flex-wrap gap-1 justify-center md:justify-start">
-                    {currentProject.techStack.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-                    ))}
+              <ScrollArea className="flex-grow">
+                <div className="p-1 space-y-3 text-center md:text-left"> {/* Added padding for ScrollArea content */}
+                  <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
+                  <p className="text-sm md:text-base text-foreground leading-relaxed">
+                    {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
+                  </p>
+                  <div>
+                      <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Full Description:</h4>
+                      <div className="max-h-40 overflow-y-auto border rounded-md p-2 bg-background/50 text-xs text-foreground leading-normal">
+                          {highlightSkillsInDescriptionInternal(
+                              currentProject.description,
+                              currentProject.techStack,
+                              `project-${currentIndex}-desc`
+                          )}
+                      </div>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
+                    <div className="flex flex-wrap gap-1 justify-center md:justify-start">
+                      {currentProject.techStack.map((tech) => (
+                        <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-2 justify-center md:justify-start pt-2">
-                    {currentProject.githubUrl && (
-                    <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
-                        <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                        <Github /> GitHub
-                        </a>
-                    </Button>
-                    )}
-                    {currentProject.liveUrl && (
-                    <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105">
-                        <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink /> Live Demo
-                        </a>
-                    </Button>
-                    )}
-                </div>
+              </ScrollArea>
+              <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto"> {/* Links outside ScrollArea */}
+                  {currentProject.githubUrl && (
+                  <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
+                      <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                      <Github /> GitHub
+                      </a>
+                  </Button>
+                  )}
+                  {currentProject.liveUrl && (
+                  <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105">
+                      <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink /> Live Demo
+                      </a>
+                  </Button>
+                  )}
               </div>
             </div>
 
@@ -259,3 +258,4 @@ export function ProjectsSection() {
     </section>
   );
 }
+
