@@ -33,7 +33,7 @@ export const projects: Project[] = [
     imageUrl: 'https://placehold.co/600x400/4285F4/FFFFFF.png', // Google Blue (Primary)
     imageHint: 'embedding framework',
     techStack: ['PyTorch', 'Sentence-Transformers', 'Hugging Face (Transformers/Datasets/PEFT)', 'Python', 'FAISS', 'Pydantic', 'pytest', 'GitHub Actions', 'Docker', 'Mixed-Precision Training', 'LoRA adaptation'],
-    githubUrl: '#',
+    githubUrl: 'https://github.com/etetteh/finetune-embedding',
     liveUrl: '#',
   },
   {
@@ -190,3 +190,4 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
+
