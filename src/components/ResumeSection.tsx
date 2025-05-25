@@ -34,7 +34,6 @@ export function ResumeSection() {
             <h3 className="text-2xl font-semibold text-primary">Download My Resume</h3>
             <p className="text-muted-foreground">
               Get a copy of my full resume to learn more about my qualifications and experience.
-              Please ensure you have placed your `resume.pdf` file in the `public` directory of your project.
             </p>
             <Button
               asChild
