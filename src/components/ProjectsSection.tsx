@@ -89,28 +89,22 @@ export function ProjectsSection() {
 
   useEffect(() => {
     if (textContentRef.current) {
-      textContentRef.current.classList.remove('opacity-0', 'translate-y-5');
-      textContentRef.current.classList.add('opacity-100', 'translate-y-0');
-      setTimeout(() => {
-        if (textContentRef.current) {
-           textContentRef.current.classList.add('opacity-0', 'translate-y-5');
-           setTimeout(() => {
-            if (textContentRef.current) {
-              textContentRef.current.classList.remove('opacity-0', 'translate-y-5');
-              textContentRef.current.classList.add('opacity-100', 'translate-y-0');
-            }
-           }, 50); 
-        }
-      }, 0);
+      // Force re-trigger animation by changing key or class
+      textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'slide-in-from-bottom-5', 'duration-500');
+      void textContentRef.current.offsetWidth; // Trigger reflow
+      textContentRef.current.classList.add('animate-in', 'fade-in-0', 'slide-in-from-bottom-5', 'duration-500');
     }
+  }, [currentIndex]);
 
+
+  useEffect(() => {
     if (intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
     }
 
-    if (!isPaused) {
+    if (!isPaused && projects.length > 1) {
       intervalIdRef.current = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex === projects.length - 1 ? 0 : prevIndex + 1));
+        handleNext();
       }, 9000); 
     }
 
@@ -141,7 +135,7 @@ export function ProjectsSection() {
 
         <div
           ref={carouselRef}
-          className="relative"
+          className="relative my-8"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -150,7 +144,7 @@ export function ProjectsSection() {
             <div
               ref={textContentRef}
               key={currentIndex} 
-              className="md:w-1/2 space-y-4 text-center md:text-left transition-all duration-500 ease-in-out opacity-100 translate-y-0"
+              className="md:w-1/2 space-y-4 text-center md:text-left animate-in fade-in-0 slide-in-from-bottom-5 duration-500"
             >
               <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
               <p className="text-sm md:text-base text-foreground leading-relaxed">
@@ -265,4 +259,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-

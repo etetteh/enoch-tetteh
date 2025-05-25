@@ -49,14 +49,20 @@ export function SkillsSection() {
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
       const containerWidth = container.offsetWidth;
-
+      const containerScrollLeft = container.scrollLeft;
+      
+      // Calculate the target scroll position to center the active card
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
+      
+      // Adjust if the target is beyond the scrollable width
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
-      container.scrollTo({
-        left: targetScrollLeft,
-        behavior: 'smooth',
-      });
+      if (Math.abs(containerScrollLeft - targetScrollLeft) > 1) { // Only scroll if not already centered
+        container.scrollTo({
+          left: targetScrollLeft,
+          behavior: 'smooth',
+        });
+      }
     }
   }, [currentIndex]);
 
@@ -95,10 +101,10 @@ export function SkillsSection() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="flex items-center justify-center px-4 sm:px-0">
+          <div className="flex items-center justify-center">
             <div
               ref={scrollContainerRef}
-              className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[400px] sm:h-[460px]"
+              className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[400px] sm:h-[460px]"
             >
               {skillCategories.map((category, index) => {
                 const isActive = index === currentIndex;
