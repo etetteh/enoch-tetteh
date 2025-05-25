@@ -48,7 +48,7 @@ const highlightSkillsInDescriptionInternal = (
   }
 
   const pattern = allKeywordsToHighlight
-    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
+    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
 
@@ -155,7 +155,7 @@ export function ProjectsSection() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 min-h-[500px] md:min-h-[450px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
+          <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 h-[500px] md:h-[450px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
             <div
               ref={textContentRef}

@@ -98,7 +98,7 @@ export function SkillsSection() {
           <div className="flex items-center justify-center px-4 sm:px-0">
             <div
               ref={scrollContainerRef}
-              className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl"
+              className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[350px] sm:h-[410px]"
             >
               {skillCategories.map((category, index) => {
                 const isActive = index === currentIndex;
@@ -126,11 +126,11 @@ export function SkillsSection() {
                     )}>
                       <category.icon className={cn(
                         "transition-all duration-500 text-primary opacity-100 scale-100",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100 scale-100"
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2"
                       )} />
                       <CardTitle className={cn(
-                        "transition-all duration-500 text-primary",
-                         isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100"
+                        "transition-all duration-500 text-primary opacity-100",
+                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
                     {isActive && (
