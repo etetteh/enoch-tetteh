@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -49,15 +48,12 @@ export function SkillsSection() {
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
       const containerWidth = container.offsetWidth;
-      const containerScrollLeft = container.scrollLeft;
       
-      // Calculate the target scroll position to center the active card
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
       
-      // Adjust if the target is beyond the scrollable width
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
-      if (Math.abs(containerScrollLeft - targetScrollLeft) > 1) { // Only scroll if not already centered
+      if (Math.abs(container.scrollLeft - targetScrollLeft) > 1) {
         container.scrollTo({
           left: targetScrollLeft,
           behavior: 'smooth',
@@ -114,11 +110,12 @@ export function SkillsSection() {
                     ref={el => cardRefs.current[index] = el}
                     onClick={() => setCurrentIndex(index)}
                     className={cn(
-                      "transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center rounded-xl overflow-hidden",
+                      "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
                       "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                      "hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent", // Added gradient hover
                       isActive
-                        ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-card border-2 border-primary"
-                        : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer bg-card/80 hover:opacity-90 hover:scale-95"
+                        ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default"
+                        : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95"
                     )}
                     role="button"
                     tabIndex={0}
@@ -126,36 +123,41 @@ export function SkillsSection() {
                     aria-label={`Skill category: ${category.name}. Click to view details.`}
                     aria-current={isActive}
                   >
-                    <CardHeader className={cn(
-                      "flex flex-col items-center text-center p-4 transition-all duration-300",
-                      isActive ? "pt-6" : "pt-4"
-                    )}>
-                      <category.icon className={cn(
-                        "transition-all duration-500 text-primary opacity-100 scale-100",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2"
-                      )} />
-                      <CardTitle className={cn(
-                        "transition-all duration-500 text-primary opacity-100",
-                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium"
-                      )}>{category.name}</CardTitle>
-                    </CardHeader>
-                    {isActive && (
-                      <CardContent className="p-3 sm:p-4 transition-opacity duration-300 opacity-100">
-                        <ScrollArea className="h-36 sm:h-40">
-                           <div className="flex flex-wrap gap-2 justify-center">
-                            {category.skills.map((skill) => (
-                              <Badge
-                                key={skill}
-                                variant="secondary"
-                                className="text-xs sm:text-sm py-1 px-2 sm:px-3"
-                              >
-                                {skill}
-                              </Badge>
-                            ))}
-                          </div>
-                        </ScrollArea>
-                      </CardContent>
-                    )}
+                    <Card className={cn(
+                      "w-full h-full flex flex-col",
+                      isActive ? "bg-card border-2 border-primary" : "bg-card/80"
+                      )}>
+                      <CardHeader className={cn(
+                        "flex flex-col items-center text-center p-4 transition-all duration-300",
+                        isActive ? "pt-6" : "pt-4"
+                      )}>
+                        <category.icon className={cn(
+                          "transition-all duration-500 text-primary opacity-100 scale-100",
+                          isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2"
+                        )} />
+                        <CardTitle className={cn(
+                          "transition-all duration-500 text-primary opacity-100",
+                           isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium"
+                        )}>{category.name}</CardTitle>
+                      </CardHeader>
+                      {isActive && (
+                        <CardContent className="p-3 sm:p-4 transition-opacity duration-300 opacity-100">
+                          <ScrollArea className="h-36 sm:h-40">
+                             <div className="flex flex-wrap gap-2 justify-center">
+                              {category.skills.map((skill) => (
+                                <Badge
+                                  key={skill}
+                                  variant="secondary"
+                                  className="text-xs sm:text-sm py-1 px-2 sm:px-3"
+                                >
+                                  {skill}
+                                </Badge>
+                              ))}
+                            </div>
+                          </ScrollArea>
+                        </CardContent>
+                      )}
+                    </Card>
                   </div>
                 );
               })}
@@ -206,7 +208,7 @@ export function SkillsSection() {
             >
               {currentIndex === index && (
                 <div
-                  key={currentIndex}
+                  key={currentIndex} 
                   className="h-full bg-primary rounded-full"
                   style={{ animation: 'progress-fill 9s linear forwards' }}
                 />
