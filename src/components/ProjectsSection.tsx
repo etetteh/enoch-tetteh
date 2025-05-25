@@ -156,11 +156,11 @@ export function ProjectsSection() {
                        <Button 
                         variant="default" 
                         size="sm" 
-                        className="text-blue-400 hover:text-blue-300 rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2"
+                        className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2"
                       >
                         See more
-                        <span className="bg-blue-500 group-hover:bg-blue-600 rounded-full p-1 transition-colors">
-                          <ArrowRight className="h-3 w-3 text-white" />
+                        <span className="bg-primary-foreground group-hover:bg-muted rounded-full p-1 transition-colors">
+                          <ArrowRight className="h-3 w-3 text-primary" />
                         </span>
                       </Button>
                     </DialogTrigger>
