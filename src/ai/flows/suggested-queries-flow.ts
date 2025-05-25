@@ -21,7 +21,7 @@ export type SuggestedQueriesInput = z.infer<typeof SuggestedQueriesInputSchema>;
 const SuggestedQueriesOutputSchema = z.object({
   queries: z
     .array(z.string())
-    .describe('An array of 3-5 suggested query strings.'),
+    .describe('An array of 3-5 concise suggested query strings.'),
 });
 export type SuggestedQueriesOutput = z.infer<typeof SuggestedQueriesOutputSchema>;
 
@@ -32,7 +32,7 @@ const generateQueriesPrompt = ai.definePrompt({
   prompt: `You are an AI assistant tasked with generating 3 to 5 engaging and relevant suggested questions a user might ask a chatbot about Enoch Tetteh's professional portfolio.
 The portfolio content is provided below.
 Based *only* on this content, generate diverse questions that highlight key aspects like Enoch's skills, projects, experience, or education.
-Ensure the questions are concise and phrased as if a user is asking them.
+Ensure the questions are **very concise** (ideally 3-6 words) and phrased as if a user is asking them.
 
 Portfolio Content:
 {{{portfolioContent}}}
@@ -40,9 +40,9 @@ Portfolio Content:
 Output the questions as a JSON array of strings. For example:
 {
   "queries": [
-    "What are Enoch's main skills?",
-    "Tell me about Enoch's most recent project.",
-    "What experience does Enoch have with Google Cloud?"
+    "Enoch's main skills?",
+    "Latest project details?",
+    "Enoch's Google Cloud experience?"
   ]
 }`,
   safetySettings: [
@@ -63,7 +63,7 @@ const _internalSuggestedQueriesFlow = ai.defineFlow(
     const {output} = await generateQueriesPrompt(flowInput);
     if (!output || !output.queries || output.queries.length === 0) {
       // Fallback if AI fails to generate queries or returns an empty/invalid structure
-      return { queries: ["What are Enoch's key skills?", "Tell me about a recent project.", "What is Enoch's experience?"] };
+      return { queries: ["Enoch's key skills?", "Recent project?", "Enoch's experience?"] };
     }
     // Ensure we always return an object matching SuggestedQueriesOutputSchema, even if AI provides extra fields
     return { queries: output.queries };
