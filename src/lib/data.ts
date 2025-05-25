@@ -106,7 +106,7 @@ export const experiences: Experience[] = [
   },
   {
     id: 'ml-framework-architect-exp',
-    role: 'Generative AI Engineer',
+    role: 'Generative AI Engineer | End-to-End Embedding Model Fine-tuning',
     company: 'Freelance',
     period: '2025',
     description: [
