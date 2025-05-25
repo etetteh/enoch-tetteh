@@ -12,7 +12,6 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-
 const mlAiKeywords = [
   // Core ML/AI Concepts
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
@@ -31,7 +30,6 @@ const mlAiKeywords = [
   "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
   // Impact/Quality Descriptors
   "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
-  // Specific tools are handled by project.techStack
 ];
 
 // Helper function to highlight skills
@@ -138,12 +136,13 @@ export function ProjectsSection() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 h-[550px] md:h-[500px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
-            {/* Left Pane: Text Content */}
+          {/* Main card for the slide - height is auto on mobile, fixed on md+ */}
+          <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 md:h-[500px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
+            {/* Left Pane: Text Content - height is auto on mobile, full on md+ */}
             <div
               ref={textContentRef}
               key={currentIndex} 
-              className="md:w-1/2 w-full h-full flex flex-col animate-in fade-in-0 duration-500"
+              className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
             >
               <ScrollArea className="flex-grow">
                 <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
@@ -154,7 +153,7 @@ export function ProjectsSection() {
                   
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button 
+                       <Button 
                         variant="default" 
                         size="sm" 
                         className="bg-neutral-800 dark:bg-neutral-700 text-blue-400 hover:bg-neutral-700 dark:hover:bg-neutral-600 hover:text-blue-300 rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2"
@@ -165,13 +164,16 @@ export function ProjectsSection() {
                         </span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-2xl max-h-[80vh] flex flex-col">
-                      <DialogHeader className="shrink-0">
-                        <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
+                    <DialogContent className="sm:max-w-2xl max-h-[80vh] flex flex-col p-0">
+                      <DialogHeader className="p-6 pb-4 border-b shrink-0">
+                        <div className="flex items-start justify-between">
+                          <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
+                           {/* Default X close button is provided by DialogContent */}
+                        </div>
                       </DialogHeader>
-                      <ScrollArea className="flex-grow my-4">
-                        <div className="pr-4 text-sm text-foreground leading-relaxed">
-                          {highlightSkillsInDescriptionInternal(
+                      <ScrollArea className="flex-grow my-4 px-6">
+                        <div className="text-sm text-foreground leading-relaxed">
+                           {highlightSkillsInDescriptionInternal(
                               currentProject.description,
                               currentProject.techStack,
                               `project-${currentIndex}-desc-dialog`
@@ -209,8 +211,8 @@ export function ProjectsSection() {
               </div>
             </div>
 
-            {/* Right Pane: Visual Placeholder */}
-            <div className="md:w-1/2 w-full h-64 md:h-full bg-muted rounded-md flex items-center justify-center p-4 relative aspect-video md:aspect-auto">
+            {/* Right Pane: Visual Placeholder - height is fixed on mobile, full on md+ */}
+            <div className="w-full md:w-1/2 h-64 md:h-full bg-muted rounded-md flex items-center justify-center p-4 relative aspect-video md:aspect-auto">
                <Image
                   src={currentProject.imageUrl}
                   alt={currentProject.title}
@@ -276,4 +278,4 @@ export function ProjectsSection() {
   );
 }
 
-
+    
