@@ -5,7 +5,6 @@ import { useRef } from 'react';
 import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
 
@@ -42,7 +41,7 @@ const highlightExperienceKeywords = (
   if (!text) return [text];
 
   const pattern = mlAiProfessionalKeywords
-    .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
+    .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
   const parts = text.split(regex);
@@ -58,15 +57,12 @@ const highlightExperienceKeywords = (
 
 const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
 
   return (
     <div
       ref={cardRef}
       className={cn(
         "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
-        "transition-all duration-700 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}
     >
       <Card className="bg-card rounded-lg">
@@ -95,17 +91,14 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
 
 export function ExperienceSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
 
   return (
-    <section id="experience" className="bg-secondary">
+    <section id="experience">
       <div className="container">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-700 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Professional Experience

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import Link from "next/link";
 import { ResumeTailorForm } from "./ResumeTailorForm";
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data'; // Import portfolioOwner
 
@@ -15,23 +14,17 @@ export function ResumeSection() {
   const downloadBlockRef = useRef<HTMLDivElement>(null);
   const tailorFormRef = useRef<HTMLDivElement>(null); 
 
-  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
-  const isDownloadBlockVisible = useFadeInOnScroll(downloadBlockRef, { threshold: 0.1 });
-  const isTailorFormVisible = useFadeInOnScroll(tailorFormRef, { threshold: 0.1 });
-
   // Sanitize the name for use in a filename
   const sanitizedName = portfolioOwner.name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
   const resumeFilename = `${sanitizedName}_resume.pdf`;
 
   return (
-    <section id="resume-tailor" className="bg-secondary">
+    <section id="resume-tailor">
       <div className="container">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-700 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Resume & AI Tailoring
@@ -41,8 +34,6 @@ export function ResumeSection() {
             ref={downloadBlockRef}
             className={cn(
               "space-y-6",
-              "transition-all duration-700 ease-out",
-              isDownloadBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             )}
           >
             <h3 className="text-2xl font-semibold text-primary">Download My Resume</h3>
@@ -64,8 +55,6 @@ export function ResumeSection() {
           <div
             ref={tailorFormRef}
             className={cn(
-              "transition-all duration-700 ease-out",
-              isTailorFormVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             )}
           >
             <ResumeTailorForm />
@@ -76,4 +65,3 @@ export function ResumeSection() {
   );
 }
 
-    

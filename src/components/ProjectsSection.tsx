@@ -7,7 +7,6 @@ import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Github, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -68,8 +67,6 @@ const highlightSkillsInDescriptionInternal = (
 export function ProjectsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
-  const isCarouselVisible = useFadeInOnScroll(carouselRef, { threshold: 0.1 });
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -132,22 +129,19 @@ export function ProjectsSection() {
   const handleMouseLeave = () => setIsPaused(false);
 
   return (
-    <section id="projects" className="bg-secondary">
+    <section id="projects">
       <div className="container">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-700 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Featured Projects
         </h2>
         <p
           className={cn(
-            "text-center text-muted-foreground mb-12 max-w-2xl mx-auto transition-all duration-700 ease-out delay-100",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "text-center text-muted-foreground mb-12 max-w-2xl mx-auto",
           )}
         >
           Explore some of the key projects I&apos;ve worked on, showcasing my skills in AI, Google Cloud, and large-scale system development.
@@ -156,8 +150,7 @@ export function ProjectsSection() {
         <div
           ref={carouselRef}
           className={cn(
-            "relative transition-all duration-700 ease-out delay-200",
-            isCarouselVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "relative",
           )}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -169,7 +162,7 @@ export function ProjectsSection() {
               key={currentIndex} // Re-keying to trigger animation on slide change
               className={cn(
                 "md:w-1/2 space-y-4 text-center md:text-left",
-                "transition-all duration-500 ease-in-out opacity-0 translate-y-5" // Initial animation state
+                "transition-all duration-500 ease-in-out opacity-100 translate-y-0" 
               )}
             >
               <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
@@ -257,7 +250,6 @@ export function ProjectsSection() {
           </div>
         </div>
         
-        {/* Dot Indicators - Moved outside of the main carousel div */}
         <div className="flex justify-center items-center space-x-2 py-6">
           {projects.map((_, index) => (
             <button

@@ -20,7 +20,7 @@ export function HeroSection() {
       ref={sectionRef}
       id="hero"
       className={cn(
-        "bg-gradient-to-b from-background to-secondary min-h-screen flex flex-col justify-center"
+        "min-h-screen flex flex-col justify-center"
       )}
     >
       <div className="container text-center">
