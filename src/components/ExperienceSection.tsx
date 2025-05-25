@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useRef } from 'react';
 import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -56,11 +55,9 @@ const highlightExperienceKeywords = (
 };
 
 const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
-      ref={cardRef}
       className={cn(
         "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
       )}
@@ -76,7 +73,7 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
           </div>
         </CardHeader>
         <CardContent>
-          <ul className="list-disc list-inside space-y-1 text-sm text-foreground">
+          <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-foreground">
             {exp.description.map((desc, bulletIndex) => (
               <li key={bulletIndex}>
                 {highlightExperienceKeywords(desc, `exp-${expIndex}-bullet-${bulletIndex}`)}
@@ -90,13 +87,11 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
 };
 
 export function ExperienceSection() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
 
   return (
     <section id="experience">
       <div className="container">
         <h2
-          ref={titleRef}
           className={cn(
             "section-title",
           )}

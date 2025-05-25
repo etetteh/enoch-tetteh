@@ -207,7 +207,7 @@ export function Chatbot() {
             placeholder={currentPlaceholder}
             className={cn(
               "flex-grow h-full bg-transparent border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0",
-              "text-neutral-200 dark:text-neutral-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-sm",
+              "text-neutral-200 dark:text-neutral-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-xs sm:text-sm",
               "transition-all duration-300 ease-in-out"
             )}
             onFocus={() => {
@@ -283,7 +283,7 @@ export function Chatbot() {
                     </Avatar>
                   )}
                   <div
-                    className={`max-w-[75%] rounded-lg px-3 py-2 text-sm shadow ${
+                    className={`max-w-[75%] rounded-lg px-3 py-2 text-xs sm:text-sm shadow ${
                       msg.sender === 'user'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-card text-card-foreground border'
@@ -324,4 +324,3 @@ export function Chatbot() {
     </>
   );
 }
-

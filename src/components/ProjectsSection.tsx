@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ReactNode } from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { ReactNode } from 'react';
+
 
 const mlAiKeywords = [
   // Core ML/AI Concepts
@@ -65,7 +65,6 @@ const highlightSkillsInDescriptionInternal = (
 
 
 export function ProjectsSection() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -121,7 +120,6 @@ export function ProjectsSection() {
     <section id="projects">
       <div className="container">
         <h2
-          ref={titleRef}
           className="section-title"
         >
           Featured Projects
@@ -146,14 +144,14 @@ export function ProjectsSection() {
               className="md:w-1/2 w-full h-full flex flex-col animate-in fade-in-0 duration-500"
             >
               <ScrollArea className="flex-grow">
-                <div className="p-1 space-y-3 text-center md:text-left"> {/* Added padding for ScrollArea content */}
+                <div className="p-1 space-y-3 text-center md:text-left">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
-                  <p className="text-sm md:text-base text-foreground leading-relaxed">
+                  <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed">
                     {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
                   </p>
                   <div>
                       <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Full Description:</h4>
-                      <div className="max-h-40 overflow-y-auto border rounded-md p-2 bg-background/50 text-xs text-foreground leading-normal">
+                      <div className="max-h-40 overflow-y-auto border rounded-md p-2 bg-background/50 text-xs text-foreground leading-normal scrollbar-hide">
                           {highlightSkillsInDescriptionInternal(
                               currentProject.description,
                               currentProject.techStack,
@@ -171,7 +169,7 @@ export function ProjectsSection() {
                   </div>
                 </div>
               </ScrollArea>
-              <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto"> {/* Links outside ScrollArea */}
+              <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto">
                   {currentProject.githubUrl && (
                   <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
                       <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
@@ -258,4 +256,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-
