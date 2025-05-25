@@ -52,10 +52,9 @@ export function SkillsSection() {
       
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
       
-      // Ensure scroll target is within bounds
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
-      if (Math.abs(container.scrollLeft - targetScrollLeft) > 1) { // Add a small threshold to prevent infinite loops on some browsers
+      if (Math.abs(container.scrollLeft - targetScrollLeft) > 1) { 
         container.scrollTo({
           left: targetScrollLeft,
           behavior: 'smooth',
@@ -114,10 +113,9 @@ export function SkillsSection() {
                     className={cn(
                       "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
                       "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                      "hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent",
                       isActive
-                        ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default"
-                        : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95"
+                        ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-gradient-to-br from-primary via-accent to-accent"
+                        : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent"
                     )}
                     role="button"
                     tabIndex={0}
@@ -126,20 +124,19 @@ export function SkillsSection() {
                     aria-current={isActive}
                   >
                     <Card className={cn(
-                      "w-full h-full flex flex-col",
-                      isActive ? "bg-card border-2 border-primary" : "bg-card" // Changed bg-card/80 to bg-card
+                      "w-full h-full flex flex-col bg-card rounded-lg"
                       )}>
                       <CardHeader className={cn(
                         "flex flex-col items-center text-center p-4 transition-all duration-300",
                         isActive ? "pt-6" : "pt-4"
                       )}>
                         <category.icon className={cn(
-                          "transition-all duration-500 text-primary scale-100", // Removed opacity-0 from inactive
-                          isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100"
+                          "transition-all duration-500 text-primary",
+                          isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100"
                         )} />
                         <CardTitle className={cn(
-                          "transition-all duration-500 text-primary", // Removed opacity-0 from inactive
-                           isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100"
+                          "transition-all duration-500 text-primary",
+                           isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium opacity-100"
                         )}>{category.name}</CardTitle>
                       </CardHeader>
                       {isActive && (
@@ -152,7 +149,7 @@ export function SkillsSection() {
                                 <Badge
                                   key={skill}
                                   variant="secondary"
-                                  className="text-xs sm:text-sm py-1 px-2 sm:px-3" // Removed animation classes like animate-in, opacity-0
+                                  className="text-xs sm:text-sm py-1 px-2 sm:px-3"
                                 >
                                   {skill}
                                 </Badge>
@@ -224,4 +221,3 @@ export function SkillsSection() {
     </section>
   );
 }
-
