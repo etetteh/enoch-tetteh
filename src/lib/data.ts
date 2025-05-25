@@ -11,7 +11,7 @@ export const projects: Project[] = [
     imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Google Green (Accent)
     imageHint: 'synthetic data',
     techStack: ['Python', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'Parquet'],
-    githubUrl: '#',
+    githubUrl: 'https://github.com/etetteh/synthetic-data-generator',
     liveUrl: '#',
   },
   {
@@ -190,4 +190,3 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
-
