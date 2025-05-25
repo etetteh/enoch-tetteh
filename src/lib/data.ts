@@ -22,7 +22,7 @@ export const projects: Project[] = [
     imageUrl: 'https://placehold.co/600x400/FBBC05/000000.png', // Google Yellow (Chart-3)
     imageHint: 'vision system',
     techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python'],
-    githubUrl: '#',
+    githubUrl: 'https://github.com/etetteh/e/tree/main/deepmindflow/image_classification',
     liveUrl: '#',
   },
   {
@@ -190,4 +190,3 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
-
