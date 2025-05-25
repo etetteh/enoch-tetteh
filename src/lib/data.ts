@@ -93,7 +93,7 @@ export const skillCategories: SkillCategory[] = [
 export const experiences: Experience[] = [
   {
     id: 'synthetic-data-exp',
-    role: 'Generative AI Engineer',
+    role: 'Generative AI Engineer | End-to-End Synthetic Data Generation',
     company: 'Freelance',
     period: '2025',
     description: [
@@ -190,3 +190,4 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
+
