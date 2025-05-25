@@ -132,7 +132,7 @@ export const experiences: Experience[] = [
   },
     {
     id: 'cv-framework-architect-exp',
-    role: 'Senior Computer Vision Engineer',
+    role: 'Senior Computer Vision Engineer | End-to-End Image Classification',
     company: 'Freelance',
     period: '2023',
     description: [
@@ -190,4 +190,3 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
-
