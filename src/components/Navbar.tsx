@@ -6,8 +6,6 @@ import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data';
 import { ThemeSwitcher } from './ThemeSwitcher';
-import { Button } from './ui/button';
-
 
 const navLinks = [
   { href: '#hero', label: 'Home' },
@@ -16,7 +14,7 @@ const navLinks = [
   { href: '#experience', label: 'Experience' },
   { href: '#education', label: 'Education' },
   { href: '#publications', label: 'Publications' },
-  { href: '#resume-tailor', label: 'Resume Tailor' },
+  { href: '#resume', label: 'Resume' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -42,45 +40,35 @@ export function Navbar() {
         if (section) {
           const sectionTop = section.offsetTop;
           if (scrollY >= sectionTop - navbarHeight) {
-            current = link.href; // Keep assigning as we scroll down
+            current = link.href;
           } else {
-            // If we scrolled up past the sectionTop, this section is no longer the 'current' one.
-            // We break here, so 'current' remains the last valid section.
-            // If it's the first section, and we are above it, it might become blank
-            // but the fallback logic handles that.
             break;
           }
         }
       }
       
-      // Fallback if no section is matched (e.g. top of page) or after scrolling past the last section
       if (!current && navLinks.length > 0) {
         if (scrollY < (document.getElementById(navLinks[0].href.substring(1))?.offsetTop || 0) - navbarHeight) {
-             current = navLinks[0].href; // Default to first link if above all sections
+             current = navLinks[0].href; 
         } else {
-            // If scrolled past all sections, keep the last one active
-            // This can happen if the footer is very tall or page is short
              const lastSectionId = navLinks[navLinks.length - 1].href.substring(1);
              const lastSection = document.getElementById(lastSectionId);
              if(lastSection && scrollY >= lastSection.offsetTop - navbarHeight) {
                 current = navLinks[navLinks.length - 1].href;
              } else {
-                // Default if still no match (should be rare)
                 current = navLinks[0].href;
              }
         }
       }
-       // Ensure if we are very near the top, the first link is active
       if (scrollY < navbarHeight && navLinks.length > 0) {
           current = navLinks[0].href;
       }
-
 
       setActiveLink(current);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Call on mount
+    handleScroll(); 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMounted]);
 
@@ -96,14 +84,8 @@ export function Navbar() {
         <Link
           key={link.label}
           href={link.href}
-          onClick={(e) => {
+          onClick={() => {
             setActiveLink(link.href);
-            // Optional: Smooth scroll for browsers that don't support scroll-behavior: smooth via CSS
-            // const section = document.getElementById(link.href.substring(1));
-            // if (section) {
-            //   e.preventDefault();
-            //   section.scrollIntoView({ behavior: 'smooth' });
-            // }
           }}
           className={cn(
             "block px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background",

@@ -4,17 +4,15 @@
 import { useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
-import { ResumeTailorForm } from "./ResumeTailorForm";
 import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data';
 
 export function ResumeSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const downloadBlockRef = useRef<HTMLDivElement>(null);
-  const tailorFormRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section id="resume-tailor">
+    <section id="resume">
       <div className="container">
         <h2
           ref={titleRef}
@@ -22,13 +20,13 @@ export function ResumeSection() {
             "section-title",
           )}
         >
-          Resume & AI Tailoring
+          My Resume
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="flex justify-center">
           <div
             ref={downloadBlockRef}
             className={cn(
-              "space-y-6",
+              "space-y-6 text-center max-w-md",
             )}
           >
             <h3 className="text-2xl font-semibold text-primary">Download My Resume</h3>
@@ -45,14 +43,6 @@ export function ResumeSection() {
                 Download Resume (PDF)
               </a>
             </Button>
-          </div>
-
-          <div
-            ref={tailorFormRef}
-            className={cn(
-            )}
-          >
-            <ResumeTailorForm />
           </div>
         </div>
       </div>
