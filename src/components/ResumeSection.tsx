@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef } from 'react';
@@ -35,9 +36,9 @@ export function ResumeSection() {
               Get a copy of my full resume to learn more about my qualifications and experience.
               Please ensure you have placed your `resume.pdf` file in the `public` directory of your project.
             </p>
-            <Button 
-              asChild 
-              size="lg" 
+            <Button
+              asChild
+              size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transform transition-transform hover:scale-105"
             >
               <a href="/resume.pdf" download={`${portfolioOwner.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_Resume.pdf`}>
@@ -45,9 +46,6 @@ export function ResumeSection() {
                 Download Resume (PDF)
               </a>
             </Button>
-             <p className="text-xs text-muted-foreground">
-              If the download doesn&apos;t start, ensure `public/resume.pdf` exists.
-            </p>
           </div>
 
           <div
