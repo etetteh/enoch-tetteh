@@ -10,7 +10,7 @@ const EducationCard = ({ edu }: { edu: typeof education[0] }) => {
   return (
     <div
       className={cn(
-        "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
+        "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
       )}
     >
       <Card className="bg-card rounded-lg">

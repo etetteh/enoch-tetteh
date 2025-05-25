@@ -20,7 +20,7 @@ const mlAiProfessionalKeywords = [
   "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
   // MLOps & Production
   "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient", 
-  "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control",
+  "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control", "LLMOps",
   // Tools & Frameworks (examples, as tech stack is often separate)
   "PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "Hugging Face", "Transformers", "Datasets", 
   "Accelerate", "PEFT", "TIMM", "Sentence-Transformers", "FAISS", "Vertex AI", "Google Gemini API", 
@@ -59,7 +59,7 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
   return (
     <div
       className={cn(
-        "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
+        "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
       )}
     >
       <Card className="bg-card rounded-lg">
@@ -67,7 +67,7 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
           <div className="flex items-start justify-between gap-4">
             <div>
               <CardTitle className="text-xl font-semibold text-primary">{exp.role}</CardTitle>
-              <CardDescription className="text-md text-muted-foreground">{exp.company} | {exp.period}</CardDescription>
+              <CardDescription className="text-sm sm:text-md text-muted-foreground">{exp.company} | {exp.period}</CardDescription>
             </div>
             <exp.icon className="h-10 w-10 text-primary flex-shrink-0 mt-1" />
           </div>
