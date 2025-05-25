@@ -133,8 +133,8 @@ export const experiences: Experience[] = [
     {
     id: 'cv-framework-architect-exp',
     role: 'Senior Computer Vision Engineer',
-    company: 'VisionAI Labs',
-    period: '2019 - 2021',
+    company: 'Freelance',
+    period: '2023',
     description: [
       "Architected state-of-the-art computer vision pipeline with 50+ SOTA models from TIMM library achieving 100% accuracy on validation sets, implementing advanced techniques including CutMix/MixUp augmentation, model pruning (25% compression), and adversarial training with FGSM attacks.",
       "Developed production-ready MLOps infrastructure with HuggingFace Accelerate for distributed training across CPUs/GPUs/TPUs, integrated MLflow experiment tracking, and deployed FastAPI inference endpoints with ONNX model optimization for real-time image classification.",
