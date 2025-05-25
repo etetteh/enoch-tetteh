@@ -119,7 +119,7 @@ export const experiences: Experience[] = [
   },
   {
     id: 'xray-ood-exp',
-    role: 'Deep Learning Research Engineer',
+    role: 'Deep Learning Research Engineer | OOD Medical Image Classification',
     company: 'Mila - Quebec Artificial Intelligence Institute',
     period: '2020 - 2021',
     description: [
