@@ -144,7 +144,7 @@ export function ProjectsSection() {
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto",
           )}
         >
-          Explore some of the key projects I&apos;ve worked on, showcasing my skills in AI, Google Cloud, and large-scale system development.
+          Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
 
         <div
