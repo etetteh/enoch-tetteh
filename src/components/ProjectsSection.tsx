@@ -127,7 +127,7 @@ export function ProjectsSection() {
           Featured Projects
         </h2>
         <p
-          className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-xs sm:text-sm"
+          className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base"
         >
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
@@ -275,4 +275,5 @@ export function ProjectsSection() {
     </section>
   );
 }
+
 
