@@ -14,12 +14,12 @@ import { cn } from '@/lib/utils';
 export function SkillsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, skillCategories.length);
@@ -98,7 +98,7 @@ export function SkillsSection() {
           <div className="flex items-center justify-center px-4 sm:px-0">
             <div
               ref={scrollContainerRef}
-              className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[350px] sm:h-[410px]"
+              className="flex overflow-x-auto scrollbar-hide py-8 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[400px] sm:h-[460px]"
             >
               {skillCategories.map((category, index) => {
                 const isActive = index === currentIndex;

@@ -48,7 +48,7 @@ const highlightSkillsInDescriptionInternal = (
   }
 
   const pattern = allKeywordsToHighlight
-    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
+    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
 
@@ -71,7 +71,7 @@ export function ProjectsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
-  const textContentRef = useRef<HTMLDivElement>(null); // Ref for text content animation
+  const textContentRef = useRef<HTMLDivElement>(null); 
 
   const currentProject = projects[currentIndex];
 
@@ -87,13 +87,10 @@ export function ProjectsSection() {
     setCurrentIndex(index);
   };
 
-  // Effect for auto-sliding and text animation
   useEffect(() => {
-    // Text content animation trigger
     if (textContentRef.current) {
       textContentRef.current.classList.remove('opacity-0', 'translate-y-5');
       textContentRef.current.classList.add('opacity-100', 'translate-y-0');
-      // Re-trigger animation on currentIndex change by briefly making it non-visible
       setTimeout(() => {
         if (textContentRef.current) {
            textContentRef.current.classList.add('opacity-0', 'translate-y-5');
@@ -102,12 +99,11 @@ export function ProjectsSection() {
               textContentRef.current.classList.remove('opacity-0', 'translate-y-5');
               textContentRef.current.classList.add('opacity-100', 'translate-y-0');
             }
-           }, 50); // Small delay to allow CSS to re-apply
+           }, 50); 
         }
       }, 0);
     }
 
-    // Auto-sliding logic
     if (intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
     }
@@ -115,7 +111,7 @@ export function ProjectsSection() {
     if (!isPaused) {
       intervalIdRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex === projects.length - 1 ? 0 : prevIndex + 1));
-      }, 9000); // Change slide every 9 seconds
+      }, 9000); 
     }
 
     return () => {
@@ -133,37 +129,28 @@ export function ProjectsSection() {
       <div className="container">
         <h2
           ref={titleRef}
-          className={cn(
-            "section-title",
-          )}
+          className="section-title"
         >
           Featured Projects
         </h2>
         <p
-          className={cn(
-            "text-center text-muted-foreground mb-12 max-w-2xl mx-auto",
-          )}
+          className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto"
         >
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
 
         <div
           ref={carouselRef}
-          className={cn(
-            "relative",
-          )}
+          className="relative"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 h-[500px] md:h-[450px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
+          <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 h-[550px] md:h-[500px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
             <div
               ref={textContentRef}
-              key={currentIndex} // Re-keying to trigger animation on slide change
-              className={cn(
-                "md:w-1/2 space-y-4 text-center md:text-left",
-                "transition-all duration-500 ease-in-out opacity-100 translate-y-0" 
-              )}
+              key={currentIndex} 
+              className="md:w-1/2 space-y-4 text-center md:text-left transition-all duration-500 ease-in-out opacity-100 translate-y-0"
             >
               <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
               <p className="text-sm md:text-base text-foreground leading-relaxed">
@@ -218,7 +205,7 @@ export function ProjectsSection() {
                   style={{objectFit: 'cover'}}
                   className="rounded-md"
                   data-ai-hint={currentProject.imageHint}
-                  priority={currentIndex === 0} // Prioritize loading the first image
+                  priority={currentIndex === 0} 
                 />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-md"></div>
               <p className="text-lg font-semibold text-background/80 z-10 p-4 text-center bg-black/30 rounded backdrop-blur-sm">
@@ -258,15 +245,15 @@ export function ProjectsSection() {
               className={cn(
                 "h-2 rounded-full transition-all duration-300 ease-in-out",
                 currentIndex === index
-                  ? "w-6 bg-primary/30 relative overflow-hidden" // Active dot: wider, track color, relative for inner progress
-                  : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" // Inactive dot
+                  ? "w-6 bg-primary/30 relative overflow-hidden" 
+                  : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" 
               )}
               aria-label={`Go to project ${index + 1}`}
               aria-current={currentIndex === index ? "true" : "false"}
             >
               {currentIndex === index && (
                 <div
-                  key={currentIndex} // Reset animation when currentIndex changes
+                  key={currentIndex} 
                   className="h-full bg-primary rounded-full"
                   style={{ animation: 'progress-fill 9s linear forwards' }}
                 />
