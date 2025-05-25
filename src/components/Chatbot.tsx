@@ -6,10 +6,10 @@ import { portfolioChatbot, type PortfolioChatbotInput, type PortfolioChatbotOutp
 import { suggestedQueriesFlow, type SuggestedQueriesInput, type SuggestedQueriesOutput } from '@/ai/flows/suggested-queries-flow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bot, User, Loader2, Send, Sparkles, X } from 'lucide-react';
+import { Bot, User, Loader2, Send, Sparkles, MessageCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { portfolioOwner } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -28,7 +28,7 @@ const defaultSuggestedQueries = [
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [query, setQuery] = useState(''); // Used for input in bottom bar AND inside sheet
+  const [query, setQuery] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -94,7 +94,6 @@ export function Chatbot() {
         clearInterval(intervalRef.current);
       }
 
-      // Only cycle suggestions if the sheet is closed and the input is not focused/empty
       const isBottomInputFocused = bottomInputRef.current === document.activeElement;
       if (!isOpen && !isBottomInputFocused && !query) {
         intervalRef.current = setInterval(() => {
@@ -158,20 +157,20 @@ export function Chatbot() {
 
   const handleBottomBarSubmit = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
-    if (!query.trim() || isLoading) {
-      // If query is empty, but there's a suggestion, use that.
-      if (displayedSuggestedQuery && !isLoading) {
-        await processQuery(displayedSuggestedQuery);
-        setIsOpen(true);
-        return;
-      }
-      return;
-    }
-    await processQuery(query);
-    setQuery(''); 
-    setIsOpen(true); 
-  };
+    if (!query.trim() && !displayedSuggestedQuery) return;
+    
+    setIsLoading(true); // Set loading true before processing
+    setIsOpen(true); // Open the sheet immediately
 
+    if (query.trim()) {
+      await processQuery(query);
+      setQuery('');
+    } else if (displayedSuggestedQuery) {
+      await processQuery(displayedSuggestedQuery);
+    }
+    // isLoading will be set to false inside processQuery's finally block
+  };
+  
   const handleSheetFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!query.trim() || isLoading) return;
@@ -193,7 +192,7 @@ export function Chatbot() {
           className={cn(
             "fixed bottom-6 left-1/2 -translate-x-1/2",
             "w-11/12 max-w-lg h-14 px-3 py-2",
-            "bg-neutral-700 dark:bg-neutral-800",
+            "bg-neutral-700 dark:bg-neutral-800", // Darker background for the bar
             "rounded-full shadow-xl",
             "flex items-center justify-between gap-2 z-50 group"
           )}
@@ -214,7 +213,6 @@ export function Chatbot() {
               if (intervalRef.current) clearInterval(intervalRef.current);
             }}
             onBlur={() => {
-              // Restart interval if query is empty and sheet is not open
               if (!query && !isOpen && !isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
                 if (intervalRef.current) clearInterval(intervalRef.current);
                 intervalRef.current = setInterval(() => {
@@ -228,7 +226,7 @@ export function Chatbot() {
             type="submit" 
             size="icon" 
             variant="ghost" 
-            disabled={isLoading && !!query.trim()} // Disable only if loading AND query has text. Allow submit if query is empty to use suggestion.
+            disabled={isLoading && !!query.trim()}
             className="h-9 w-9 p-0 text-neutral-300 hover:text-accent disabled:text-neutral-500 transition-colors"
             aria-label="Send message or use suggestion"
           >
@@ -240,8 +238,7 @@ export function Chatbot() {
       <Sheet open={isOpen} onOpenChange={(open) => {
           setIsOpen(open);
           if (!open) {
-            setQuery(''); // Clear query when sheet closes
-             // Restart suggestion cycling if applicable
+            setQuery(''); 
             if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
                 if (intervalRef.current) clearInterval(intervalRef.current);
                 intervalRef.current = setInterval(() => {
@@ -259,13 +256,9 @@ export function Chatbot() {
                 <Bot className="h-6 w-6 text-primary" />
                 <SheetTitle className="text-lg">Portfolio Assistant</SheetTitle>
               </div>
-              <SheetClose asChild>
-                <Button variant="ghost" size="icon" className="text-muted-foreground">
-                  <X className="h-5 w-5" />
-                </Button>
-              </SheetClose>
+              {/* The default close button from SheetContent will be used */}
             </div>
-            <SheetDescription className="text-xs">
+            <SheetDescription className="text-xs sm:text-sm">
               Ask me anything about the content on this page.
             </SheetDescription>
           </SheetHeader>
