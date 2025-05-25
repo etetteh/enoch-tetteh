@@ -94,7 +94,7 @@ export const experiences: Experience[] = [
   {
     id: 'synthetic-data-exp',
     role: 'Generative AI Engineer',
-    company: 'SynthoAI Dynamics Inc.',
+    company: 'Freelance',
     period: '2025',
     description: [
       "Architected enterprise-grade synthetic data generation pipeline leveraging Google Gemini LLMs via LangChain, implementing modular architecture with dependency injection and strategy patterns to generate 5000+ high-quality NLP training samples with 95%+ uniqueness through advanced duplicate detection and hashing algorithms.",
@@ -107,7 +107,7 @@ export const experiences: Experience[] = [
   {
     id: 'ml-framework-architect-exp',
     role: 'Generative AI Engineer',
-    company: 'EmbedLLM Innovations',
+    company: 'Freelance',
     period: '2025',
     description: [
       "Architected modular sentence embedding fine-tuning framework supporting 4 dataset formats (triplet, pair, pair-score, pair-class) with automated loss function selection, enabling parameter-efficient training via LoRA adaptation and hard negative mining for contrastive learning optimization.",
@@ -190,3 +190,4 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
+
