@@ -85,7 +85,7 @@ export const skillCategories: SkillCategory[] = [
       'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run',
       'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform',
       'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training',
-      'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions'
+      'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions', 'LLMOps'
     ],
   },
 ];
@@ -191,3 +191,5 @@ export const portfolioOwner = {
   githubUrl: "https://github.com/etetteh",
 };
 
+
+  
