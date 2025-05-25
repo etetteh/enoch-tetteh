@@ -190,3 +190,4 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
+
