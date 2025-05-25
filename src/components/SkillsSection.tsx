@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -51,9 +52,10 @@ export function SkillsSection() {
       
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
       
+      // Ensure scroll target is within bounds
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
-      if (Math.abs(container.scrollLeft - targetScrollLeft) > 1) {
+      if (Math.abs(container.scrollLeft - targetScrollLeft) > 1) { // Add a small threshold to prevent infinite loops on some browsers
         container.scrollTo({
           left: targetScrollLeft,
           behavior: 'smooth',
@@ -69,7 +71,7 @@ export function SkillsSection() {
     if (!isPaused && skillCategories.length > 1) {
       intervalIdRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex === skillCategories.length - 1 ? 0 : prevIndex + 1));
-      }, 9000);
+      }, 9000); 
     }
     return () => {
       if (intervalIdRef.current) {
@@ -112,7 +114,7 @@ export function SkillsSection() {
                     className={cn(
                       "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
                       "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                      "hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent", // Added gradient hover
+                      "hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent",
                       isActive
                         ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default"
                         : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95"
@@ -125,30 +127,32 @@ export function SkillsSection() {
                   >
                     <Card className={cn(
                       "w-full h-full flex flex-col",
-                      isActive ? "bg-card border-2 border-primary" : "bg-card/80"
+                      isActive ? "bg-card border-2 border-primary" : "bg-card" // Changed bg-card/80 to bg-card
                       )}>
                       <CardHeader className={cn(
                         "flex flex-col items-center text-center p-4 transition-all duration-300",
                         isActive ? "pt-6" : "pt-4"
                       )}>
                         <category.icon className={cn(
-                          "transition-all duration-500 text-primary opacity-100 scale-100",
-                          isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2"
+                          "transition-all duration-500 text-primary scale-100", // Removed opacity-0 from inactive
+                          isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3 opacity-100" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100"
                         )} />
                         <CardTitle className={cn(
-                          "transition-all duration-500 text-primary opacity-100",
-                           isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium"
+                          "transition-all duration-500 text-primary", // Removed opacity-0 from inactive
+                           isActive ? "text-lg sm:text-xl font-semibold opacity-100" : "text-md sm:text-lg font-medium opacity-100"
                         )}>{category.name}</CardTitle>
                       </CardHeader>
                       {isActive && (
-                        <CardContent className="p-3 sm:p-4 transition-opacity duration-300 opacity-100">
+                        <CardContent className={cn(
+                          "p-3 sm:p-4 transition-opacity duration-300 opacity-100" 
+                        )}>
                           <ScrollArea className="h-36 sm:h-40">
                              <div className="flex flex-wrap gap-2 justify-center">
                               {category.skills.map((skill) => (
                                 <Badge
                                   key={skill}
                                   variant="secondary"
-                                  className="text-xs sm:text-sm py-1 px-2 sm:px-3"
+                                  className="text-xs sm:text-sm py-1 px-2 sm:px-3" // Removed animation classes like animate-in, opacity-0
                                 >
                                   {skill}
                                 </Badge>
@@ -166,7 +170,7 @@ export function SkillsSection() {
 
           {/* Navigation Arrows */}
           <div className="absolute left-0 sm:-left-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary h-10 w-10">
+             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -178,7 +182,7 @@ export function SkillsSection() {
             </div>
           </div>
           <div className="absolute right-0 sm:-right-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary h-10 w-10">
+            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handleNext}
@@ -220,3 +224,4 @@ export function SkillsSection() {
     </section>
   );
 }
+
