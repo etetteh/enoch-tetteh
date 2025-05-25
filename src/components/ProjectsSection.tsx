@@ -136,9 +136,9 @@ export function ProjectsSection() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Main card for the slide - height is auto on mobile, fixed on md+ */}
+          {/* Main card for the slide */}
           <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 md:h-[500px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
-            {/* Left Pane: Text Content - height is auto on mobile, full on md+ */}
+            {/* Left Pane: Text Content */}
             <div
               ref={textContentRef}
               key={currentIndex} 
@@ -156,7 +156,7 @@ export function ProjectsSection() {
                        <Button 
                         variant="default" 
                         size="sm" 
-                        className="bg-neutral-800 dark:bg-neutral-700 text-blue-400 hover:bg-neutral-700 dark:hover:bg-neutral-600 hover:text-blue-300 rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2"
+                        className="text-blue-400 hover:text-blue-300 rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2"
                       >
                         See more
                         <span className="bg-blue-500 group-hover:bg-blue-600 rounded-full p-1 transition-colors">
@@ -211,7 +211,7 @@ export function ProjectsSection() {
               </div>
             </div>
 
-            {/* Right Pane: Visual Placeholder - height is fixed on mobile, full on md+ */}
+            {/* Right Pane: Visual Placeholder */}
             <div className="w-full md:w-1/2 h-64 md:h-full bg-muted rounded-md flex items-center justify-center p-4 relative aspect-video md:aspect-auto">
                <Image
                   src={currentProject.imageUrl}
