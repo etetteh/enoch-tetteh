@@ -28,7 +28,7 @@ export function Navbar() {
 
     const handleScroll = () => {
       let current = '';
-      let navbarHeight = 70; // Default offset
+      let navbarHeight = 70; 
       if (headerRef.current) {
         navbarHeight = headerRef.current.offsetHeight + 20;
       }
@@ -48,29 +48,41 @@ export function Navbar() {
       }
       
       if (!current && navLinks.length > 0) {
-        if (scrollY < (document.getElementById(navLinks[0].href.substring(1))?.offsetTop || 0) - navbarHeight) {
+        const firstSectionId = navLinks[0].href.substring(1);
+        const firstSection = document.getElementById(firstSectionId);
+        if (firstSection && scrollY < firstSection.offsetTop - navbarHeight) {
              current = navLinks[0].href; 
         } else {
              const lastSectionId = navLinks[navLinks.length - 1].href.substring(1);
              const lastSection = document.getElementById(lastSectionId);
              if(lastSection && scrollY >= lastSection.offsetTop - navbarHeight) {
                 current = navLinks[navLinks.length - 1].href;
-             } else {
+             } else if (navLinks[0]) { // Ensure first link exists
                 current = navLinks[0].href;
              }
         }
       }
-      if (scrollY < navbarHeight && navLinks.length > 0) {
+      if (scrollY < navbarHeight && navLinks.length > 0 && navLinks[0]) {
           current = navLinks[0].href;
       }
 
-      setActiveLink(current);
+      // Only update if the active link has actually changed
+      setActiveLink(prevActiveLink => {
+        if (current && current !== prevActiveLink) {
+          return current;
+        }
+        // If no current determined and not at the very top, keep previous active link to avoid flicker to default
+        if (!current && scrollY >= navbarHeight && navLinks[0] && prevActiveLink !== navLinks[0].href) { 
+          return prevActiveLink;
+        }
+        return current || (navLinks[0]?.href || ''); // Fallback to first link or empty
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMounted]);
+  }, [isMounted]); // navLinks is stable, activeLink is managed by the scroll handler itself.
 
 
   const renderPillNavLinks = (isMobile: boolean) => (
@@ -85,7 +97,7 @@ export function Navbar() {
           key={link.label}
           href={link.href}
           onClick={() => {
-            setActiveLink(link.href);
+            setActiveLink(link.href); // Immediately set active link on click
           }}
           className={cn(
             "block px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background",
@@ -127,7 +139,7 @@ export function Navbar() {
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container py-4">
+      <div className="container mx-auto py-4">
         {/* Desktop Layout: Name - Nav Pills - ThemeSwitcher */}
         <div className="hidden md:flex justify-between items-center">
           <Link
