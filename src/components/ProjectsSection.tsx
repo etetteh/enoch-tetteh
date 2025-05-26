@@ -6,10 +6,12 @@ import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, VideoIcon } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import React from 'react';
+
 
 const mlAiKeywords = [
   // Core ML/AI Concepts
@@ -46,29 +48,42 @@ const highlightSkillsInDescriptionInternal = (
   }
 
   const pattern = allKeywordsToHighlight
-    .map(skill => `\\b${skill.replace(/[.*+?^${()}|[\\]\\\\]/g, '\\$&')}\\b`)
+    .map(skill => typeof skill === 'string' ? `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b` : '')
+    .filter(Boolean) // Remove any empty strings if a skill wasn't a string
     .join('|');
-  const regex = new RegExp(`(${pattern})`, 'gi');
 
+  if (!pattern) return [description]; // No valid patterns to match
+
+  const regex = new RegExp(`(${pattern})`, 'gi');
   const parts = description.split(regex);
 
   return parts.map((part, index) => {
-    const isKeyword = allKeywordsToHighlight.some(skill => part.toLowerCase() === skill.toLowerCase());
-    if (isKeyword) {
-      return <span key={`${uniquePrefix}-skill-${part.toLowerCase().replace(/\s+/g, '-')}-${index}`} className="font-semibold text-accent">{part}</span>;
+    const key = `${uniquePrefix}-part-${index}`;
+
+    if (typeof part === 'string' && part.length > 0) {
+      const partLower = part.toLowerCase();
+      const isKeyword = allKeywordsToHighlight.some(
+        (skill) => typeof skill === 'string' && skill.toLowerCase() === partLower
+      );
+
+      if (isKeyword) {
+        return <span key={key} className="font-semibold text-accent">{part}</span>;
+      }
+      // Use React.Fragment to ensure keys are applied even for plain string parts
+      return <React.Fragment key={key}>{part}</React.Fragment>;
     }
-    return part;
+    // For undefined, null, or empty string parts, render an empty fragment with a key
+    return <React.Fragment key={key}></React.Fragment>;
   });
 };
 
 
 export function ProjectsSection() {
   const carouselRef = useRef<HTMLDivElement>(null);
-
+  const textContentRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
-  const textContentRef = useRef<HTMLDivElement>(null);
 
   const currentProject = projects[currentIndex];
 
@@ -87,11 +102,10 @@ export function ProjectsSection() {
   useEffect(() => {
     if (textContentRef.current) {
       textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'duration-500');
-      void textContentRef.current.offsetWidth;
+      void textContentRef.current.offsetWidth; // Force reflow to restart animation
       textContentRef.current.classList.add('animate-in', 'fade-in-0', 'duration-500');
     }
   }, [currentIndex]);
-
 
   useEffect(() => {
     if (intervalIdRef.current) {
@@ -101,7 +115,7 @@ export function ProjectsSection() {
     if (!isPaused && projects.length > 1) {
       intervalIdRef.current = setInterval(() => {
         handleNext();
-      }, 9000);
+      }, 9000); // 9 seconds
     }
 
     return () => {
@@ -126,7 +140,7 @@ export function ProjectsSection() {
         <p
           className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base"
         >
-          Explore key projects where I&apos;ve engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
+         Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
 
         <div
@@ -135,16 +149,15 @@ export function ProjectsSection() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Main card for the slide */}
           <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 md:h-[500px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
             <div
               ref={textContentRef}
-              key={currentIndex}
+              key={currentIndex} // Add key here to re-trigger animations on slide change
               className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
             >
               <ScrollArea className="flex-grow">
-                <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
+                 <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
                   {currentProject.keyAchievement && (
                     <p className="text-sm sm:text-md font-semibold text-foreground mt-1 mb-2">
@@ -160,7 +173,7 @@ export function ProjectsSection() {
                        <Button
                         variant="default"
                         size="sm"
-                        className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2 text-primary-foreground hover:bg-primary/90"
+                        className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2 text-primary-foreground bg-primary hover:bg-primary/90"
                       >
                         See more
                         <span className="bg-primary-foreground group-hover:bg-primary-foreground/80 rounded-full p-1 transition-colors">
@@ -169,18 +182,19 @@ export function ProjectsSection() {
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-y-auto">
-                      <DialogHeader className="p-6 pb-4 border-b shrink-0">
+                       <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <div className="flex items-center justify-between">
                           <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
+                          {/* Default X button from DialogContent will be used */}
                         </div>
                       </DialogHeader>
                       <ScrollArea className="flex-grow my-4 px-6">
-                        <div className="text-xs sm:text-sm text-foreground leading-relaxed">
+                        <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
                            {highlightSkillsInDescriptionInternal(
                               currentProject.description,
                               currentProject.techStack,
                               `project-${currentIndex}-desc-dialog`
-                          )}
+                          ).map((node, i) => <React.Fragment key={i}>{node}</React.Fragment>)}
                         </div>
                       </ScrollArea>
                        {(currentProject.githubUrl || currentProject.liveUrl) && (
@@ -290,7 +304,7 @@ export function ProjectsSection() {
             >
               {currentIndex === index && (
                 <div
-                  key={currentIndex}
+                  key={currentIndex} // Add key to ensure animation restarts on slide change
                   className="h-full bg-primary rounded-full"
                   style={{ animation: 'progress-fill 9s linear forwards' }}
                 />
