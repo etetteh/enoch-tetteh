@@ -1,6 +1,6 @@
 
 import type { Project, SkillCategory, Experience, Education, Publication } from '@/types/portfolio';
-import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText } from 'lucide-react';
+import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText, MessageCircle } from 'lucide-react';
 
 export const projects: Project[] = [
   {
@@ -9,7 +9,7 @@ export const projects: Project[] = [
     carouselDescription: "Production-ready Python application leveraging Google Gemini LLMs to generate diverse, high-quality synthetic training datasets for NLP tasks, processing 5000+ samples with 95%+ uniqueness and supporting multiple data formats through modular architecture.",
     keyAchievement: "Generated over 5,000 unique synthetic NLP training samples with 95%+ uniqueness, boosting model training efficiency.",
     description: "Developed a comprehensive synthetic data generation platform that combines advanced LLM capabilities with enterprise-grade engineering practices. The system utilizes Google's Gemini models through LangChain to create diverse training datasets for various NLP tasks including question-answering, textual entailment, and semantic similarity. Implemented sophisticated duplicate detection using hashing algorithms to ensure data uniqueness, while incorporating incremental batch processing to handle large-scale generation efficiently. The modular architecture employs dependency injection and strategy patterns for maintainability, featuring comprehensive error handling with exponential backoff retry logic for API resilience. Built robust data pipeline supporting document context integration, automated query refinement, and flexible output formatting. Achieved significant performance optimizations including 60% memory usage reduction for large datasets and configurable generation parameters for optimal model performance. The system includes extensive testing suite with pytest, comprehensive logging infrastructure, and production-ready CLI interface supporting various deployment scenarios.",
-    imageUrl: 'https://placehold.co/600x400/009688/FFFFFF.png', // Teal (Accent)
+    imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Accent Green
     imageHint: 'synthetic data',
     techStack: ['Python', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'Parquet'],
     githubUrl: 'https://github.com/etetteh/synthetic-data-generator',
@@ -21,7 +21,7 @@ export const projects: Project[] = [
     description: "Developed a comprehensive computer vision classification system leveraging 50+ state-of-the-art models from the TIMM library with advanced training optimizations including CutMix/MixUp data augmentation, global model pruning (25% parameter reduction), and adversarial robustness through FGSM attack training. Implemented production-ready MLOps infrastructure using HuggingFace Accelerate for seamless distributed training across CPUs, GPUs, and TPUs, with automated experiment tracking via MLflow and hyperparameter optimization through Ray Tune's Population-Based Training algorithm. The system features advanced model optimization techniques including Exponential Moving Average weight updates, intelligent checkpoint averaging of top-performing models, and ONNX export for optimized inference deployment. Built comprehensive model interpretability pipeline using SHAP analysis with automated performance visualization including confusion matrices and ROC curves. Deployed FastAPI-based inference endpoints supporting both single and batch image processing with JSON configuration, enabling real-time production deployment with robust error handling and scalable architecture.",
     carouselDescription: "Engineered enterprise-grade image classification framework achieving 100% validation accuracy across 18 SOTA models with comprehensive MLOps pipeline, supporting distributed training and real-time inference deployment.",
     keyAchievement: "Achieved 100% validation accuracy with 18 SOTA models and reduced model size by 25% via pruning.",
-    imageUrl: 'https://placehold.co/600x400/3F51B5/FFFFFF.png', // Deep Blue (Primary)
+    imageUrl: 'https://placehold.co/600x400/4285F4/FFFFFF.png', // Primary Blue
     imageHint: 'vision system',
     techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python'],
     githubUrl: 'https://github.com/etetteh/e/tree/main/deepmindflow/image_classification',
@@ -47,7 +47,7 @@ export const projects: Project[] = [
     description: "This advanced medical AI system addresses a critical challenge in healthcare AI: ensuring model reliability across different hospital systems and imaging equipment. The project implements a novel multi-domain balanced sampling strategy that significantly improves out-of-distribution generalization compared to traditional merged dataset approaches. The system processes chest X-rays from four major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) to predict four key pathologies: Cardiomegaly, Effusion, Edema, and Consolidation. Key innovations include custom weighted loss functions for handling medical data imbalance, sophisticated domain adaptation through balanced mini-batch sampling, and comprehensive leave-one-out cross-validation across medical institutions. The production pipeline features automated experiment tracking, robust checkpoint management, and quantization-aware training for deployment in resource-constrained clinical environments. Performance optimization includes cosine annealing learning rate scheduling with warmup, advanced data augmentation strategies, and efficient GPU/CPU inference modes. The system achieved publication at Medical Imaging meets NeurIPS 2021, demonstrating both research excellence and practical clinical applicability with deployment-ready model variants that maintain high accuracy.",
     imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
     imageHint: 'medical AI',
-    techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'CUDA/CPU Optimization', 'Quantization', 'Medical Imaging'],
+    techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'CUDA/CPU Optimization', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation', 'Medical Imaging'],
     githubUrl: 'https://github.com/etetteh/OoD_Gen-Chest_Xray',
     liveUrl: 'https://arxiv.org/abs/2112.13734',
   }
@@ -66,10 +66,10 @@ export const skillCategories: SkillCategory[] = [
       'Natural Language Processing', 'Computer Vision', 'Deep Learning',
       'PyTorch', 'Scikit-learn', 'Vertex AI', 'Google AI Platform',
       'TorchXRayVision', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation',
-      'TIMM', 'TorchMetrics', 'Model Pruning', 'Adversarial Training', 'CutMix/MixUp Augmentation',
+      'TIMM', 'TorchMetrics', 'HuggingFace Accelerate', 'Model Pruning', 'Adversarial Training', 'CutMix/MixUp Augmentation',
       'Sentence-Transformers', 'Hugging Face (Transformers/Datasets/PEFT)', 'FAISS', 'LoRA adaptation',
       'Hard Negative Mining', 'Mixed-Precision Training',
-      'LangChain', 'Google Gemini API', 'Prompt Engineering'
+      'LangChain', 'Google Gemini API', 'Prompt Engineering',
     ],
   },
   {
@@ -87,8 +87,8 @@ export const skillCategories: SkillCategory[] = [
     icon: Cloud,
     skills: [
       'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run',
-      'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform',
-      'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training', 'LLMOps',
+      'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform', 'LLMOps',
+      'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training',
       'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions',
     ],
   },
@@ -189,8 +189,10 @@ export const publications: Publication[] = [
 export const portfolioOwner = {
   name: "Enoch Tetteh",
   title: "Innovative AI Engineer & MLOps Expert",
-  bio: "Highly accomplished and results-oriented AI/ML Engineer specializing in the architecture and deployment of enterprise-grade solutions in Natural Language Processing, Computer Vision, and Generative AI. Proven expertise in building innovative solutions, production-ready MLOps, advanced model optimization (LoRA, quantization, pruning), and leveraging cutting-edge technologies like Google Gemini and LangChain. Consistently delivers impactful results, including significant model size reduction (75%), data quality improvements (40%), and enhanced out-of-distribution generalization for large-scale systems.",
+  bio: "Proven AI/ML Engineer adept at transforming complex challenges into impactful, enterprise-grade solutions across NLP, Computer Vision, and Generative AI. My expertise in MLOps, advanced model optimization (LoRA, quantization, pruning), and cutting-edge tools like Google Gemini & LangChain consistently drives tangible results: from 75% model size reductions and 40% data quality boosts to pioneering out-of-distribution generalization for critical, large-scale systems. I build AI that delivers.",
   contactEmail: "enoch.tetteh.2099@gmail.com",
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
+
+    
