@@ -22,74 +22,94 @@ export function Navbar() {
   const [activeLink, setActiveLink] = useState('');
   const [isMounted, setIsMounted] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
+  }, []);
 
-    const handleScroll = () => {
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const calculateActiveLink = () => {
       let current = '';
-      let navbarHeight = 70; 
-      if (headerRef.current) {
-        navbarHeight = headerRef.current.offsetHeight + 20;
-      }
+      const navbarHeight = headerRef.current ? headerRef.current.offsetHeight + 20 : 90;
       const scrollY = window.scrollY;
 
-      for (const link of navLinks) {
+      // Iterate from bottom to top to find the current section
+      // This helps if sections are close or overlap in visibility during scroll
+      for (let i = navLinks.length - 1; i >= 0; i--) {
+        const link = navLinks[i];
         const id = link.href.substring(1);
         const section = id ? document.getElementById(id) : null;
+
         if (section) {
           const sectionTop = section.offsetTop;
+          // Check if the section's top is at or above the (navbar-adjusted) scroll position
           if (scrollY >= sectionTop - navbarHeight) {
             current = link.href;
-          } else {
-            break;
+            break; // Found the current section
           }
         }
       }
       
-      if (!current && navLinks.length > 0) {
-        const firstSectionId = navLinks[0].href.substring(1);
-        const firstSection = document.getElementById(firstSectionId);
-        if (firstSection && scrollY < firstSection.offsetTop - navbarHeight) {
-             current = navLinks[0].href; 
-        } else {
-             const lastSectionId = navLinks[navLinks.length - 1].href.substring(1);
-             const lastSection = document.getElementById(lastSectionId);
-             if(lastSection && scrollY >= lastSection.offsetTop - navbarHeight) {
-                current = navLinks[navLinks.length - 1].href;
-             } else if (navLinks[0]) { // Ensure first link exists
-                current = navLinks[0].href;
-             }
-        }
+      // Fallback for the very top of the page
+      if (!current && scrollY < navbarHeight && navLinks.length > 0 && navLinks[0]) {
+        current = navLinks[0].href;
       }
-      if (scrollY < navbarHeight && navLinks.length > 0 && navLinks[0]) {
-          current = navLinks[0].href;
+      
+      // Fallback for the very bottom of the page (if last section isn't filling viewport)
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20 && navLinks.length > 0) {
+         current = navLinks[navLinks.length - 1].href;
       }
 
-      // Only update if the active link has actually changed
-      setActiveLink(prevActiveLink => {
-        if (current && current !== prevActiveLink) {
-          return current;
-        }
-        // If no current determined and not at the very top, keep previous active link to avoid flicker to default
-        if (!current && scrollY >= navbarHeight && navLinks[0] && prevActiveLink !== navLinks[0].href) { 
+
+      if (current) {
+        setActiveLink(prevActiveLink => {
+          // Only update if the determined current link is different
+          if (current !== prevActiveLink) {
+            return current;
+          }
           return prevActiveLink;
-        }
-        return current || (navLinks[0]?.href || ''); // Fallback to first link or empty
-      });
+        });
+      } else if (navLinks.length > 0 && navLinks[0]) {
+         // Default to the first link if no section is determined (e.g., if all sections are very short)
+         // and not already at the top (which is handled above)
+         const atVeryTop = scrollY < navbarHeight;
+         if(!atVeryTop) {
+            setActiveLink(prevActiveLink => {
+                if (prevActiveLink === '') return navLinks[0].href; // Initial set if empty
+                return prevActiveLink; // Otherwise keep
+            });
+         }
+      }
+    };
+    
+    const debouncedHandleScroll = () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        calculateActiveLink();
+      }, 150); // Debounce timeout: 150ms. Adjust if needed.
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMounted]); // navLinks is stable, activeLink is managed by the scroll handler itself.
+    window.addEventListener('scroll', debouncedHandleScroll, { passive: true });
+    calculateActiveLink(); // Initial check
 
+    return () => {
+      window.removeEventListener('scroll', debouncedHandleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [isMounted]); // navLinks is stable
 
   const renderPillNavLinks = (isMobile: boolean) => (
     <div
       className={cn(
         "inline-flex bg-secondary rounded-full p-1 items-center shadow-sm",
-        isMobile ? "space-x-0.5" : "space-x-1" 
+        isMobile ? "space-x-0.5" : "space-x-1"
       )}
     >
       {navLinks.map((link) => (
@@ -98,13 +118,14 @@ export function Navbar() {
           href={link.href}
           onClick={() => {
             setActiveLink(link.href); // Immediately set active link on click
+            // Optionally, if using isClickScrolling, set it here
           }}
           className={cn(
             "block px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background",
             isMobile ? "whitespace-nowrap" : "",
             activeLink === link.href
               ? 'bg-primary text-primary-foreground shadow-md'
-              : 'text-muted-foreground hover:bg-background hover:text-primary'
+              : 'text-muted-foreground hover:bg-card hover:text-primary'
           )}
         >
           {link.label}
@@ -114,10 +135,9 @@ export function Navbar() {
   );
 
   if (!isMounted) {
-    // Basic skeleton loader for navbar
     return (
       <header ref={headerRef} className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 h-[76px] md:h-[68px]">
-        <div className="container py-4">
+        <div className="container mx-auto py-4">
           {/* Desktop Skeleton */}
           <div className="hidden md:flex justify-between items-center">
             <div className="h-7 w-1/4 bg-muted rounded"></div> {/* Name */}
