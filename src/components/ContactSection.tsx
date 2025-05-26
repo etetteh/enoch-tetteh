@@ -36,7 +36,7 @@ export function ContactSection() {
         </h2>
         <div
           className={cn(
-            "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-accent shadow-lg max-w-2xl mx-auto",
+            "rounded-lg p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg max-w-2xl mx-auto",
           )}
         >
           <Card className="bg-card rounded-lg">
@@ -59,7 +59,7 @@ export function ContactSection() {
                   </Link>
                 </Button>
               </div>
-               <Button asChild size="lg" className="w-full text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+               <Button asChild size="lg" className="w-full text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
                 <a
                   href={emailHref}
                   onClick={handleEmailClick}

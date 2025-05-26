@@ -9,25 +9,25 @@ import type { ReactNode } from 'react';
 
 const mlAiProfessionalKeywords = [
   // Core ML/AI Concepts
-  "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI", 
-  "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering", 
-  "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity", 
+  "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
+  "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering",
+  "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity",
   "Textual Entailment", "Question Answering",
   // ML Techniques & Processes
-  "Fine-tuning", "Pre-trained Model", "Transfer Learning", "Data Augmentation", "CutMix", "MixUp", 
-  "Model Pruning", "Quantization", "Adversarial Training", "Hard Negative Mining", "Parameter-Efficient", 
-  "LoRA", "Optimization", "Algorithm", "Generalization", "Accuracy", "Performance", 
+  "Fine-tuning", "Pre-trained Model", "Transfer Learning", "Data Augmentation", "CutMix", "MixUp",
+  "Model Pruning", "Quantization", "Adversarial Training", "Hard Negative Mining", "Parameter-Efficient",
+  "LoRA", "Optimization", "Algorithm", "Generalization", "Accuracy", "Performance",
   "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
   // MLOps & Production
-  "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient", 
+  "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient",
   "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control", "LLMOps",
   // Tools & Frameworks (examples, as tech stack is often separate)
-  "PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "Hugging Face", "Transformers", "Datasets", 
-  "Accelerate", "PEFT", "TIMM", "Sentence-Transformers", "FAISS", "Vertex AI", "Google Gemini API", 
-  "MLflow", "Ray Tune", "Weights & Biases", "ONNX", "FastAPI", "Docker", "Kubernetes", "GCP", 
+  "PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "Hugging Face", "Transformers", "Datasets",
+  "Accelerate", "PEFT", "TIMM", "Sentence-Transformers", "FAISS", "Vertex AI", "Google Gemini API",
+  "MLflow", "Ray Tune", "Weights & Biases", "ONNX", "FastAPI", "Docker", "Kubernetes", "GCP",
   "Google Cloud Platform", "BigQuery",
   // Action Verbs
-  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated", 
+  "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated",
   "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
   // Impact/Quality Descriptors
   "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
@@ -40,7 +40,7 @@ const highlightExperienceKeywords = (
   if (!text) return [text];
 
   const pattern = mlAiProfessionalKeywords
-    .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
+    .map(keyword => `\\b${keyword.replace(/[.*+?^${()}|[\\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
   const parts = text.split(regex);
@@ -59,7 +59,7 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
   return (
     <div
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-accent transition-all duration-300 ease-in-out shadow-lg",
+        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
       )}
     >
       <Card className="bg-card rounded-lg">

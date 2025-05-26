@@ -68,7 +68,7 @@ export function ProjectsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
-  const textContentRef = useRef<HTMLDivElement>(null); 
+  const textContentRef = useRef<HTMLDivElement>(null);
 
   const currentProject = projects[currentIndex];
 
@@ -87,7 +87,7 @@ export function ProjectsSection() {
   useEffect(() => {
     if (textContentRef.current) {
       textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'duration-500');
-      void textContentRef.current.offsetWidth; 
+      void textContentRef.current.offsetWidth;
       textContentRef.current.classList.add('animate-in', 'fade-in-0', 'duration-500');
     }
   }, [currentIndex]);
@@ -101,7 +101,7 @@ export function ProjectsSection() {
     if (!isPaused && projects.length > 1) {
       intervalIdRef.current = setInterval(() => {
         handleNext();
-      }, 9000); 
+      }, 9000);
     }
 
     return () => {
@@ -140,7 +140,7 @@ export function ProjectsSection() {
             {/* Left Pane: Text Content */}
             <div
               ref={textContentRef}
-              key={currentIndex} 
+              key={currentIndex}
               className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
             >
               <ScrollArea className="flex-grow">
@@ -154,12 +154,12 @@ export function ProjectsSection() {
                   <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed">
                     {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
                   </p>
-                  
+
                   <Dialog>
                     <DialogTrigger asChild>
-                       <Button 
-                        variant="default" 
-                        size="sm" 
+                       <Button
+                        variant="default"
+                        size="sm"
                         className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2 text-primary-foreground hover:bg-primary/90"
                       >
                         See more
@@ -193,7 +193,7 @@ export function ProjectsSection() {
                             </Button>
                             )}
                             {currentProject.liveUrl && (
-                            <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                            <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
                                 <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                                 <ExternalLink /> Live Demo
                                 </a>
@@ -223,7 +223,7 @@ export function ProjectsSection() {
                   </Button>
                   )}
                   {currentProject.liveUrl && (
-                  <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                  <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
                       <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink /> Live Demo
                       </a>
@@ -239,7 +239,7 @@ export function ProjectsSection() {
                 // Dynamic background based on currentIndex
                 currentIndex % 4 === 0 ? "bg-gradient-to-br from-primary/20 to-primary/5" :
                 currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
-                currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" : 
+                currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" :
                                      "bg-gradient-to-br from-chart-5/20 to-chart-5/5",
               )}
               data-ai-hint={currentProject.imageHint}
@@ -252,7 +252,7 @@ export function ProjectsSection() {
           </div>
 
           {/* Navigation Arrows */}
-           <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+           <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
             <Button
               variant="outline"
               onClick={handlePrev}
@@ -262,7 +262,7 @@ export function ProjectsSection() {
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </div>
-          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-secondary">
+          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
             <Button
               variant="outline"
               onClick={handleNext}
@@ -273,7 +273,7 @@ export function ProjectsSection() {
             </Button>
           </div>
         </div>
-        
+
         <div className="flex justify-center items-center space-x-2 py-6">
           {projects.map((_, index) => (
             <button
@@ -282,15 +282,15 @@ export function ProjectsSection() {
               className={cn(
                 "h-2 rounded-full transition-all duration-300 ease-in-out",
                 currentIndex === index
-                  ? "w-6 bg-primary/30 relative overflow-hidden" 
-                  : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30" 
+                  ? "w-6 bg-primary/30 relative overflow-hidden"
+                  : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30"
               )}
               aria-label={`Go to project ${index + 1}`}
               aria-current={currentIndex === index ? "true" : "false"}
             >
               {currentIndex === index && (
                 <div
-                  key={currentIndex} 
+                  key={currentIndex}
                   className="h-full bg-primary rounded-full"
                   style={{ animation: 'progress-fill 9s linear forwards' }}
                 />
@@ -302,4 +302,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-

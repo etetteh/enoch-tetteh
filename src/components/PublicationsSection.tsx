@@ -15,7 +15,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
   return (
     <div
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-accent shadow-lg",
+        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
       )}
     >
       <Card className="bg-card rounded-lg h-full flex flex-col">
@@ -43,7 +43,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
               </Button>
             )}
             {pub.paperUrl && (
-              <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90">
+              <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90">
                 <Link href={pub.paperUrl} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4" /> Read Paper
                 </Link>
