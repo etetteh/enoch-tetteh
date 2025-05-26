@@ -5,10 +5,9 @@ import { useState, useRef, useEffect, type ReactNode } from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, VideoIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -171,7 +170,7 @@ export function ProjectsSection() {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-y-auto">
                       <DialogHeader className="p-6 pb-4 border-b shrink-0">
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-center justify-between">
                           <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                         </div>
                       </DialogHeader>
@@ -216,17 +215,21 @@ export function ProjectsSection() {
             </div>
 
             {/* Right Pane: Visual Placeholder */}
-            <div className="w-full md:w-1/2 h-64 md:h-full bg-muted rounded-md flex items-center justify-center p-4 relative aspect-video md:aspect-auto">
-               <Image
-                  src={currentProject.imageUrl}
-                  alt={currentProject.title}
-                  fill
-                  style={{objectFit: 'cover'}}
-                  className="rounded-md"
-                  data-ai-hint={currentProject.imageHint}
-                  priority={currentIndex === 0} 
-                />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent rounded-md"></div>
+            <div
+              className={cn(
+                "w-full md:w-1/2 h-64 md:h-full rounded-md flex flex-col items-center justify-center p-4 relative aspect-video md:aspect-auto",
+                // Dynamic background based on currentIndex
+                currentIndex % 4 === 0 ? "bg-gradient-to-br from-primary/20 to-primary/5" :
+                currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
+                currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" : 
+                                     "bg-gradient-to-br from-chart-5/20 to-chart-5/5",
+              )}
+              data-ai-hint={currentProject.imageHint}
+            >
+              <div className="text-center">
+                <VideoIcon className="h-16 w-16 text-foreground/30 mx-auto mb-2" />
+                <p className="text-xs text-foreground/50">Project Visual Coming Soon</p>
+              </div>
             </div>
           </div>
 
@@ -281,3 +284,4 @@ export function ProjectsSection() {
     </section>
   );
 }
+
