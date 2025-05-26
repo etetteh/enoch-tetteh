@@ -36,7 +36,7 @@ const CertificationCard = ({ cert }: { cert: Certification }) => {
           </div>
         </CardHeader>
         <CardFooter className="mt-auto pt-4 border-t">
-          <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground w-full sm:w-auto">
+          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90 w-full sm:w-auto">
             <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="mr-2 h-4 w-4" /> View Credential
             </Link>

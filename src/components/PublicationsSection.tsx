@@ -43,7 +43,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
               </Button>
             )}
             {pub.paperUrl && (
-              <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90">
                 <Link href={pub.paperUrl} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4" /> Read Paper
                 </Link>

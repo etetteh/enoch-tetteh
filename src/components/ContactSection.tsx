@@ -47,7 +47,6 @@ export function ContactSection() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Removed the div that explicitly displayed the email address */}
               <div className="flex gap-4 pt-4 border-t">
                 <Button variant="outline" asChild className="transform transition-transform hover:scale-105">
                   <Link href={portfolioOwner.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
@@ -60,7 +59,7 @@ export function ContactSection() {
                   </Link>
                 </Button>
               </div>
-               <Button asChild size="lg" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105">
+               <Button asChild size="lg" className="w-full text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90 transform transition-transform hover:scale-105">
                 <a
                   href={emailHref}
                   onClick={handleEmailClick}

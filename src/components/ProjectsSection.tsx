@@ -46,7 +46,7 @@ const highlightSkillsInDescriptionInternal = (
   }
 
   const pattern = allKeywordsToHighlight
-    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
+    .map(skill => `\\b${skill.replace(/[.*+?^${()}|[\\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
 
@@ -126,7 +126,7 @@ export function ProjectsSection() {
         <p
           className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base"
         >
-          Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
+          Explore key projects where I&apos;ve engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
 
         <div
@@ -183,6 +183,24 @@ export function ProjectsSection() {
                           )}
                         </div>
                       </ScrollArea>
+                       {(currentProject.githubUrl || currentProject.liveUrl) && (
+                        <div className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 mt-auto">
+                            {currentProject.githubUrl && (
+                            <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
+                                <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                                <Github /> GitHub
+                                </a>
+                            </Button>
+                            )}
+                            {currentProject.liveUrl && (
+                            <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                                <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink /> Live Demo
+                                </a>
+                            </Button>
+                            )}
+                        </div>
+                        )}
                     </DialogContent>
                   </Dialog>
 
@@ -205,7 +223,7 @@ export function ProjectsSection() {
                   </Button>
                   )}
                   {currentProject.liveUrl && (
-                  <Button variant="default" size="sm" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105">
+                  <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-accent hover:brightness-90 transform transition-transform hover:scale-105">
                       <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink /> Live Demo
                       </a>
