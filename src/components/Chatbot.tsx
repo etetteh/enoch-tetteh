@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bot, User, Loader2, Send, Sparkles, MessageCircle } from 'lucide-react';
+import { Bot, User, Loader2, Send, Sparkles } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { portfolioOwner } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -22,7 +22,7 @@ interface Message {
 
 const defaultSuggestedQueries = [
   `What are ${portfolioOwner.name.split(' ')[0]}'s key skills?`,
-  `Tell me about ${portfolioOwner.name.split(' ')[0]}'s latest project.`,
+  `Latest project details?`,
   `${portfolioOwner.name.split(' ')[0]}'s experience with GCP?`,
 ];
 
@@ -95,6 +95,7 @@ export function Chatbot() {
       }
 
       const isBottomInputFocused = bottomInputRef.current === document.activeElement;
+      // Only cycle suggestions if the bottom input bar is not focused AND the query input is empty AND sheet is not open
       if (!isOpen && !isBottomInputFocused && !query) {
         intervalRef.current = setInterval(() => {
           queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
@@ -157,18 +158,13 @@ export function Chatbot() {
 
   const handleBottomBarSubmit = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
-    if (!query.trim() && !displayedSuggestedQuery) return;
+    const queryToProcess = query.trim() || displayedSuggestedQuery;
+    if (!queryToProcess) return;
     
-    setIsLoading(true); // Set loading true before processing
     setIsOpen(true); // Open the sheet immediately
 
-    if (query.trim()) {
-      await processQuery(query);
-      setQuery('');
-    } else if (displayedSuggestedQuery) {
-      await processQuery(displayedSuggestedQuery);
-    }
-    // isLoading will be set to false inside processQuery's finally block
+    await processQuery(queryToProcess);
+    setQuery(''); // Clear input after processing
   };
   
   const handleSheetFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -192,7 +188,7 @@ export function Chatbot() {
           className={cn(
             "fixed bottom-6 left-1/2 -translate-x-1/2",
             "w-11/12 max-w-lg h-14 px-3 py-2",
-            "bg-neutral-700 dark:bg-neutral-800", // Darker background for the bar
+            "bg-neutral-700 dark:bg-neutral-800", 
             "rounded-full shadow-xl",
             "flex items-center justify-between gap-2 z-50 group"
           )}
@@ -213,8 +209,9 @@ export function Chatbot() {
               if (intervalRef.current) clearInterval(intervalRef.current);
             }}
             onBlur={() => {
+              // Only restart cycling if input is empty, sheet isn't open, and suggestions are loaded
               if (!query && !isOpen && !isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
-                if (intervalRef.current) clearInterval(intervalRef.current);
+                if (intervalRef.current) clearInterval(intervalRef.current); // Clear any existing before starting new
                 intervalRef.current = setInterval(() => {
                   queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
                   setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
@@ -230,7 +227,7 @@ export function Chatbot() {
             className="h-9 w-9 p-0 text-neutral-300 hover:text-accent disabled:text-neutral-500 transition-colors"
             aria-label="Send message or use suggestion"
           >
-            {(isLoading && query.trim()) ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+            {(isLoading && !!query.trim()) ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </Button>
         </form>
       )}
@@ -239,24 +236,23 @@ export function Chatbot() {
           setIsOpen(open);
           if (!open) {
             setQuery(''); 
-            if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
+            if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted && !bottomInputRef.current?.matches(':focus') && !query) {
                 if (intervalRef.current) clearInterval(intervalRef.current);
                 intervalRef.current = setInterval(() => {
-                queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
-                setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+                  queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
+                  setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
                 }, 3000);
             }
           }
         }}
       >
-        <SheetContent className="w-full max-w-md flex flex-col p-0">
+        <SheetContent className="w-full max-w-md sm:max-w-lg flex flex-col p-0">
           <SheetHeader className="p-6 pb-2 border-b">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Bot className="h-6 w-6 text-primary" />
                 <SheetTitle className="text-lg">Portfolio Assistant</SheetTitle>
               </div>
-              {/* The default close button from SheetContent will be used */}
             </div>
             <SheetDescription className="text-xs sm:text-sm">
               Ask me anything about the content on this page.
@@ -271,8 +267,8 @@ export function Chatbot() {
                   className={`flex items-end gap-2 ${msg.sender === 'user' ? 'justify-end' : ''}`}
                 >
                   {msg.sender === 'bot' && (
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-primary text-primary-foreground"><Bot size={18}/></AvatarFallback>
+                    <Avatar className="h-9 w-9" aria-label="Bot Avatar">
+                      <AvatarFallback className="bg-primary text-primary-foreground"><Bot size={20}/></AvatarFallback>
                     </Avatar>
                   )}
                   <div
@@ -285,8 +281,8 @@ export function Chatbot() {
                     {msg.text}
                   </div>
                    {msg.sender === 'user' && (
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-muted-foreground text-background"><User size={18}/></AvatarFallback>
+                    <Avatar className="h-9 w-9" aria-label="User Avatar">
+                      <AvatarFallback className="bg-muted-foreground text-background"><User size={20}/></AvatarFallback>
                     </Avatar>
                   )}
                 </div>
