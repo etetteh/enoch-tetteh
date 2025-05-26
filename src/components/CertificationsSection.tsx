@@ -5,12 +5,12 @@ import { certifications } from '@/lib/data';
 import type { Certification } from '@/types/portfolio';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, ShieldCheck } from 'lucide-react';
+import { ExternalLink, ShieldCheck, Award } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 const CertificationCard = ({ cert }: { cert: Certification }) => {
-  const IconToUse = cert.icon || ShieldCheck;
+  const IconToUse = cert.icon || Award; // Default to Award if no specific icon
 
   return (
     <div
@@ -60,7 +60,7 @@ export function CertificationsSection() {
             "section-title",
           )}
         >
-          Certifications
+          Certifications & Learning
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {certifications.map((cert) => (
@@ -71,3 +71,5 @@ export function CertificationsSection() {
     </section>
   );
 }
+
+    

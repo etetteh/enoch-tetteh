@@ -188,21 +188,21 @@ export const publications: Publication[] = [
 
 export const certifications: Certification[] = [
   {
-    id: 'gcp-ace',
-    title: 'Associate Cloud Engineer',
-    issuer: 'Google Cloud',
-    dateObtained: 'Jan 2024',
-    credentialUrl: 'https://www.credential.net/12345678-abcd-1234-abcd-1234567890ab', // Replace with your actual URL
-    icon: ShieldCheck,
+    id: 'coursera-deep-learning-spec',
+    title: 'Certificate of Completion: Deep Learning Specialization',
+    issuer: 'Coursera (deeplearning.ai)',
+    dateObtained: 'Feb 2020',
+    credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/certificate/YOUR_ID_HERE', // Replace with your actual URL
+    icon: Award, // Using Award as a generic icon
   },
-  // Add more certifications here
+  // Add more certificates of completion here
   // {
-  //   id: 'another-cert',
-  //   title: 'Another Certification Title',
-  //   issuer: 'Another Issuer',
-  //   dateObtained: 'Dec 2023',
-  //   credentialUrl: 'https://example.com/your-cert-link',
-  //   icon: Award,
+  //   id: 'google-cloud-ai-essentials',
+  //   title: 'Certificate of Completion: Google Cloud AI Essentials',
+  //   issuer: 'Google Cloud Skills Boost',
+  //   dateObtained: 'Jan 2024',
+  //   credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/YOUR_PROFILE_ID/badges/YOUR_BADGE_ID', // Replace with actual URL
+  //   icon: ShieldCheck,
   // },
 ];
 
@@ -215,3 +215,5 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
+
+    
