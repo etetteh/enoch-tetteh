@@ -98,71 +98,70 @@ export function SkillsSection() {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="flex items-center justify-center">
-            <div
-              ref={scrollContainerRef}
-              className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[400px] sm:h-[460px]"
-            >
-              {skillCategories.map((category, index) => {
-                const isActive = index === currentIndex;
-                return (
-                  <div
-                    key={category.name}
-                    ref={el => cardRefs.current[index] = el}
-                    onClick={() => setCurrentIndex(index)}
-                    className={cn(
-                      "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
-                      "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                      isActive
-                        ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-gradient-to-br from-primary via-accent to-accent"
-                        : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent"
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[400px] sm:h-[460px]"
+          >
+            {skillCategories.map((category, index) => {
+              const isActive = index === currentIndex;
+              return (
+                <div
+                  key={category.name}
+                  ref={el => cardRefs.current[index] = el}
+                  onClick={() => setCurrentIndex(index)}
+                  className={cn(
+                    "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    isActive
+                      ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-gradient-to-br from-primary via-accent to-accent"
+                      : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent"
+                  )}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setCurrentIndex(index);}}
+                  aria-label={`Skill category: ${category.name}. Click to view details.`}
+                  aria-current={isActive}
+                >
+                  <Card className={cn(
+                    "w-full h-full flex flex-col bg-card rounded-xl", // Changed rounded-lg to rounded-xl
+                    isActive ? "border-transparent" : "" // Removed border-primary from active card
+                    )}>
+                    <CardHeader className={cn(
+                      "flex flex-col items-center text-center p-4 transition-all duration-300",
+                      isActive ? "pt-6" : "pt-4"
+                    )}>
+                      <category.icon className={cn(
+                        "transition-all duration-500 text-primary",
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100"
+                      )} />
+                      <CardTitle className={cn(
+                        "transition-all duration-500 text-primary",
+                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium opacity-100"
+                      )}>{category.name}</CardTitle>
+                    </CardHeader>
+                    {isActive && (
+                      <CardContent className={cn(
+                        "p-3 sm:p-4 transition-opacity duration-300 opacity-100" 
+                      )}>
+                        <ScrollArea className="h-36 sm:h-40">
+                           <div className="flex flex-wrap gap-2 justify-center">
+                            {category.skills.map((skill) => (
+                              <Badge
+                                key={skill}
+                                variant="secondary"
+                                className="text-xs sm:text-sm py-1 px-2 sm:px-3"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </ScrollArea>
+                      </CardContent>
                     )}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setCurrentIndex(index);}}
-                    aria-label={`Skill category: ${category.name}. Click to view details.`}
-                    aria-current={isActive}
-                  >
-                    <Card className={cn(
-                      "w-full h-full flex flex-col bg-card rounded-lg"
-                      )}>
-                      <CardHeader className={cn(
-                        "flex flex-col items-center text-center p-4 transition-all duration-300",
-                        isActive ? "pt-6" : "pt-4"
-                      )}>
-                        <category.icon className={cn(
-                          "transition-all duration-500 text-primary",
-                          isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100"
-                        )} />
-                        <CardTitle className={cn(
-                          "transition-all duration-500 text-primary",
-                           isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium opacity-100"
-                        )}>{category.name}</CardTitle>
-                      </CardHeader>
-                      {isActive && (
-                        <CardContent className={cn(
-                          "p-3 sm:p-4 transition-opacity duration-300 opacity-100" 
-                        )}>
-                          <ScrollArea className="h-36 sm:h-40">
-                             <div className="flex flex-wrap gap-2 justify-center">
-                              {category.skills.map((skill) => (
-                                <Badge
-                                  key={skill}
-                                  variant="secondary"
-                                  className="text-xs sm:text-sm py-1 px-2 sm:px-3"
-                                >
-                                  {skill}
-                                </Badge>
-                              ))}
-                            </div>
-                          </ScrollArea>
-                        </CardContent>
-                      )}
-                    </Card>
-                  </div>
-                );
-              })}
-            </div>
+                  </Card>
+                </div>
+              );
+            })}
           </div>
 
           {/* Navigation Arrows */}
