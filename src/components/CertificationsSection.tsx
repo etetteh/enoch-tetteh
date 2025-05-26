@@ -15,7 +15,7 @@ const CertificationCard = ({ cert }: { cert: Certification }) => {
   return (
     <div
       className={cn(
-        "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
+        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-accent shadow-lg",
       )}
     >
       <Card className="bg-card rounded-xl h-full flex flex-col">
@@ -71,5 +71,3 @@ export function CertificationsSection() {
     </section>
   );
 }
-
-    

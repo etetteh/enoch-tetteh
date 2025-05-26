@@ -1,16 +1,17 @@
 
 'use client';
 
+import type { Education } from '@/types/portfolio';
 import { education } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-const EducationCard = ({ edu }: { edu: typeof education[0] }) => {
+const EducationCard = ({ edu }: { edu: Education }) => {
 
   return (
     <div
       className={cn(
-        "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl",
+        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-accent shadow-lg",
       )}
     >
       <Card className="bg-card rounded-lg">

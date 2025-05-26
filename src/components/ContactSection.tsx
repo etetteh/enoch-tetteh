@@ -36,7 +36,7 @@ export function ContactSection() {
         </h2>
         <div
           className={cn(
-            "group rounded-lg p-0.5 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent transition-all duration-300 ease-in-out transform motion-safe:group-hover:scale-[1.02] shadow-lg hover:shadow-xl max-w-2xl mx-auto",
+            "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-accent shadow-lg max-w-2xl mx-auto",
           )}
         >
           <Card className="bg-card rounded-lg">
