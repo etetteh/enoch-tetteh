@@ -123,8 +123,8 @@ export function SkillsSection() {
                   aria-current={isActive}
                 >
                   <Card className={cn(
-                    "w-full h-full flex flex-col bg-card rounded-xl", // Changed rounded-lg to rounded-xl
-                    isActive ? "border-transparent" : "" // Removed border-primary from active card
+                    "w-full h-full flex flex-col bg-card rounded-xl",
+                    isActive ? "border-transparent" : "" 
                     )}>
                     <CardHeader className={cn(
                       "flex flex-col items-center text-center p-4 transition-all duration-300",
@@ -143,13 +143,13 @@ export function SkillsSection() {
                       <CardContent className={cn(
                         "p-3 sm:p-4 transition-opacity duration-300 opacity-100" 
                       )}>
-                        <ScrollArea className="h-36 sm:h-40">
+                        <ScrollArea className="h-40 sm:h-48">
                            <div className="flex flex-wrap gap-2 justify-center">
                             {category.skills.map((skill) => (
                               <Badge
                                 key={skill}
                                 variant="secondary"
-                                className="text-xs sm:text-sm py-1 px-2 sm:px-3"
+                                className="text-xs py-1 px-2"
                               >
                                 {skill}
                               </Badge>
@@ -166,7 +166,7 @@ export function SkillsSection() {
 
           {/* Navigation Arrows */}
           <div className="absolute left-0 sm:-left-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent h-10 w-10">
+             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent to-accent h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -178,7 +178,7 @@ export function SkillsSection() {
             </div>
           </div>
           <div className="absolute right-0 sm:-right-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-accent h-10 w-10">
+            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent to-accent h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handleNext}

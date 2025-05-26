@@ -6,6 +6,7 @@ export interface Project {
   title: string;
   description: string; // Full description
   carouselDescription: string; // Short description for carousel
+  keyAchievement?: string; // Optional: A concise sentence highlighting the main impact/achievement
   imageUrl: string;
   imageHint?: string;
   techStack: string[];

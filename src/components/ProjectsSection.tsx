@@ -147,6 +147,11 @@ export function ProjectsSection() {
               <ScrollArea className="flex-grow">
                 <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
+                  {currentProject.keyAchievement && (
+                    <p className="text-sm sm:text-md font-semibold text-foreground mt-1 mb-2">
+                      {currentProject.keyAchievement}
+                    </p>
+                  )}
                   <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed">
                     {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
                   </p>
@@ -168,7 +173,6 @@ export function ProjectsSection() {
                       <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <div className="flex items-start justify-between">
                           <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
-                           {/* Default X close button is provided by DialogContent */}
                         </div>
                       </DialogHeader>
                       <ScrollArea className="flex-grow my-4 px-6">

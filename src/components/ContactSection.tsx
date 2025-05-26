@@ -43,7 +43,7 @@ export function ContactSection() {
             <CardHeader>
               <CardTitle className="text-2xl font-semibold text-primary">Contact Me</CardTitle>
               <CardDescription className="text-xs sm:text-sm">
-                I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+                I&apos;m driven to build impactful AI solutions and explore innovative ideas. Whether it&apos;s a challenging role, a collaborative project, or a groundbreaking venture, I&apos;m ready to connect!
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
