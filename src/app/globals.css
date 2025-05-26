@@ -53,7 +53,7 @@
   }
 
   .dark {
-    --background: 220 15% 12%; /* Dark Blue/Gray */
+    --background: 0 0% 0%; /* True Black */
     --foreground: 0 0% 95%; /* Light Gray for text */
 
     --card: 220 15% 15%; /* Slightly lighter than dark background */
@@ -89,7 +89,7 @@
     --chart-5: 260 70% 70%; /* A Purple (Dark Mode) */
 
     /* Sidebar specific colors for dark mode */
-    --sidebar-background: 220 15% 10%; /* Even darker for sidebar */
+    --sidebar-background: 0 0% 0%; /* True Black */
     --sidebar-foreground: 0 0% 90%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
