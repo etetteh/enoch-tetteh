@@ -52,3 +52,12 @@ export interface Publication {
   paperUrl?: string;
   icon: LucideIcon;
 }
+
+export interface Certification {
+  id: string;
+  title: string;
+  issuer: string;
+  dateObtained?: string; // Optional
+  credentialUrl: string; // Link to verification page
+  icon?: LucideIcon; // Optional: an icon representing the issuer or cert type
+}

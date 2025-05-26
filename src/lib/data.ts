@@ -1,6 +1,6 @@
 
-import type { Project, SkillCategory, Experience, Education, Publication } from '@/types/portfolio';
-import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText, MessageCircle } from 'lucide-react';
+import type { Project, SkillCategory, Experience, Education, Publication, Certification } from '@/types/portfolio';
+import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText, MessageCircle, Award, ShieldCheck } from 'lucide-react';
 
 export const projects: Project[] = [
   {
@@ -18,9 +18,9 @@ export const projects: Project[] = [
   {
     id: 'deepmindflow-cv',
     title: 'DeepMindFlow - Production-Ready Computer Vision Classification System',
-    description: "Developed a comprehensive computer vision classification system leveraging 50+ state-of-the-art models from the TIMM library with advanced training optimizations including CutMix/MixUp data augmentation, global model pruning (25% parameter reduction), and adversarial robustness through FGSM attack training. Implemented production-ready MLOps infrastructure using HuggingFace Accelerate for seamless distributed training across CPUs, GPUs, and TPUs, with automated experiment tracking via MLflow and hyperparameter optimization through Ray Tune's Population-Based Training algorithm. The system features advanced model optimization techniques including Exponential Moving Average weight updates, intelligent checkpoint averaging of top-performing models, and ONNX export for optimized inference deployment. Built comprehensive model interpretability pipeline using SHAP analysis with automated performance visualization including confusion matrices and ROC curves. Deployed FastAPI-based inference endpoints supporting both single and batch image processing with JSON configuration, enabling real-time production deployment with robust error handling and scalable architecture.",
     carouselDescription: "Engineered enterprise-grade image classification framework achieving 100% validation accuracy across 18 SOTA models with comprehensive MLOps pipeline, supporting distributed training and real-time inference deployment.",
     keyAchievement: "Achieved 100% validation accuracy with 18 SOTA models and reduced model size by 25% via pruning.",
+    description: "Developed a comprehensive computer vision classification system leveraging 50+ state-of-the-art models from the TIMM library with advanced training optimizations including CutMix/MixUp data augmentation, global model pruning (25% parameter reduction), and adversarial robustness through FGSM attack training. Implemented production-ready MLOps infrastructure using HuggingFace Accelerate for seamless distributed training across CPUs, GPUs, and TPUs, with automated experiment tracking via MLflow and hyperparameter optimization through Ray Tune's Population-Based Training algorithm. The system features advanced model optimization techniques including Exponential Moving Average weight updates, intelligent checkpoint averaging of top-performing models, and ONNX export for optimized inference deployment. Built comprehensive model interpretability pipeline using SHAP analysis with automated performance visualization including confusion matrices and ROC curves. Deployed FastAPI-based inference endpoints supporting both single and batch image processing with JSON configuration, enabling real-time production deployment with robust error handling and scalable architecture.",
     imageUrl: 'https://placehold.co/600x400/4285F4/FFFFFF.png', // Primary Blue
     imageHint: 'vision system',
     techStack: ['PyTorch', 'HuggingFace Accelerate', 'TIMM', 'TorchMetrics', 'MLflow', 'Ray Tune', 'SHAP', 'ONNX', 'FastAPI', 'Python'],
@@ -186,6 +186,27 @@ export const publications: Publication[] = [
   },
 ];
 
+export const certifications: Certification[] = [
+  {
+    id: 'gcp-ace',
+    title: 'Associate Cloud Engineer',
+    issuer: 'Google Cloud',
+    dateObtained: 'Jan 2024',
+    credentialUrl: 'https://www.credential.net/12345678-abcd-1234-abcd-1234567890ab', // Replace with your actual URL
+    icon: ShieldCheck,
+  },
+  // Add more certifications here
+  // {
+  //   id: 'another-cert',
+  //   title: 'Another Certification Title',
+  //   issuer: 'Another Issuer',
+  //   dateObtained: 'Dec 2023',
+  //   credentialUrl: 'https://example.com/your-cert-link',
+  //   icon: Award,
+  // },
+];
+
+
 export const portfolioOwner = {
   name: "Enoch Tetteh",
   title: "Innovative AI Engineer & MLOps Expert",
@@ -194,5 +215,3 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
-
-    

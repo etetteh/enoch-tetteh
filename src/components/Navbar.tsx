@@ -14,6 +14,7 @@ const navLinks = [
   { href: '#experience', label: 'Experience' },
   { href: '#education', label: 'Education' },
   { href: '#publications', label: 'Publications' },
+  { href: '#certifications', label: 'Certifications' },
   { href: '#resume', label: 'Resume' },
   { href: '#contact', label: 'Contact' },
 ];
@@ -33,11 +34,9 @@ export function Navbar() {
 
     const calculateActiveLink = () => {
       let current = '';
-      const navbarHeight = headerRef.current ? headerRef.current.offsetHeight + 20 : 90;
+      const navbarHeight = headerRef.current ? headerRef.current.offsetHeight + 20 : 90; // Increased offset
       const scrollY = window.scrollY;
 
-      // Iterate from bottom to top to find the current section
-      // This helps if sections are close or overlap in visibility during scroll
       for (let i = navLinks.length - 1; i >= 0; i--) {
         const link = navLinks[i];
         const id = link.href.substring(1);
@@ -45,43 +44,25 @@ export function Navbar() {
 
         if (section) {
           const sectionTop = section.offsetTop;
-          // Check if the section's top is at or above the (navbar-adjusted) scroll position
           if (scrollY >= sectionTop - navbarHeight) {
             current = link.href;
-            break; // Found the current section
+            break; 
           }
         }
       }
       
-      // Fallback for the very top of the page
       if (!current && scrollY < navbarHeight && navLinks.length > 0 && navLinks[0]) {
         current = navLinks[0].href;
       }
       
-      // Fallback for the very bottom of the page (if last section isn't filling viewport)
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20 && navLinks.length > 0) {
          current = navLinks[navLinks.length - 1].href;
       }
 
-
-      if (current) {
-        setActiveLink(prevActiveLink => {
-          // Only update if the determined current link is different
-          if (current !== prevActiveLink) {
-            return current;
-          }
-          return prevActiveLink;
-        });
-      } else if (navLinks.length > 0 && navLinks[0]) {
-         // Default to the first link if no section is determined (e.g., if all sections are very short)
-         // and not already at the top (which is handled above)
-         const atVeryTop = scrollY < navbarHeight;
-         if(!atVeryTop) {
-            setActiveLink(prevActiveLink => {
-                if (prevActiveLink === '') return navLinks[0].href; // Initial set if empty
-                return prevActiveLink; // Otherwise keep
-            });
-         }
+      if (current && current !== activeLink) {
+        setActiveLink(current);
+      } else if (!current && navLinks.length > 0 && navLinks[0] && activeLink === '') {
+         setActiveLink(navLinks[0].href);
       }
     };
     
@@ -91,11 +72,11 @@ export function Navbar() {
       }
       scrollTimeoutRef.current = setTimeout(() => {
         calculateActiveLink();
-      }, 150); // Debounce timeout: 150ms. Adjust if needed.
+      }, 150); 
     };
 
     window.addEventListener('scroll', debouncedHandleScroll, { passive: true });
-    calculateActiveLink(); // Initial check
+    calculateActiveLink(); 
 
     return () => {
       window.removeEventListener('scroll', debouncedHandleScroll);
@@ -103,7 +84,7 @@ export function Navbar() {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [isMounted]); // navLinks is stable
+  }, [isMounted, activeLink]); 
 
   const renderPillNavLinks = (isMobile: boolean) => (
     <div
@@ -117,8 +98,7 @@ export function Navbar() {
           key={link.label}
           href={link.href}
           onClick={() => {
-            setActiveLink(link.href); // Immediately set active link on click
-            // Optionally, if using isClickScrolling, set it here
+            setActiveLink(link.href); 
           }}
           className={cn(
             "block px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-background",
