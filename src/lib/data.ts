@@ -95,7 +95,7 @@ export const skillCategories: SkillCategory[] = [
 ];
 
 export const experiences: Experience[] = [
-  {
+   {
     id: 'synthetic-data-exp',
     role: 'Generative AI Engineer | End-to-End Synthetic Data Generation',
     company: 'Freelance',
@@ -199,7 +199,7 @@ export const certifications: Certification[] = [
     id: 'looker-data-viz',
     title: 'Analyzing and Visualizing Data in Looker',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'June 3, 2022',
+    dateObtained: 'Jun 3, 2022',
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2155405',
     icon: BarChart3,
   },
@@ -207,7 +207,7 @@ export const certifications: Certification[] = [
     id: 'bigquery-insights',
     title: 'Derive Insights from BigQuery Data',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'June 3, 2022',
+    dateObtained: 'Jun 3, 2022',
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2147732',
     icon: Database,
   },
@@ -215,9 +215,17 @@ export const certifications: Certification[] = [
     id: 'lookml-data-models',
     title: 'Developing Data Models with LookML',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'June 21, 2022',
+    dateObtained: 'Jun 21, 2022',
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2297953',
     icon: Cog,
+  },
+  {
+    id: 'llm-intro',
+    title: 'Introduction to Large Language Models',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Mar 7, 2024',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/8246700',
+    icon: MessageCircle,
   },
 ];
 
