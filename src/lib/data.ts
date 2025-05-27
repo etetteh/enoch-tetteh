@@ -235,6 +235,14 @@ export const certifications: Certification[] = [
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/8272562',
     icon: Sparkles,
   },
+  {
+    id: 'responsible-ai-intro',
+    title: 'Introduction to Responsible AI',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Mar 10, 2024',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/8272941',
+    icon: ShieldCheck,
+  },
 ];
 
 
@@ -246,6 +254,8 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
+    
+
     
 
     
