@@ -1,6 +1,6 @@
 
 import type { Project, SkillCategory, Experience, Education, Publication, Certification } from '@/types/portfolio';
-import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText, MessageCircle, Award, ShieldCheck } from 'lucide-react';
+import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText, MessageCircle, Award, ShieldCheck, VideoIcon } from 'lucide-react';
 
 export const projects: Project[] = [
   {
@@ -9,7 +9,7 @@ export const projects: Project[] = [
     carouselDescription: "Production-ready Python application leveraging Google Gemini LLMs to generate diverse, high-quality synthetic training datasets for NLP tasks, processing 5000+ samples with 95%+ uniqueness and supporting multiple data formats through modular architecture.",
     keyAchievement: "Generated over 5,000 unique synthetic NLP training samples with 95%+ uniqueness, boosting model training efficiency.",
     description: "Developed a comprehensive synthetic data generation platform that combines advanced LLM capabilities with enterprise-grade engineering practices. The system utilizes Google's Gemini models through LangChain to create diverse training datasets for various NLP tasks including question-answering, textual entailment, and semantic similarity. Implemented sophisticated duplicate detection using hashing algorithms to ensure data uniqueness, while incorporating incremental batch processing to handle large-scale generation efficiently. The modular architecture employs dependency injection and strategy patterns for maintainability, featuring comprehensive error handling with exponential backoff retry logic for API resilience. Built robust data pipeline supporting document context integration, automated query refinement, and flexible output formatting. Achieved significant performance optimizations including 60% memory usage reduction for large datasets and configurable generation parameters for optimal model performance. The system includes extensive testing suite with pytest, comprehensive logging infrastructure, and production-ready CLI interface supporting various deployment scenarios.",
-    imageUrl: 'https://placehold.co/600x400/34A853/FFFFFF.png', // Accent Green
+    imageUrl: 'https://placehold.co/600x400/009688/FFFFFF.png', // Teal
     imageHint: 'synthetic data',
     techStack: ['Python', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'Parquet'],
     githubUrl: 'https://github.com/etetteh/synthetic-data-generator',
@@ -193,17 +193,16 @@ export const certifications: Certification[] = [
     issuer: 'Coursera (deeplearning.ai)',
     dateObtained: 'Feb 2020',
     credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/certificate/YOUR_ID_HERE', // Replace with your actual URL
-    icon: Award, // Using Award as a generic icon
+    icon: Award,
   },
-  // Add more certificates of completion here
-  // {
-  //   id: 'google-cloud-ai-essentials',
-  //   title: 'Certificate of Completion: Google Cloud AI Essentials',
-  //   issuer: 'Google Cloud Skills Boost',
-  //   dateObtained: 'Jan 2024',
-  //   credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/YOUR_PROFILE_ID/badges/YOUR_BADGE_ID', // Replace with actual URL
-  //   icon: ShieldCheck,
-  // },
+  {
+    id: 'google-cloud-skills-boost-badge',
+    title: 'Google Cloud Learning Achievement',
+    issuer: 'Google Cloud Skills Boost',
+    // dateObtained: 'Jan 2024', // You can add the date if you know it
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14840035',
+    icon: ShieldCheck,
+  },
 ];
 
 
