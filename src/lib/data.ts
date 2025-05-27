@@ -259,6 +259,14 @@ export const certifications: Certification[] = [
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14048484',
     icon: ImageIcon,
   },
+  {
+    id: 'responsible-ai-gcp',
+    title: 'Responsible AI: Applying AI Principles with Google Cloud',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Jul 17, 2024',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/9878060',
+    icon: ShieldCheck,
+  },
 ];
 
 
@@ -277,4 +285,5 @@ export const portfolioOwner = {
     
 
     
+
 
