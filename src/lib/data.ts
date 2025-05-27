@@ -191,7 +191,7 @@ export const certifications: Certification[] = [
     id: 'mlops-genai',
     title: 'Machine Learning Operations (MLOps) for Generative AI',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'April 13, 2025',
+    dateObtained: 'Apr 13, 2025',
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14840035',
     icon: ShieldCheck,
   },
@@ -210,6 +210,14 @@ export const certifications: Certification[] = [
     dateObtained: 'June 3, 2022',
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2147732',
     icon: Database,
+  },
+  {
+    id: 'lookml-data-models',
+    title: 'Developing Data Models with LookML',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'June 21, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2297953',
+    icon: Cog,
   },
 ];
 
