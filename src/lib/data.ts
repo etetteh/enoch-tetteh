@@ -212,6 +212,14 @@ export const certifications: Certification[] = [
     icon: Database,
   },
   {
+    id: 'bigquery-advanced-insights',
+    title: 'Achieving Advanced Insights with BigQuery',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'May 27, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2089825',
+    icon: TestTube2,
+  },
+  {
     id: 'lookml-data-models',
     title: 'Developing Data Models with LookML',
     issuer: 'Google Cloud Skills Boost',
@@ -285,5 +293,6 @@ export const portfolioOwner = {
     
 
     
+
 
 
