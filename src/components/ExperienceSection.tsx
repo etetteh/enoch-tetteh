@@ -5,7 +5,7 @@ import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import type { ReactNode } from 'react';
+import React, { type ReactNode } from 'react'; // Added full React import
 
 const mlAiProfessionalKeywords = [
   // Core ML/AI Concepts
@@ -37,20 +37,28 @@ const highlightExperienceKeywords = (
   text: string,
   uniquePrefix: string // For generating unique keys
 ): ReactNode[] => {
-  if (!text) return [text];
+  if (!text) return [<React.Fragment key={`${uniquePrefix}-empty`}>{text}</React.Fragment>];
 
   const pattern = mlAiProfessionalKeywords
-    .map(keyword => `\\b${keyword.replace(/[.*+?^${()}|[\\]\\\\]/g, '\\$&')}\\b`)
+    .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
   const regex = new RegExp(`(${pattern})`, 'gi');
+  
+  if (!pattern) return [<React.Fragment key={`${uniquePrefix}-nodesc`}>{text}</React.Fragment>];
+
   const parts = text.split(regex);
 
   return parts.map((part, index) => {
-    const isKeyword = mlAiProfessionalKeywords.some(keyword => typeof part === 'string' && part.toLowerCase() === keyword.toLowerCase());
-    if (isKeyword) {
-      return <span key={`${uniquePrefix}-kw-${part.toLowerCase().replace(/\s+/g, '-')}-${index}`} className="font-semibold text-accent">{part}</span>;
+    const key = `${uniquePrefix}-kw-${index}`;
+    if (typeof part === 'string' && part.length > 0) {
+        const isKeyword = mlAiProfessionalKeywords.some(keyword => typeof keyword === 'string' && part.toLowerCase() === keyword.toLowerCase());
+        if (isKeyword) {
+        return <span key={key} className="font-bold text-accent">{part}</span>;
+        }
+        return <React.Fragment key={key}>{part}</React.Fragment>;
     }
-    return part;
+    // Return a fragment for empty or non-string parts to ensure a valid ReactNode array
+    return <React.Fragment key={key}></React.Fragment>;
   });
 };
 
@@ -59,10 +67,10 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
   return (
     <div
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
+        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
       )}
     >
-      <Card className="bg-card rounded-lg">
+      <Card className="bg-card rounded-lg h-full">
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div>

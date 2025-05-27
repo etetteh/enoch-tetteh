@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useEffect, type ReactNode } from 'react';
+import React, { useState, useRef, useEffect, type ReactNode } from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
@@ -10,8 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import React from 'react';
-
 
 const mlAiKeywords = [
   // Core ML/AI Concepts
@@ -39,19 +37,20 @@ const highlightSkillsInDescriptionInternal = (
   projectTechStack: string[],
   uniquePrefix: string
 ): ReactNode[] => {
-  if (!description) return [description];
+  if (!description) return [<React.Fragment key={`${uniquePrefix}-empty`}>{description}</React.Fragment>];
 
-  const allKeywordsToHighlight = [...new Set([...projectTechStack, ...mlAiKeywords].filter(skill => typeof skill === 'string' && skill.trim() !== ''))];
+  const allKeywordsToHighlight = [...new Set([...(projectTechStack || []), ...mlAiKeywords]
+    .filter(skill => typeof skill === 'string' && skill.trim() !== ''))];
 
   if (!allKeywordsToHighlight || allKeywordsToHighlight.length === 0) {
-    return [description];
+    return [<React.Fragment key={`${uniquePrefix}-nodesc`}>{description}</React.Fragment>];
   }
   
   const pattern = allKeywordsToHighlight
-    .map(skill => `\\b${skill.replace(/[.*+?^${()}|[\\]\\\\]/g, '\\$&')}\\b`)
+    .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
 
-  if (!pattern) return [description]; 
+  if (!pattern) return [<React.Fragment key={`${uniquePrefix}-nopattern`}>{description}</React.Fragment>]; 
 
   const regex = new RegExp(`(${pattern})`, 'gi');
   const parts = description.split(regex);
@@ -61,11 +60,11 @@ const highlightSkillsInDescriptionInternal = (
     if (typeof part === 'string' && part.length > 0) {
       const partLower = part.toLowerCase();
       const isKeyword = allKeywordsToHighlight.some(
-        (skill) => skill.toLowerCase() === partLower
+        (skill) => typeof skill === 'string' && skill.toLowerCase() === partLower
       );
 
       if (isKeyword) {
-        return <span key={key} className="font-semibold text-accent">{part}</span>;
+        return <span key={key} className="font-bold text-accent">{part}</span>;
       }
       return <React.Fragment key={key}>{part}</React.Fragment>;
     }
@@ -98,7 +97,7 @@ export function ProjectsSection() {
   useEffect(() => {
     if (textContentRef.current) {
       textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'duration-500');
-      void textContentRef.current.offsetWidth; // Force reflow to restart animation
+      void textContentRef.current.offsetWidth; 
       textContentRef.current.classList.add('animate-in', 'fade-in-0', 'duration-500');
     }
   }, [currentIndex]);
@@ -147,12 +146,12 @@ export function ProjectsSection() {
         >
           <div className="bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 md:h-[500px] flex flex-col md:flex-row items-center gap-6 md:gap-8">
             {/* Left Pane: Text Content */}
-            <div
+             <div
               ref={textContentRef}
               key={currentIndex} 
               className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
             >
-              <ScrollArea className="flex-grow">
+              <ScrollArea className="flex-grow pr-2">
                  <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
                   {currentProject.keyAchievement && (
@@ -161,7 +160,7 @@ export function ProjectsSection() {
                     </p>
                   )}
                   <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed">
-                    {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-${currentIndex}-carousel`)}
+                    {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-carousel-${currentIndex}`)}
                   </p>
 
                   <Dialog>
@@ -181,7 +180,6 @@ export function ProjectsSection() {
                        <DialogHeader className="p-6 pb-4 border-b shrink-0">
                         <div className="flex items-center justify-between">
                           <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
-                          {/* Default X button from DialogContent will be used */}
                         </div>
                       </DialogHeader>
                       <ScrollArea className="flex-grow my-4 px-6">
@@ -189,7 +187,7 @@ export function ProjectsSection() {
                            {highlightSkillsInDescriptionInternal(
                               currentProject.description,
                               currentProject.techStack,
-                              `project-${currentIndex}-desc-dialog`
+                              `project-desc-dialog-${currentIndex}`
                           ).map((node, i) => <React.Fragment key={i}>{node}</React.Fragment>)}
                         </div>
                       </ScrollArea>
@@ -246,11 +244,10 @@ export function ProjectsSection() {
             <div
               className={cn(
                 "w-full md:w-1/2 h-64 md:h-full rounded-md flex flex-col items-center justify-center p-4 relative aspect-video md:aspect-auto",
-                // Dynamic background based on currentIndex
                 currentIndex % 4 === 0 ? "bg-gradient-to-br from-primary/20 to-primary/5" :
                 currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
                 currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" :
-                                     "bg-gradient-to-br from-ring/20 to-ring/5", // Use ring as the 4th option
+                                     "bg-gradient-to-br from-ring/20 to-ring/5", 
               )}
               data-ai-hint={currentProject.imageHint}
             >
