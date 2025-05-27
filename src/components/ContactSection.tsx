@@ -36,13 +36,13 @@ export function ContactSection() {
         </h2>
         <div
           className={cn(
-            "rounded-lg p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg max-w-2xl mx-auto",
+            "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg max-w-2xl mx-auto",
           )}
         >
           <Card className="bg-card rounded-lg">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold text-primary">Contact Me</CardTitle>
-              <CardDescription className="text-xs sm:text-sm">
+              <CardDescription className="text-xs sm:text-sm text-muted-foreground">
                 I&apos;m driven to build impactful AI solutions and explore innovative ideas. Whether it&apos;s a challenging role, a collaborative project, or a groundbreaking venture, I&apos;m ready to connect!
               </CardDescription>
             </CardHeader>
@@ -59,7 +59,7 @@ export function ContactSection() {
                   </Link>
                 </Button>
               </div>
-               <Button asChild size="lg" className="w-full text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+               <Button asChild size="lg" className="w-full text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 transform transition-transform hover:scale-105">
                 <a
                   href={emailHref}
                   onClick={handleEmailClick}

@@ -6,7 +6,7 @@ import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, VideoIcon } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -41,38 +41,34 @@ const highlightSkillsInDescriptionInternal = (
 ): ReactNode[] => {
   if (!description) return [description];
 
-  const allKeywordsToHighlight = [...new Set([...projectTechStack, ...mlAiKeywords])];
+  const allKeywordsToHighlight = [...new Set([...projectTechStack, ...mlAiKeywords].filter(skill => typeof skill === 'string' && skill.trim() !== ''))];
 
   if (!allKeywordsToHighlight || allKeywordsToHighlight.length === 0) {
     return [description];
   }
-
+  
   const pattern = allKeywordsToHighlight
-    .map(skill => typeof skill === 'string' ? `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b` : '')
-    .filter(Boolean) // Remove any empty strings if a skill wasn't a string
+    .map(skill => `\\b${skill.replace(/[.*+?^${()}|[\\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
 
-  if (!pattern) return [description]; // No valid patterns to match
+  if (!pattern) return [description]; 
 
   const regex = new RegExp(`(${pattern})`, 'gi');
   const parts = description.split(regex);
 
   return parts.map((part, index) => {
     const key = `${uniquePrefix}-part-${index}`;
-
     if (typeof part === 'string' && part.length > 0) {
       const partLower = part.toLowerCase();
       const isKeyword = allKeywordsToHighlight.some(
-        (skill) => typeof skill === 'string' && skill.toLowerCase() === partLower
+        (skill) => skill.toLowerCase() === partLower
       );
 
       if (isKeyword) {
         return <span key={key} className="font-semibold text-accent">{part}</span>;
       }
-      // Use React.Fragment to ensure keys are applied even for plain string parts
       return <React.Fragment key={key}>{part}</React.Fragment>;
     }
-    // For undefined, null, or empty string parts, render an empty fragment with a key
     return <React.Fragment key={key}></React.Fragment>;
   });
 };
@@ -115,7 +111,7 @@ export function ProjectsSection() {
     if (!isPaused && projects.length > 1) {
       intervalIdRef.current = setInterval(() => {
         handleNext();
-      }, 9000); // 9 seconds
+      }, 9000); 
     }
 
     return () => {
@@ -153,7 +149,7 @@ export function ProjectsSection() {
             {/* Left Pane: Text Content */}
             <div
               ref={textContentRef}
-              key={currentIndex} // Add key here to re-trigger animations on slide change
+              key={currentIndex} 
               className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
             >
               <ScrollArea className="flex-grow">
@@ -173,7 +169,7 @@ export function ProjectsSection() {
                        <Button
                         variant="default"
                         size="sm"
-                        className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2 text-primary-foreground bg-primary hover:bg-primary/90"
+                        className="rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2 text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90"
                       >
                         See more
                         <span className="bg-primary-foreground group-hover:bg-primary-foreground/80 rounded-full p-1 transition-colors">
@@ -207,7 +203,7 @@ export function ProjectsSection() {
                             </Button>
                             )}
                             {currentProject.liveUrl && (
-                            <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                            <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 transform transition-transform hover:scale-105">
                                 <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                                 <ExternalLink /> Live Demo
                                 </a>
@@ -237,7 +233,7 @@ export function ProjectsSection() {
                   </Button>
                   )}
                   {currentProject.liveUrl && (
-                  <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                  <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 transform transition-transform hover:scale-105">
                       <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink /> Live Demo
                       </a>
@@ -254,7 +250,7 @@ export function ProjectsSection() {
                 currentIndex % 4 === 0 ? "bg-gradient-to-br from-primary/20 to-primary/5" :
                 currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
                 currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" :
-                                     "bg-gradient-to-br from-chart-5/20 to-chart-5/5",
+                                     "bg-gradient-to-br from-ring/20 to-ring/5", // Use ring as the 4th option
               )}
               data-ai-hint={currentProject.imageHint}
             >
@@ -266,7 +262,7 @@ export function ProjectsSection() {
           </div>
 
           {/* Navigation Arrows */}
-           <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+           <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
             <Button
               variant="outline"
               onClick={handlePrev}
@@ -276,7 +272,7 @@ export function ProjectsSection() {
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </div>
-          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
             <Button
               variant="outline"
               onClick={handleNext}
@@ -304,7 +300,7 @@ export function ProjectsSection() {
             >
               {currentIndex === index && (
                 <div
-                  key={currentIndex} // Add key to ensure animation restarts on slide change
+                  key={currentIndex} 
                   className="h-full bg-primary rounded-full"
                   style={{ animation: 'progress-fill 9s linear forwards' }}
                 />

@@ -113,8 +113,8 @@ export function SkillsSection() {
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     isActive
-                      ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-gradient-to-br from-primary via-primary to-accent"
-                      : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
+                      ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-gradient-to-br from-primary via-accent to-ring"
+                      : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring"
                   )}
                   role="button"
                   tabIndex={0}
@@ -131,12 +131,12 @@ export function SkillsSection() {
                       isActive ? "pt-6" : "pt-4"
                     )}>
                       <category.icon className={cn(
-                        "transition-all duration-500 text-primary",
-                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 opacity-100"
+                        "transition-all duration-500 text-primary opacity-100",
+                        isActive ? "h-12 w-12 sm:h-16 sm:h-16 mb-3" : "h-8 w-8 sm:h-10 sm:h-10 mb-2 scale-100"
                       )} />
                       <CardTitle className={cn(
-                        "transition-all duration-500 text-primary",
-                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium opacity-100"
+                        "transition-all duration-500 text-primary opacity-100",
+                         isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium"
                       )}>{category.name}</CardTitle>
                     </CardHeader>
                     {isActive && (
@@ -166,7 +166,7 @@ export function SkillsSection() {
 
           {/* Navigation Arrows */}
           <div className="absolute left-0 sm:-left-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent h-10 w-10">
+             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -178,7 +178,7 @@ export function SkillsSection() {
             </div>
           </div>
           <div className="absolute right-0 sm:-right-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent h-10 w-10">
+            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handleNext}

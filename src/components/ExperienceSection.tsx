@@ -46,7 +46,7 @@ const highlightExperienceKeywords = (
   const parts = text.split(regex);
 
   return parts.map((part, index) => {
-    const isKeyword = mlAiProfessionalKeywords.some(keyword => part.toLowerCase() === keyword.toLowerCase());
+    const isKeyword = mlAiProfessionalKeywords.some(keyword => typeof part === 'string' && part.toLowerCase() === keyword.toLowerCase());
     if (isKeyword) {
       return <span key={`${uniquePrefix}-kw-${part.toLowerCase().replace(/\s+/g, '-')}-${index}`} className="font-semibold text-accent">{part}</span>;
     }
@@ -59,7 +59,7 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
   return (
     <div
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
+        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
       )}
     >
       <Card className="bg-card rounded-lg">

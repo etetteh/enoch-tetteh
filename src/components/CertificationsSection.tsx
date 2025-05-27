@@ -15,7 +15,7 @@ const CertificationCard = ({ cert }: { cert: Certification }) => {
   return (
     <div
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
+        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
       )}
     >
       <Card className="bg-card rounded-xl h-full flex flex-col">
@@ -36,7 +36,7 @@ const CertificationCard = ({ cert }: { cert: Certification }) => {
           </div>
         </CardHeader>
         <CardFooter className="mt-auto pt-4 border-t">
-          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 w-full sm:w-auto">
+          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 w-full sm:w-auto">
             <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="mr-2 h-4 w-4" /> View Credential
             </Link>

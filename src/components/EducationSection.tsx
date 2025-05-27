@@ -11,7 +11,7 @@ const EducationCard = ({ edu }: { edu: Education }) => {
   return (
     <div
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
+        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
       )}
     >
       <Card className="bg-card rounded-lg">
