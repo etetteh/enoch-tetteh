@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -54,6 +53,7 @@ export function SkillsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPaused, skillCategories.length]);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export function SkillsSection() {
     const activeCard = cardRefs.current[currentIndex];
 
     if (container && activeCard) {
-      const containerWidth = container.offsetWidth;
+      const containerWidth = container.clientWidth;
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
       
@@ -87,15 +87,14 @@ export function SkillsSection() {
         </h2>
 
         <div
-          className="relative max-w-5xl mx-auto" // Constrain width for arrow positioning
+          className="relative max-w-5xl mx-auto" 
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
             ref={scrollContainerRef}
             className={cn(
-              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full" 
-              // Removed: justify-center, mx-auto, max-w-5xl from here
+              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full justify-center" 
             )}
           >
             {skillCategories.map((category, index) => {
@@ -108,8 +107,8 @@ export function SkillsSection() {
                   className={cn(
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer shadow-lg",
                     isActive
-                      ? "w-64 sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-accent to-ring"
-                      : "w-48 sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring"
+                      ? "w-64 sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent"
+                      : "w-48 sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
                   )}
                   role="button"
                   tabIndex={0}
@@ -119,9 +118,9 @@ export function SkillsSection() {
                 >
                   <Card
                     className={cn(
-                      "w-full h-full flex flex-col items-center justify-start text-center p-1 transition-all duration-300 ease-in-out overflow-hidden",
+                      "w-full h-full flex flex-col items-center text-center p-1 transition-all duration-300 ease-in-out overflow-hidden justify-start",
                       isActive ? "bg-card" : "bg-card", 
-                      "rounded-xl"
+                      "rounded-xl" 
                     )}
                   >
                     <CardHeader className="p-2 shrink-0">
@@ -141,7 +140,7 @@ export function SkillsSection() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent
-                      className={cn(
+                       className={cn(
                         "w-full flex-grow overflow-hidden transition-all duration-500 ease-in-out",
                         isActive ? "max-h-full opacity-100 pt-3" : "max-h-0 opacity-0 p-0"
                       )}
@@ -168,54 +167,58 @@ export function SkillsSection() {
             })}
           </div>
 
-          {/* Navigation Arrows */}
-          <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
-            <Button
-              variant="outline"
-              onClick={handlePrev}
-              className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
-              aria-label="Previous skill category"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </Button>
-          </div>
-          <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
-            <Button
-              variant="outline"
-              onClick={handleNext}
-              className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
-              aria-label="Next skill category"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </Button>
-          </div>
+          {skillCategories.length > 1 && (
+            <>
+              <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+                <Button
+                  variant="outline"
+                  onClick={handlePrev}
+                  className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+                  aria-label="Previous skill category"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </Button>
+              </div>
+              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+                <Button
+                  variant="outline"
+                  onClick={handleNext}
+                  className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+                  aria-label="Next skill category"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </Button>
+              </div>
+            </>
+          )}
         </div>
-
-        {/* Dot Indicators */}
-        <div className="flex justify-center items-center space-x-2 py-6">
-          {skillCategories.map((_, index) => (
-            <button
-              key={`dot-${index}`}
-              onClick={() => goToSlide(index)}
-              className={cn(
-                "h-2 rounded-full transition-all duration-300 ease-in-out",
-                currentIndex === index
-                  ? "w-6 bg-primary/30 relative overflow-hidden"
-                  : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30"
-              )}
-              aria-label={`Go to skill category ${index + 1}`}
-              aria-current={currentIndex === index ? "true" : "false"}
-            >
-              {currentIndex === index && (
-                <div
-                  key={`fill-${currentIndex}`}
-                  className="h-full bg-primary rounded-full"
-                  style={{ animation: 'progress-fill 9s linear forwards' }}
-                />
-              )}
-            </button>
-          ))}
-        </div>
+        
+        {skillCategories.length > 1 && (
+          <div className="flex justify-center items-center space-x-2 py-6">
+            {skillCategories.map((_, index) => (
+              <button
+                key={`dot-${index}`}
+                onClick={() => goToSlide(index)}
+                className={cn(
+                  "h-2 rounded-full transition-all duration-300 ease-in-out",
+                  currentIndex === index
+                    ? "w-6 bg-primary/30 relative overflow-hidden"
+                    : "w-2 border border-muted-foreground/70 bg-transparent hover:bg-muted-foreground/30"
+                )}
+                aria-label={`Go to skill category ${index + 1}`}
+                aria-current={currentIndex === index ? "true" : "false"}
+              >
+                {currentIndex === index && (
+                  <div
+                    key={`fill-${currentIndex}`}
+                    className="h-full bg-primary rounded-full"
+                    style={{ animation: 'progress-fill 9s linear forwards' }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
