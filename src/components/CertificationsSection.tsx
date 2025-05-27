@@ -16,8 +16,8 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
   return (
     <div
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg transition-all duration-300 ease-in-out",
-        "w-80 sm:w-96 h-full flex-shrink-0 snap-center", // Fixed width for carousel items
+        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg transition-all duration-300 ease-in-out",
+        "w-64 sm:w-72 md:w-80 lg:w-96 h-full flex-shrink-0 snap-center", // Adjusted widths
         isActive ? "opacity-100 scale-105" : "opacity-80 scale-100"
       )}
     >
@@ -39,7 +39,7 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
           </div>
         </CardHeader>
         <CardFooter className="mt-auto pt-4 border-t">
-          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 w-full sm:w-auto">
+          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 w-full sm:w-auto">
             <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="mr-2 h-4 w-4" /> View Credential
             </Link>
@@ -95,16 +95,18 @@ export function CertificationsSection() {
     const activeCard = cardRefs.current[currentIndex];
 
     if (container && activeCard) {
-      const containerWidth = container.offsetWidth;
+      const containerContentWidth = container.clientWidth; // Use clientWidth for content area
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
       
-      let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
-      targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
+      let targetScrollLeft = cardLeft - (containerContentWidth / 2) + (cardWidth / 2);
+      
+      // Clamp the scrollLeft value to be within valid bounds
+      targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth));
 
       container.scrollTo({
         left: targetScrollLeft,
-        behavior: 'smooth',
+        behavior: 'auto', // Change to 'auto' for potentially better interaction with CSS snap
       });
     }
   }, [currentIndex]);
@@ -120,13 +122,13 @@ export function CertificationsSection() {
           Certifications & Learning
         </h2>
         <div
-          className="relative max-w-3xl mx-auto" // Max width for the carousel area
+          className="relative max-w-3xl mx-auto"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
             ref={carouselContainerRef}
-            className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[320px] sm:h-[350px]" // Fixed height for the carousel track
+            className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[320px] sm:h-[350px]"
           >
             {certifications.map((cert, index) => (
               <div
@@ -145,7 +147,7 @@ export function CertificationsSection() {
 
           {certifications.length > 1 && (
             <>
-              <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
+               <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -155,7 +157,7 @@ export function CertificationsSection() {
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
               </div>
-              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
+              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
                 <Button
                   variant="outline"
                   onClick={handleNext}
@@ -173,7 +175,7 @@ export function CertificationsSection() {
           <div className="flex justify-center items-center space-x-2 py-6">
             {certifications.map((_, index) => (
               <button
-                key={`dot-${index}`}
+                key={`dot-cert-${index}`} // Added unique prefix for keys
                 onClick={() => goToSlide(index)}
                 className={cn(
                   "h-2 rounded-full transition-all duration-300 ease-in-out",
