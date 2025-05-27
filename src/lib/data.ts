@@ -9,7 +9,7 @@ export const projects: Project[] = [
     carouselDescription: "Production-ready Python application leveraging Google Gemini LLMs to generate diverse, high-quality synthetic training datasets for NLP tasks, processing 5000+ samples with 95%+ uniqueness and supporting multiple data formats through modular architecture.",
     keyAchievement: "Generated over 5,000 unique synthetic NLP training samples with 95%+ uniqueness, boosting model training efficiency.",
     description: "Developed a comprehensive synthetic data generation platform that combines advanced LLM capabilities with enterprise-grade engineering practices. The system utilizes Google's Gemini models through LangChain to create diverse training datasets for various NLP tasks including question-answering, textual entailment, and semantic similarity. Implemented sophisticated duplicate detection using hashing algorithms to ensure data uniqueness, while incorporating incremental batch processing to handle large-scale generation efficiently. The modular architecture employs dependency injection and strategy patterns for maintainability, featuring comprehensive error handling with exponential backoff retry logic for API resilience. Built robust data pipeline supporting document context integration, automated query refinement, and flexible output formatting. Achieved significant performance optimizations including 60% memory usage reduction for large datasets and configurable generation parameters for optimal model performance. The system includes extensive testing suite with pytest, comprehensive logging infrastructure, and production-ready CLI interface supporting various deployment scenarios.",
-    imageUrl: 'https://placehold.co/600x400/009688/FFFFFF.png', // Teal
+    imageUrl: 'https://placehold.co/600x400/009688/FFFFFF.png', // Teal (accent)
     imageHint: 'synthetic data',
     techStack: ['Python', 'LangChain', 'Google Gemini API', 'PyTorch', 'Pandas', 'pytest', 'Parquet'],
     githubUrl: 'https://github.com/etetteh/synthetic-data-generator',
@@ -33,7 +33,7 @@ export const projects: Project[] = [
     carouselDescription: "Comprehensive MLOps solution for fine-tuning pre-trained sentence transformers on custom datasets, featuring parameter-efficient LoRA adaptation and intelligent hard negative mining for enhanced semantic similarity tasks.",
     keyAchievement: "Improved contrastive learning effectiveness by up to 2x in training efficiency using FAISS-accelerated hard negative mining.",
     description: "Built an enterprise-grade framework for fine-tuning sentence embedding models from the sentence-transformers library, supporting multiple downstream tasks including semantic similarity, classification, and information retrieval. The system features a modular architecture with automated dataset preprocessing, intelligent loss function selection based on data format, and advanced hard negative mining using FAISS for efficient similarity search. Implemented parameter-efficient fine-tuning through LoRA (Low-Rank Adaptation) integration, enabling resource-efficient training while maintaining model performance. The framework includes comprehensive configuration management via Pydantic models, supports mixed-precision training (FP16/BF16), and provides flexible evaluation metrics. Production-ready features include automated device detection (CUDA/MPS/CPU), reproducible training through seed management, configurable logging, and integration with popular ML tracking platforms like Weights & Biases and TensorBoard.",
-    imageUrl: 'https://placehold.co/600x400/FBBC05/000000.png', // Google Yellow
+    imageUrl: 'https://placehold.co/600x400/FBBC05/000000.png', // Chart 3 (Google Yellow)
     imageHint: 'embedding framework',
     techStack: ['PyTorch', 'Sentence-Transformers', 'Hugging Face (Transformers/Datasets/PEFT)', 'Python', 'FAISS', 'Pydantic', 'pytest', 'GitHub Actions', 'Docker', 'Mixed-Precision Training', 'LoRA adaptation'],
     githubUrl: 'https://github.com/etetteh/finetune-embedding',
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     carouselDescription: "Published research achieving state-of-the-art out-of-distribution generalization for chest X-ray pathology prediction across multiple hospital systems, with 4%+ improvement in cross-domain performance and deployment-ready quantized model variants.",
     keyAchievement: "Improved out-of-distribution generalization by over 4% for chest X-ray pathology prediction, published at Med-NeurIPS 2021.",
     description: "This advanced medical AI system addresses a critical challenge in healthcare AI: ensuring model reliability across different hospital systems and imaging equipment. The project implements a novel multi-domain balanced sampling strategy that significantly improves out-of-distribution generalization compared to traditional merged dataset approaches. The system processes chest X-rays from four major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) to predict four key pathologies: Cardiomegaly, Effusion, Edema, and Consolidation. Key innovations include custom weighted loss functions for handling medical data imbalance, sophisticated domain adaptation through balanced mini-batch sampling, and comprehensive leave-one-out cross-validation across medical institutions. The production pipeline features automated experiment tracking, robust checkpoint management, and quantization-aware training for deployment in resource-constrained clinical environments. Performance optimization includes cosine annealing learning rate scheduling with warmup, advanced data augmentation strategies, and efficient GPU/CPU inference modes. The system achieved publication at Medical Imaging meets NeurIPS 2021, demonstrating both research excellence and practical clinical applicability with deployment-ready model variants that maintain high accuracy.",
-    imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Google Red
+    imageUrl: 'https://placehold.co/600x400/EA4335/FFFFFF.png', // Chart 2 (Google Red)
     imageHint: 'medical AI',
     techStack: ['PyTorch', 'TorchXRayVision', 'Weights & Biases', 'scikit-learn', 'NumPy', 'CUDA/CPU Optimization', 'Model Quantization', 'Domain Adaptation', 'Data Augmentation', 'Medical Imaging'],
     githubUrl: 'https://github.com/etetteh/OoD_Gen-Chest_Xray',
@@ -195,14 +195,7 @@ export const certifications: Certification[] = [
     credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/certificate/YOUR_ID_HERE', // Replace with your actual URL
     icon: Award,
   },
-  {
-    id: 'google-cloud-skills-boost-badge',
-    title: 'Google Cloud Learning Achievement',
-    issuer: 'Google Cloud Skills Boost',
-    // dateObtained: 'Jan 2024', // You can add the date if you know it
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14840035',
-    icon: ShieldCheck,
-  },
+  // The Google Cloud Skills Boost entry was here and is now removed.
 ];
 
 
