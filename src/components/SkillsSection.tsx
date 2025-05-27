@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -70,10 +71,10 @@ export function SkillsSection() {
 
       container.scrollTo({
         left: targetScrollLeft,
-        behavior: 'smooth',
+        behavior: 'auto', // Changed from 'smooth' to 'auto'
       });
     }
-  }, [currentIndex]);
+  }, [currentIndex, skillCategories.length]); // Added skillCategories.length as it influences scrollWidth
 
   if (!skillCategories || skillCategories.length === 0) {
     return null;
@@ -94,7 +95,7 @@ export function SkillsSection() {
           <div
             ref={scrollContainerRef}
             className={cn(
-              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full justify-center" 
+              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full" 
             )}
           >
             {skillCategories.map((category, index) => {
@@ -139,8 +140,7 @@ export function SkillsSection() {
                         {category.name}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent
-                       className={cn(
+                    <CardContent className={cn(
                         "w-full flex-grow overflow-hidden transition-all duration-500 ease-in-out",
                         isActive ? "max-h-full opacity-100 pt-3" : "max-h-0 opacity-0 p-0"
                       )}
