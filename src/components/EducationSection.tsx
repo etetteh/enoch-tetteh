@@ -5,13 +5,20 @@ import type { Education } from '@/types/portfolio';
 import { education } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useRef } from 'react';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const EducationCard = ({ edu }: { edu: Education }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
 
   return (
     <div
+      ref={cardRef}
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
+        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
+        "transition-all duration-1000 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
       )}
     >
       <Card className="bg-card rounded-lg">
@@ -31,7 +38,7 @@ const EducationCard = ({ edu }: { edu: Education }) => {
               return (
                 <p key={index} className={cn(
                   "text-xs sm:text-sm text-foreground",
-                  isThesisLine ? "text-accent font-medium" : ""
+                  isThesisLine ? "text-accent font-bold" : ""
                 )}>
                   {line}
                 </p>
@@ -45,13 +52,19 @@ const EducationCard = ({ edu }: { edu: Education }) => {
 };
 
 export function EducationSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const isTitleVisible = useFadeInOnScroll(titleRef);
 
   return (
-    <section id="education">
+    <section id="education" ref={sectionRef}>
       <div className="container">
         <h2
+          ref={titleRef}
           className={cn(
             "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           )}
         >
           Education
@@ -65,3 +78,4 @@ export function EducationSection() {
     </section>
   );
 }
+

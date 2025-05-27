@@ -19,19 +19,27 @@ export function useFadeInOnScroll(
     const element = ref.current;
     if (!element) return;
 
+    // Ensure the element starts as invisible and in its pre-animation state
+    // This is a failsafe if initial CSS isn't applied quickly enough by React's rendering
+    if (element instanceof HTMLElement) {
+      element.style.opacity = '0';
+      // Note: direct style manipulation for translate might be complex here,
+      // relying on initial CSS classes is preferred.
+    }
+
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Check if the element is intersecting
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(element); // Stop observing after it's visible
+          observer.unobserve(element); 
         }
       },
       {
-        threshold: options?.threshold ?? 0.1, // Trigger when 10% of the element is visible
+        threshold: options?.threshold ?? 0.1, 
         root: options?.root ?? null,
         rootMargin: options?.rootMargin ?? '0px',
-        ...options, // Allow overriding defaults
+        ...options, 
       }
     );
 
@@ -42,7 +50,8 @@ export function useFadeInOnScroll(
         observer.unobserve(element);
       }
     };
-  }, [ref, options]); // Re-run effect if ref or options change
+  }, [ref, options]);
 
   return isVisible;
 }
+

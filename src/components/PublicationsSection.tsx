@@ -8,14 +8,20 @@ import { Button } from '@/components/ui/button';
 import { Github, ExternalLink, FileText as DefaultPubIcon } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useRef } from 'react';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const PublicationCard = ({ pub }: { pub: Publication }) => {
-  const IconToUse = pub.icon || DefaultPubIcon;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
 
   return (
     <div
+      ref={cardRef}
       className={cn(
-        "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
+        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
+        "transition-all duration-1000 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
       )}
     >
       <Card className="bg-card rounded-lg h-full flex flex-col">
@@ -30,7 +36,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
                 Conference: <span className="font-medium">{pub.conference}</span>
               </CardDescription>
             </div>
-            <IconToUse className="h-10 w-10 text-primary flex-shrink-0 mt-1" />
+            <pub.icon className="h-10 w-10 text-primary flex-shrink-0 mt-1" />
           </div>
         </CardHeader>
         {(pub.githubUrl || pub.paperUrl) && (
@@ -57,17 +63,23 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
 };
 
 export function PublicationsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const isTitleVisible = useFadeInOnScroll(titleRef);
 
   if (!publications || publications.length === 0) {
-    return null; // Don't render the section if there are no publications
+    return null; 
   }
 
   return (
-    <section id="publications">
+    <section id="publications" ref={sectionRef}>
       <div className="container">
         <h2
+          ref={titleRef}
           className={cn(
             "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           )}
         >
           Publications
@@ -81,3 +93,4 @@ export function PublicationsSection() {
     </section>
   );
 }
+

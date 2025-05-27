@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: boolean }) => {
   const IconToUse = cert.icon || Award;
@@ -21,7 +22,7 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
         isActive ? "opacity-100 scale-105" : "opacity-70 scale-100"
       )}
     >
-      <Card className="bg-card rounded-xl h-full flex flex-col">
+      <Card className="bg-card rounded-lg h-full flex flex-col">
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-grow">
@@ -39,7 +40,7 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
           </div>
         </CardHeader>
         <CardFooter className="mt-auto pt-4 border-t">
-          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 w-full sm:w-auto">
+          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 w-full sm:w-auto">
             <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="mr-2 h-4 w-4" /> View Credential
             </Link>
@@ -56,6 +57,14 @@ export function CertificationsSection() {
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const carouselBlockRef = useRef<HTMLDivElement>(null);
+
+  const isSectionVisible = useFadeInOnScroll(sectionRef);
+  const isTitleVisible = useFadeInOnScroll(titleRef);
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, certifications.length);
@@ -80,14 +89,13 @@ export function CertificationsSection() {
     if (!isPaused && certifications.length > 1) {
       intervalIdRef.current = setInterval(() => {
         handleNext();
-      }, 9000); // 9-second interval
+      }, 9000); 
     }
     return () => {
       if (intervalIdRef.current) {
         clearInterval(intervalIdRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPaused, certifications.length]);
 
   useEffect(() => {
@@ -115,13 +123,25 @@ export function CertificationsSection() {
   }
 
   return (
-    <section id="certifications">
+    <section id="certifications" ref={sectionRef}>
       <div className="container">
-        <h2 className="section-title">
+        <h2 
+          ref={titleRef}
+          className={cn(
+            "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+          )}
+        >
           Certifications & Learning
         </h2>
         <div
-          className="relative max-w-3xl mx-auto"
+          ref={carouselBlockRef}
+          className={cn(
+            "relative max-w-3xl mx-auto",
+            "transition-all duration-1000 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+          )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -146,7 +166,7 @@ export function CertificationsSection() {
 
           {certifications.length > 1 && (
             <>
-               <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+               <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent to-ring">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -156,7 +176,7 @@ export function CertificationsSection() {
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
               </div>
-              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent to-ring">
                 <Button
                   variant="outline"
                   onClick={handleNext}
@@ -200,3 +220,4 @@ export function CertificationsSection() {
     </section>
   );
 }
+

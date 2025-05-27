@@ -1,11 +1,13 @@
 
 'use client';
 
+import React, { type ReactNode, useRef } from 'react';
 import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import React, { type ReactNode } from 'react'; // Added full React import
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
+
 
 const mlAiProfessionalKeywords = [
   // Core ML/AI Concepts
@@ -35,17 +37,17 @@ const mlAiProfessionalKeywords = [
 
 const highlightExperienceKeywords = (
   text: string,
-  uniquePrefix: string // For generating unique keys
+  uniquePrefix: string 
 ): ReactNode[] => {
   if (!text) return [<React.Fragment key={`${uniquePrefix}-empty`}>{text}</React.Fragment>];
 
-  const pattern = mlAiProfessionalKeywords
+  const patternString = mlAiProfessionalKeywords
     .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
-  const regex = new RegExp(`(${pattern})`, 'gi');
   
-  if (!pattern) return [<React.Fragment key={`${uniquePrefix}-nodesc`}>{text}</React.Fragment>];
+  if (!patternString) return [<React.Fragment key={`${uniquePrefix}-nodesc`}>{text}</React.Fragment>];
 
+  const regex = new RegExp(`(${patternString})`, 'gi');
   const parts = text.split(regex);
 
   return parts.map((part, index) => {
@@ -57,17 +59,21 @@ const highlightExperienceKeywords = (
         }
         return <React.Fragment key={key}>{part}</React.Fragment>;
     }
-    // Return a fragment for empty or non-string parts to ensure a valid ReactNode array
     return <React.Fragment key={key}></React.Fragment>;
   });
 };
 
 const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
 
   return (
     <div
+      ref={cardRef}
       className={cn(
-        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
+        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
+        "transition-all duration-1000 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
       )}
     >
       <Card className="bg-card rounded-lg h-full">
@@ -95,13 +101,19 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
 };
 
 export function ExperienceSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const isTitleVisible = useFadeInOnScroll(titleRef);
 
   return (
-    <section id="experience">
+    <section id="experience" ref={sectionRef}>
       <div className="container">
         <h2
+          ref={titleRef}
           className={cn(
             "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           )}
         >
           Professional Experience
@@ -115,3 +127,4 @@ export function ExperienceSection() {
     </section>
   );
 }
+

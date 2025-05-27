@@ -6,18 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { portfolioOwner } from '@/lib/data';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function ResumeSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const downloadBlockRef = useRef<HTMLDivElement>(null);
 
+  const isSectionVisible = useFadeInOnScroll(sectionRef);
+  const isTitleVisible = useFadeInOnScroll(titleRef);
+  const isDownloadBlockVisible = useFadeInOnScroll(downloadBlockRef, { threshold: 0.1 });
+
   return (
-    <section id="resume">
+    <section id="resume" ref={sectionRef}>
       <div className="container">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           )}
         >
           My Resume
@@ -27,6 +35,8 @@ export function ResumeSection() {
             ref={downloadBlockRef}
             className={cn(
               "space-y-6 text-center max-w-md",
+              "transition-all duration-1000 ease-out delay-200",
+              isDownloadBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
             )}
           >
             <h3 className="text-2xl font-semibold text-primary">Download My Resume</h3>
@@ -49,3 +59,4 @@ export function ResumeSection() {
     </section>
   );
 }
+

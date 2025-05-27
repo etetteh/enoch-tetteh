@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function SkillsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,7 +19,15 @@ export function SkillsSection() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+  
+  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const carouselBlockRef = useRef<HTMLDivElement>(null);
+
+  const isSectionVisible = useFadeInOnScroll(sectionRef);
+  const isTitleVisible = useFadeInOnScroll(titleRef);
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
+
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? skillCategories.length - 1 : prevIndex - 1));
@@ -54,7 +63,6 @@ export function SkillsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPaused, skillCategories.length]);
 
   useEffect(() => {
@@ -71,31 +79,43 @@ export function SkillsSection() {
 
       container.scrollTo({
         left: targetScrollLeft,
-        behavior: 'auto', // Changed from 'smooth' to 'auto'
+        behavior: 'auto',
       });
     }
-  }, [currentIndex, skillCategories.length]); // Added skillCategories.length as it influences scrollWidth
+  }, [currentIndex, skillCategories.length]);
 
   if (!skillCategories || skillCategories.length === 0) {
     return null;
   }
 
   return (
-    <section id="skills">
+    <section id="skills" ref={sectionRef}>
       <div className="container">
-        <h2 ref={titleRef} className="section-title">
+        <h2 
+          ref={titleRef} 
+          className={cn(
+            "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+          )}
+        >
           Skills & Expertise
         </h2>
 
         <div
-          className="relative max-w-5xl mx-auto" 
+          ref={carouselBlockRef}
+          className={cn(
+            "relative max-w-5xl mx-auto",
+            "transition-all duration-1000 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
             ref={scrollContainerRef}
             className={cn(
-              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full" 
+              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full justify-center" 
             )}
           >
             {skillCategories.map((category, index) => {
@@ -108,8 +128,8 @@ export function SkillsSection() {
                   className={cn(
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer shadow-lg",
                     isActive
-                      ? "w-64 sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent"
-                      : "w-48 sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
+                      ? "w-[90%] max-w-[256px] sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent"
+                      : "w-[80%] max-w-[208px] sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
                   )}
                   role="button"
                   tabIndex={0}
@@ -169,7 +189,7 @@ export function SkillsSection() {
 
           {skillCategories.length > 1 && (
             <>
-              <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+              <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -179,7 +199,7 @@ export function SkillsSection() {
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
               </div>
-              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent">
+              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                 <Button
                   variant="outline"
                   onClick={handleNext}
@@ -197,7 +217,7 @@ export function SkillsSection() {
           <div className="flex justify-center items-center space-x-2 py-6">
             {skillCategories.map((_, index) => (
               <button
-                key={`dot-${index}`}
+                key={`dot-skill-${index}`}
                 onClick={() => goToSlide(index)}
                 className={cn(
                   "h-2 rounded-full transition-all duration-300 ease-in-out",
@@ -210,7 +230,7 @@ export function SkillsSection() {
               >
                 {currentIndex === index && (
                   <div
-                    key={`fill-${currentIndex}`}
+                    key={`fill-skill-${currentIndex}`}
                     className="h-full bg-primary rounded-full"
                     style={{ animation: 'progress-fill 9s linear forwards' }}
                   />
@@ -223,3 +243,4 @@ export function SkillsSection() {
     </section>
   );
 }
+

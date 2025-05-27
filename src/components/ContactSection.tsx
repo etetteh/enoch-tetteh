@@ -1,17 +1,26 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Linkedin, Github } from "lucide-react";
 import Link from "next/link";
 import { portfolioOwner } from "@/lib/data";
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function ContactSection() {
   const [emailHref, setEmailHref] = useState<string>('#');
   const [isClient, setIsClient] = useState(false);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardWrapperRef = useRef<HTMLDivElement>(null);
+
+  const isSectionVisible = useFadeInOnScroll(sectionRef);
+  const isTitleVisible = useFadeInOnScroll(titleRef);
+  const isCardWrapperVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
 
   useEffect(() => {
     setIsClient(true);
@@ -25,18 +34,24 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact">
+    <section id="contact" ref={sectionRef}>
       <div className="container">
         <h2
+          ref={titleRef}
           className={cn(
             "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           )}
         >
           Get In Touch
         </h2>
         <div
+          ref={cardWrapperRef}
           className={cn(
-            "rounded-lg p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg max-w-2xl mx-auto",
+            "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg max-w-2xl mx-auto",
+            "transition-all duration-1000 ease-out delay-200",
+            isCardWrapperVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           )}
         >
           <Card className="bg-card rounded-lg">
@@ -74,3 +89,4 @@ export function ContactSection() {
     </section>
   );
 }
+
