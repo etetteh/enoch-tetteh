@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bot, User, Loader2, Send, Sparkles } from 'lucide-react';
+import { Bot, User, Loader2, Send, BrainCircuit } from 'lucide-react'; // Changed Sparkles to BrainCircuit
 import { useToast } from "@/hooks/use-toast";
 import { portfolioOwner } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -95,7 +95,6 @@ export function Chatbot() {
       }
 
       const isBottomInputFocused = bottomInputRef.current === document.activeElement;
-      // Only cycle suggestions if the bottom input bar is not focused AND the query input is empty AND sheet is not open
       if (!isOpen && !isBottomInputFocused && !query) {
         intervalRef.current = setInterval(() => {
           queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
@@ -158,13 +157,22 @@ export function Chatbot() {
 
   const handleBottomBarSubmit = async (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
-    const queryToProcess = query.trim() || displayedSuggestedQuery;
+    let queryToProcess = query.trim();
+
+    if (!queryToProcess && displayedSuggestedQuery) {
+        queryToProcess = displayedSuggestedQuery;
+    }
+    
     if (!queryToProcess) return;
     
-    setIsOpen(true); // Open the sheet immediately
+    setIsOpen(true); 
+
+    // Wait for the sheet to potentially animate open slightly before processing
+    // This is a small UX tweak, can be adjusted or removed
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     await processQuery(queryToProcess);
-    setQuery(''); // Clear input after processing
+    setQuery(''); 
   };
   
   const handleSheetFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -193,7 +201,7 @@ export function Chatbot() {
             "flex items-center justify-between gap-2 z-50 group"
           )}
         >
-          <Sparkles className="h-5 w-5 text-accent flex-shrink-0 ml-1 group-focus-within:text-primary transition-colors" />
+          <BrainCircuit className="h-5 w-5 text-accent flex-shrink-0 ml-1 group-focus-within:text-primary transition-colors" />
           <Input
             ref={bottomInputRef}
             type="text"
@@ -209,9 +217,8 @@ export function Chatbot() {
               if (intervalRef.current) clearInterval(intervalRef.current);
             }}
             onBlur={() => {
-              // Only restart cycling if input is empty, sheet isn't open, and suggestions are loaded
               if (!query && !isOpen && !isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
-                if (intervalRef.current) clearInterval(intervalRef.current); // Clear any existing before starting new
+                if (intervalRef.current) clearInterval(intervalRef.current); 
                 intervalRef.current = setInterval(() => {
                   queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
                   setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
@@ -227,7 +234,7 @@ export function Chatbot() {
             className="h-9 w-9 p-0 text-neutral-300 hover:text-accent disabled:text-neutral-500 transition-colors"
             aria-label="Send message or use suggestion"
           >
-            {(isLoading && !!query.trim()) ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+            {(isLoading && (!!query.trim() || !!displayedSuggestedQuery)) ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </Button>
         </form>
       )}
@@ -247,7 +254,7 @@ export function Chatbot() {
         }}
       >
         <SheetContent className="w-full max-w-md sm:max-w-lg flex flex-col p-0">
-          <SheetHeader className="p-6 pb-2 border-b">
+          <SheetHeader className="p-6 pb-2 border-b shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Bot className="h-6 w-6 text-primary" />
@@ -291,7 +298,7 @@ export function Chatbot() {
             </div>
           </ScrollArea>
 
-          <SheetFooter className="p-4 border-t">
+          <SheetFooter className="p-4 border-t shrink-0">
             <form onSubmit={handleSheetFormSubmit} className="flex w-full items-center space-x-2">
               <Input
                 type="text"
