@@ -9,16 +9,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
 export function SkillsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedSkill, setSelectedSkill] = useState<SkillCategory | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const carouselContainerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
@@ -36,10 +32,8 @@ export function SkillsSection() {
     setCurrentIndex(index);
   };
 
-  const handleCardClick = (category: SkillCategory, index: number) => {
-    setSelectedSkill(category);
-    setIsDialogOpen(true);
-    setCurrentIndex(index); // Make the clicked card active in the carousel
+  const handleCardClick = (index: number) => {
+    setCurrentIndex(index);
   };
 
   useEffect(() => {
@@ -73,7 +67,6 @@ export function SkillsSection() {
       const cardWidth = activeCard.offsetWidth;
       
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
-      // Ensure scroll doesn't go beyond bounds
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
       container.scrollTo({
@@ -95,7 +88,6 @@ export function SkillsSection() {
         </h2>
 
         <div
-          ref={carouselContainerRef}
           className="relative"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -110,42 +102,63 @@ export function SkillsSection() {
                 <div
                   key={category.name}
                   ref={(el) => (cardRefs.current[index] = el)}
-                  onClick={() => handleCardClick(category, index)}
+                  onClick={() => handleCardClick(index)}
                   className={cn(
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer shadow-lg",
                     isActive
                       ? "w-64 sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-accent to-ring"
-                      : "w-48 sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring"
+                      : "w-48 sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-accent to-ring"
                   )}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick(category, index);}}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick(index);}}
                   aria-label={`View skills for ${category.name}. ${isActive ? 'Currently active.' : ''}`}
                   aria-expanded={isActive}
                 >
                   <Card
                     className={cn(
-                      "w-full h-full flex flex-col items-center justify-center text-center p-4 transition-all duration-300 ease-in-out",
-                       isActive ? "bg-card" : "bg-card" // Solid background for both
+                      "w-full h-full flex flex-col items-center justify-start text-center p-4 transition-all duration-300 ease-in-out overflow-hidden",
+                      "bg-card rounded-xl" 
                     )}
                   >
-                    <CardHeader className="p-2">
+                    <CardHeader className="p-2 shrink-0">
                       <category.icon
                         className={cn(
-                          "mx-auto mb-2 transition-all duration-300 ease-in-out text-primary",
-                          isActive ? "h-12 w-12 sm:h-16 sm:w-16" : "h-10 w-10 sm:h-12 sm:w-12"
+                          "mx-auto mb-2 transition-all duration-300 ease-in-out",
+                          isActive ? "h-12 w-12 sm:h-16 sm:w-16 text-primary" : "h-10 w-10 sm:h-12 sm:w-12 text-primary opacity-100"
                         )}
                       />
                       <CardTitle
                         className={cn(
-                          "transition-all duration-300 ease-in-out text-primary",
-                          isActive ? "text-lg sm:text-xl font-semibold" : "text-md sm:text-lg font-medium"
+                          "transition-all duration-300 ease-in-out",
+                          isActive ? "text-lg sm:text-xl font-semibold text-primary" : "text-md sm:text-lg font-medium text-primary opacity-100"
                         )}
                       >
                         {category.name}
                       </CardTitle>
                     </CardHeader>
-                    {/* Skill badges are now shown in the dialog */}
+                    <CardContent
+                      className={cn(
+                        "w-full flex-grow overflow-hidden transition-all duration-500 ease-in-out",
+                        isActive ? "max-h-full opacity-100 pt-3" : "max-h-0 opacity-0 p-0"
+                      )}
+                    >
+                      {isActive && ( 
+                        <ScrollArea className="h-full">
+                          <div className="flex flex-wrap gap-2 justify-center">
+                            {category.skills.map((skill) => (
+                              <Badge
+                                key={skill}
+                                variant="secondary"
+                                className="text-xs py-1 px-2"
+                              >
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </ScrollArea>
+                      )}
+                    </CardContent>
                   </Card>
                 </div>
               );
@@ -201,33 +214,6 @@ export function SkillsSection() {
           ))}
         </div>
       </div>
-
-      {/* Dialog for displaying selected skill details */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          {selectedSkill && (
-            <>
-              <DialogHeader className="items-center text-center">
-                <selectedSkill.icon className="h-16 w-16 text-primary mb-2" />
-                <DialogTitle className="text-2xl text-primary">{selectedSkill.name}</DialogTitle>
-              </DialogHeader>
-              <ScrollArea className="h-64 mt-4 pr-3">
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {selectedSkill.skills.map((skill) => (
-                    <Badge
-                      key={skill}
-                      variant="secondary"
-                      className="text-xs py-1 px-2"
-                    >
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </ScrollArea>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }
