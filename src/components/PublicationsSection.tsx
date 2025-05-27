@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Publication } from '@/types/portfolio';
@@ -10,17 +11,17 @@ import { cn } from '@/lib/utils';
 import { useRef } from 'react';
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
-const PublicationCard = ({ pub }: { pub: Publication }) => {
+const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1, delay: pubIndex * 100 });
 
   return (
     <div
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-opacity duration-1000 ease-out",
-        isVisible ? "opacity-100" : "opacity-0"
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
       )}
     >
       <Card className="bg-card rounded-lg h-full flex flex-col">
@@ -76,15 +77,15 @@ export function PublicationsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-opacity duration-1000 ease-out",
-            isTitleVisible ? "opacity-100" : "opacity-0"
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
           Publications
         </h2>
         <div className="space-y-8">
-          {publications.map((pub) => (
-            <PublicationCard key={pub.id} pub={pub} />
+          {publications.map((pub, index) => (
+            <PublicationCard key={pub.id} pub={pub} pubIndex={index} />
           ))}
         </div>
       </div>

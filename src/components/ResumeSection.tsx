@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef } from 'react';
@@ -13,7 +14,7 @@ export function ResumeSection() {
   const downloadBlockRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isDownloadBlockVisible = useFadeInOnScroll(downloadBlockRef, { threshold: 0.1 });
+  const isDownloadBlockVisible = useFadeInOnScroll(downloadBlockRef, { delay: 200 });
 
   return (
     <section id="resume">
@@ -22,8 +23,8 @@ export function ResumeSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-opacity duration-1000 ease-out",
-            isTitleVisible ? "opacity-100" : "opacity-0"
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
           My Resume
@@ -33,8 +34,8 @@ export function ResumeSection() {
             ref={downloadBlockRef}
             className={cn(
               "space-y-6 text-center max-w-md",
-              "transition-opacity duration-1000 ease-out delay-200",
-              isDownloadBlockVisible ? "opacity-100" : "opacity-0"
+              "transition-all duration-1000 ease-out",
+              isDownloadBlockVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
             )}
           >
             <h3 className="text-2xl font-semibold text-primary">Download My Resume</h3>

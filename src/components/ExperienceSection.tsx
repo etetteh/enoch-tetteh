@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { type ReactNode, useRef } from 'react';
@@ -9,28 +10,22 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 
 const mlAiProfessionalKeywords = [
-  // Core ML/AI Concepts
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
   "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering",
   "Anomaly Detection", "Recommendation System", "Reinforcement Learning", "Semantic Similarity",
   "Textual Entailment", "Question Answering",
-  // ML Techniques & Processes
   "Fine-tuning", "Pre-trained Model", "Transfer Learning", "Data Augmentation", "CutMix", "MixUp",
   "Model Pruning", "Quantization", "Adversarial Training", "Hard Negative Mining", "Parameter-Efficient",
   "LoRA", "Optimization", "Algorithm", "Generalization", "Accuracy", "Performance",
   "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
-  // MLOps & Production
   "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient",
   "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control", "LLMOps",
-  // Tools & Frameworks (examples, as tech stack is often separate)
   "PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "Hugging Face", "Transformers", "Datasets",
   "Accelerate", "PEFT", "TIMM", "Sentence-Transformers", "FAISS", "Vertex AI", "Google Gemini API",
   "MLflow", "Ray Tune", "Weights & Biases", "ONNX", "FastAPI", "Docker", "Kubernetes", "GCP",
   "Google Cloud Platform", "BigQuery",
-  // Action Verbs
   "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated",
   "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
-  // Impact/Quality Descriptors
   "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
 ];
 
@@ -64,15 +59,15 @@ const highlightExperienceKeywords = (
 
 const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1, delay: expIndex * 100 });
 
   return (
     <div
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-opacity duration-1000 ease-out",
-        isVisible ? "opacity-100" : "opacity-0"
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
       )}
     >
       <Card className="bg-card rounded-lg h-full">
@@ -110,8 +105,8 @@ export function ExperienceSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-opacity duration-1000 ease-out",
-            isTitleVisible ? "opacity-100" : "opacity-0"
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
           Professional Experience

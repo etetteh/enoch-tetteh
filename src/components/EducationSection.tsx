@@ -1,6 +1,7 @@
+
 'use client';
 
-import React, { type ReactNode } from 'react'; // Ensured React import
+import React, { type ReactNode } from 'react'; 
 import type { Education } from '@/types/portfolio';
 import { education } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,17 +9,17 @@ import { cn } from '@/lib/utils';
 import { useRef } from 'react';
 import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
-const EducationCard = ({ edu }: { edu: Education }) => {
+const EducationCard = ({ edu, eduIndex }: { edu: Education, eduIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1 });
+  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1, delay: eduIndex * 100 });
 
   return (
     <div
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-opacity duration-1000 ease-out",
-        isVisible ? "opacity-100" : "opacity-0"
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
       )}
     >
       <Card className="bg-card rounded-lg">
@@ -62,15 +63,15 @@ export function EducationSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-opacity duration-1000 ease-out",
-            isTitleVisible ? "opacity-100" : "opacity-0"
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
           Education
         </h2>
         <div className="space-y-8">
-          {education.map((edu) => (
-            <EducationCard key={edu.id} edu={edu} />
+          {education.map((edu, index) => (
+            <EducationCard key={edu.id} edu={edu} eduIndex={index} />
           ))}
         </div>
       </div>

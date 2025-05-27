@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -61,7 +62,7 @@ export function CertificationsSection() {
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { delay: 200 });
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, certifications.length);
@@ -126,8 +127,8 @@ export function CertificationsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-opacity duration-1000 ease-out",
-            isTitleVisible ? "opacity-100" : "opacity-0"
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
           Certifications & Learning
@@ -136,8 +137,8 @@ export function CertificationsSection() {
           ref={carouselBlockRef}
           className={cn(
             "relative max-w-3xl mx-auto",
-            "transition-opacity duration-1000 ease-out delay-200",
-            isCarouselBlockVisible ? "opacity-100" : "opacity-0"
+            "transition-all duration-1000 ease-out",
+            isCarouselBlockVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
           )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}

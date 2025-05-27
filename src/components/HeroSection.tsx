@@ -9,7 +9,7 @@ import Balancer from 'react-wrap-balancer';
 import { cn } from '@/lib/utils';
 
 export function HeroSection() {
-  const sectionRef = useRef<HTMLElement>(null);
+  // Refs for individual elements to potentially apply specific animations if needed later
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const bioRef = useRef<HTMLParagraphElement>(null);
@@ -17,7 +17,6 @@ export function HeroSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className={cn(
         "min-h-screen flex flex-col justify-center"
@@ -27,7 +26,8 @@ export function HeroSection() {
         <h1
           ref={titleRef}
           className={cn(
-            "text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl"
+            "text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl",
+            "opacity-0 animate-in fade-in slide-in-from-bottom-6 duration-1000 ease-out delay-300"
           )}
         >
           <Balancer>{portfolioOwner.name}</Balancer>
@@ -35,7 +35,8 @@ export function HeroSection() {
         <p
           ref={subtitleRef}
           className={cn(
-            "mt-6 max-w-2xl mx-auto text-lg text-foreground sm:text-xl md:text-2xl"
+            "mt-6 max-w-2xl mx-auto text-lg text-foreground sm:text-xl md:text-2xl",
+            "opacity-0 animate-in fade-in slide-in-from-bottom-5 duration-1000 ease-out delay-500"
           )}
         >
           <Balancer>{portfolioOwner.title}</Balancer>
@@ -43,7 +44,8 @@ export function HeroSection() {
         <p
           ref={bioRef}
           className={cn(
-            "mt-8 max-w-3xl mx-auto text-md text-muted-foreground sm:text-lg"
+            "mt-8 max-w-3xl mx-auto text-md text-muted-foreground sm:text-lg",
+            "opacity-0 animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out delay-700"
           )}
         >
           <Balancer>{portfolioOwner.bio}</Balancer>
@@ -51,7 +53,8 @@ export function HeroSection() {
         <div
           ref={buttonsRef}
           className={cn(
-            "mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+            "mt-10 flex flex-col sm:flex-row gap-4 justify-center",
+            "opacity-0 animate-in fade-in slide-in-from-bottom-3 duration-1000 ease-out delay-900"
           )}
         >
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform transition-transform hover:scale-105">
