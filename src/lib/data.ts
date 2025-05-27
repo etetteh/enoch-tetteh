@@ -1,6 +1,6 @@
 
 import type { Project, SkillCategory, Experience, Education, Publication, Certification } from '@/types/portfolio';
-import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText, MessageCircle, Award, ShieldCheck, VideoIcon, Sparkles } from 'lucide-react';
+import { Briefcase, GraduationCap, Brain, Database, Cloud, Code, Cpu, AppWindow, BarChart3, Workflow, Settings2, Puzzle, ToyBrick, Palette, TestTube2, Microscope, Cog, FileText, MessageCircle, Award, ShieldCheck, VideoIcon, Sparkles, ImageIcon } from 'lucide-react';
 
 export const projects: Project[] = [
   {
@@ -249,7 +249,15 @@ export const certifications: Certification[] = [
     issuer: 'Google Cloud Skills Boost',
     dateObtained: 'May 27, 2022',
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2096799',
-    icon: Cloud, // Using the Cloud icon as it's directly related
+    icon: Cloud,
+  },
+  {
+    id: 'image-gen-intro',
+    title: 'Introduction to Image Generation',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Feb 21, 2025',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14048484',
+    icon: ImageIcon,
   },
 ];
 
@@ -269,3 +277,4 @@ export const portfolioOwner = {
     
 
     
+
