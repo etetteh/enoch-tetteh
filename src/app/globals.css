@@ -22,7 +22,7 @@
     --muted: 0 0% 90%; /* Muted gray, slightly darker than secondary */
     --muted-foreground: 0 0% 45%; /* Muted text color */
 
-    --accent: 142 71% 45%; /* Google Green (approx. #34A853) */
+    --accent: 174 100% 29%; /* Teal (#009688) */
     --accent-foreground: 0 0% 100%; /* White text for accent elements */
 
     --destructive: 4 90% 58%; /* Google Red */
@@ -38,7 +38,7 @@
     --chart-1: 217 91% 60%; /* Google Blue */
     --chart-2: 4 90% 58%;   /* Google Red */
     --chart-3: 45 100% 50%; /* Google Yellow */
-    --chart-4: 142 71% 45%; /* Google Green */
+    --chart-4: 174 100% 29%; /* Teal */
     --chart-5: 260 80% 65%; /* A Purple, for variety if needed */
     
     /* Sidebar specific colors - align with the new theme */
@@ -71,8 +71,8 @@
     --muted: 220 15% 25%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 142 71% 55%; /* Lighter Google Green for dark mode */
-    --accent-foreground: 0 0% 10%;
+    --accent: 174 100% 37%; /* Lighter Teal for dark mode */
+    --accent-foreground: 0 0% 10%; /* Very Dark Gray/Black text for accent elements */
 
     --destructive: 4 80% 65%; /* Lighter Google Red for dark mode */
     --destructive-foreground: 0 0% 98%;
@@ -85,7 +85,7 @@
     --chart-1: 217 91% 65%; /* Google Blue (Dark Mode) */
     --chart-2: 4 80% 65%;   /* Google Red (Dark Mode) */
     --chart-3: 45 90% 60%; /* Google Yellow (Dark Mode) */
-    --chart-4: 142 71% 55%; /* Google Green (Dark Mode) */
+    --chart-4: 174 100% 37%; /* Teal (Dark Mode) */
     --chart-5: 260 70% 70%; /* A Purple (Dark Mode) */
 
     /* Sidebar specific colors for dark mode */
