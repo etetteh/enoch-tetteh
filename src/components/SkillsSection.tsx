@@ -52,6 +52,7 @@ export function SkillsSection() {
       
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
       
+      // Ensure scrollLeft is within bounds
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
       if (Math.abs(container.scrollLeft - targetScrollLeft) > 1) { 
@@ -61,7 +62,7 @@ export function SkillsSection() {
         });
       }
     }
-  }, [currentIndex]);
+  }, [currentIndex]); 
 
   useEffect(() => {
     if (intervalIdRef.current) {
@@ -84,7 +85,7 @@ export function SkillsSection() {
 
   return (
     <section id="skills">
-      <div className="container">
+      <div className="container mx-auto">
         <h2
           ref={titleRef}
           className="section-title"
@@ -100,7 +101,11 @@ export function SkillsSection() {
         >
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory w-full max-w-5xl h-[400px] sm:h-[460px]"
+            className={cn(
+              "flex justify-center overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory",
+              "w-full max-w-5xl h-[400px] sm:h-[460px]",
+              "mx-auto" // Ensures this max-width container is centered if parent is wider
+            )}
           >
             {skillCategories.map((category, index) => {
               const isActive = index === currentIndex;
@@ -113,8 +118,8 @@ export function SkillsSection() {
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     isActive
-                      ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-gradient-to-br from-primary via-accent to-ring"
-                      : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring"
+                      ? "w-64 h-80 sm:w-72 sm:h-96 shadow-2xl scale-105 z-10 cursor-default bg-gradient-to-br from-primary via-primary to-accent"
+                      : "w-48 h-64 sm:w-56 sm:h-72 shadow-lg scale-90 opacity-70 cursor-pointer hover:opacity-90 hover:scale-95 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
                   )}
                   role="button"
                   tabIndex={0}
@@ -124,7 +129,7 @@ export function SkillsSection() {
                 >
                   <Card className={cn(
                     "w-full h-full flex flex-col bg-card rounded-xl",
-                     isActive ? "border-transparent" : ""
+                     isActive ? "border-transparent" : "border-transparent" // Keep borders transparent, gradient wrapper handles it
                     )}>
                     <CardHeader className={cn(
                       "flex flex-col items-center text-center p-4 transition-all duration-300",
@@ -166,7 +171,7 @@ export function SkillsSection() {
 
           {/* Navigation Arrows */}
           <div className="absolute left-0 sm:-left-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring h-10 w-10">
+             <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -178,7 +183,7 @@ export function SkillsSection() {
             </div>
           </div>
           <div className="absolute right-0 sm:-right-2 top-1/2 -translate-y-1/2 z-20 hidden sm:block">
-            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring h-10 w-10">
+            <div className="rounded-full p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent h-10 w-10">
                 <Button
                   variant="outline"
                   onClick={handleNext}
@@ -220,3 +225,4 @@ export function SkillsSection() {
     </section>
   );
 }
+
