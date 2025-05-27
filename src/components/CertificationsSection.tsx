@@ -17,8 +17,8 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
     <div
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg transition-all duration-300 ease-in-out",
-        "w-64 sm:w-72 md:w-80 lg:w-96 h-full flex-shrink-0 snap-center", // Adjusted widths
-        isActive ? "opacity-100 scale-105" : "opacity-80 scale-100"
+        "w-64 sm:w-72 md:w-80 lg:w-96 h-full flex-shrink-0 snap-center",
+        isActive ? "opacity-100 scale-105" : "opacity-70 scale-100"
       )}
     >
       <Card className="bg-card rounded-xl h-full flex flex-col">
@@ -95,18 +95,17 @@ export function CertificationsSection() {
     const activeCard = cardRefs.current[currentIndex];
 
     if (container && activeCard) {
-      const containerContentWidth = container.clientWidth; // Use clientWidth for content area
+      const containerContentWidth = container.clientWidth;
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
       
       let targetScrollLeft = cardLeft - (containerContentWidth / 2) + (cardWidth / 2);
       
-      // Clamp the scrollLeft value to be within valid bounds
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth));
 
       container.scrollTo({
         left: targetScrollLeft,
-        behavior: 'auto', // Change to 'auto' for potentially better interaction with CSS snap
+        behavior: 'auto', 
       });
     }
   }, [currentIndex]);
@@ -128,7 +127,7 @@ export function CertificationsSection() {
         >
           <div
             ref={carouselContainerRef}
-            className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[320px] sm:h-[350px]"
+            className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[380px] sm:h-[400px]"
           >
             {certifications.map((cert, index) => (
               <div
@@ -175,7 +174,7 @@ export function CertificationsSection() {
           <div className="flex justify-center items-center space-x-2 py-6">
             {certifications.map((_, index) => (
               <button
-                key={`dot-cert-${index}`} // Added unique prefix for keys
+                key={`dot-cert-${index}`}
                 onClick={() => goToSlide(index)}
                 className={cn(
                   "h-2 rounded-full transition-all duration-300 ease-in-out",
