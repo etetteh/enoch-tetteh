@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { type ReactNode, useRef } from 'react';
@@ -39,7 +38,7 @@ const highlightExperienceKeywords = (
   text: string,
   uniquePrefix: string 
 ): ReactNode[] => {
-  if (!text) return [<React.Fragment key={`${uniquePrefix}-empty`}>{text}</React.Fragment>];
+  if (typeof text !== 'string' || !text) return [<React.Fragment key={`${uniquePrefix}-empty`}>{text}</React.Fragment>];
 
   const patternString = mlAiProfessionalKeywords
     .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
@@ -72,8 +71,8 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-all duration-1000 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+        "transition-opacity duration-1000 ease-out",
+        isVisible ? "opacity-100" : "opacity-0"
       )}
     >
       <Card className="bg-card rounded-lg h-full">
@@ -101,19 +100,18 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
 };
 
 export function ExperienceSection() {
-  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const isTitleVisible = useFadeInOnScroll(titleRef);
 
   return (
-    <section id="experience" ref={sectionRef}>
+    <section id="experience">
       <div className="container">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "transition-opacity duration-1000 ease-out",
+            isTitleVisible ? "opacity-100" : "opacity-0"
           )}
         >
           Professional Experience
@@ -127,4 +125,3 @@ export function ExperienceSection() {
     </section>
   );
 }
-

@@ -1,6 +1,4 @@
-
 'use client';
-
 import { type RefObject, useEffect, useState } from 'react';
 
 interface IntersectionObserverOptions {
@@ -17,29 +15,21 @@ export function useFadeInOnScroll(
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) return;
-
-    // Ensure the element starts as invisible and in its pre-animation state
-    // This is a failsafe if initial CSS isn't applied quickly enough by React's rendering
-    if (element instanceof HTMLElement) {
-      element.style.opacity = '0';
-      // Note: direct style manipulation for translate might be complex here,
-      // relying on initial CSS classes is preferred.
+    if (!element) {
+      return;
     }
-
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(element); 
+          observer.unobserve(element); // Unobserve after it becomes visible to prevent re-triggering
         }
       },
       {
-        threshold: options?.threshold ?? 0.1, 
+        threshold: options?.threshold ?? 0.01, // Lowered default threshold for more sensitivity
         root: options?.root ?? null,
         rootMargin: options?.rootMargin ?? '0px',
-        ...options, 
       }
     );
 
@@ -47,11 +37,13 @@ export function useFadeInOnScroll(
 
     return () => {
       if (element) {
-        observer.unobserve(element);
+        observer.unobserve(element); // Cleanup on unmount
       }
     };
-  }, [ref, options]);
+  // Ensure dependencies are stable. Primitive values from options are fine.
+  // If options object itself is passed and changes identity, it can cause re-runs.
+  // Using specific primitive properties from options is more robust.
+  }, [ref, options?.root, options?.rootMargin, options?.threshold]);
 
   return isVisible;
 }
-

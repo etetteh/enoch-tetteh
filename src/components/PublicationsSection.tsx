@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Publication } from '@/types/portfolio';
@@ -20,8 +19,8 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-all duration-1000 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+        "transition-opacity duration-1000 ease-out",
+        isVisible ? "opacity-100" : "opacity-0"
       )}
     >
       <Card className="bg-card rounded-lg h-full flex flex-col">
@@ -49,7 +48,7 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
               </Button>
             )}
             {pub.paperUrl && (
-              <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90">
+              <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90">
                 <Link href={pub.paperUrl} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4" /> Read Paper
                 </Link>
@@ -63,7 +62,6 @@ const PublicationCard = ({ pub }: { pub: Publication }) => {
 };
 
 export function PublicationsSection() {
-  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const isTitleVisible = useFadeInOnScroll(titleRef);
 
@@ -72,14 +70,14 @@ export function PublicationsSection() {
   }
 
   return (
-    <section id="publications" ref={sectionRef}>
+    <section id="publications">
       <div className="container">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "transition-opacity duration-1000 ease-out",
+            isTitleVisible ? "opacity-100" : "opacity-0"
           )}
         >
           Publications
@@ -93,4 +91,3 @@ export function PublicationsSection() {
     </section>
   );
 }
-

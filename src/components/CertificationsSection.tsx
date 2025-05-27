@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -17,9 +16,9 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
   return (
     <div
       className={cn(
-        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg transition-all duration-300 ease-in-out",
+        "rounded-xl p-0.5 shadow-lg transition-all duration-300 ease-in-out",
         "w-64 sm:w-72 md:w-80 lg:w-96 h-full flex-shrink-0 snap-center",
-        isActive ? "opacity-100 scale-105" : "opacity-70 scale-100"
+        isActive ? "opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent" : "opacity-70 scale-100 hover:opacity-90 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
       )}
     >
       <Card className="bg-card rounded-lg h-full flex flex-col">
@@ -40,7 +39,7 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
           </div>
         </CardHeader>
         <CardFooter className="mt-auto pt-4 border-t">
-          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 w-full sm:w-auto">
+          <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 w-full sm:w-auto">
             <Link href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="mr-2 h-4 w-4" /> View Credential
             </Link>
@@ -58,11 +57,9 @@ export function CertificationsSection() {
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
-  const isSectionVisible = useFadeInOnScroll(sectionRef);
   const isTitleVisible = useFadeInOnScroll(titleRef);
   const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
 
@@ -123,14 +120,14 @@ export function CertificationsSection() {
   }
 
   return (
-    <section id="certifications" ref={sectionRef}>
+    <section id="certifications">
       <div className="container">
         <h2 
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "transition-opacity duration-1000 ease-out",
+            isTitleVisible ? "opacity-100" : "opacity-0"
           )}
         >
           Certifications & Learning
@@ -139,8 +136,8 @@ export function CertificationsSection() {
           ref={carouselBlockRef}
           className={cn(
             "relative max-w-3xl mx-auto",
-            "transition-all duration-1000 ease-out delay-200",
-            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "transition-opacity duration-1000 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100" : "opacity-0"
           )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -166,7 +163,7 @@ export function CertificationsSection() {
 
           {certifications.length > 1 && (
             <>
-               <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent to-ring">
+               <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -176,7 +173,7 @@ export function CertificationsSection() {
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
               </div>
-              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent to-ring">
+              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                 <Button
                   variant="outline"
                   onClick={handleNext}
@@ -220,4 +217,3 @@ export function CertificationsSection() {
     </section>
   );
 }
-

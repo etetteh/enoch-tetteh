@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -20,11 +19,9 @@ export function SkillsSection() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   
-  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
-  const isSectionVisible = useFadeInOnScroll(sectionRef);
   const isTitleVisible = useFadeInOnScroll(titleRef);
   const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
 
@@ -70,33 +67,35 @@ export function SkillsSection() {
     const activeCard = cardRefs.current[currentIndex];
 
     if (container && activeCard) {
-      const containerWidth = container.clientWidth;
+      const containerContentWidth = container.clientWidth; // Use clientWidth for content area width
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
       
-      let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
-      targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
+      let targetScrollLeft = cardLeft - (containerContentWidth / 2) + (cardWidth / 2);
+      
+      targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth));
 
       container.scrollTo({
         left: targetScrollLeft,
-        behavior: 'auto',
+        behavior: 'auto', 
       });
     }
   }, [currentIndex, skillCategories.length]);
+
 
   if (!skillCategories || skillCategories.length === 0) {
     return null;
   }
 
   return (
-    <section id="skills" ref={sectionRef}>
+    <section id="skills">
       <div className="container">
         <h2 
           ref={titleRef} 
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "transition-opacity duration-1000 ease-out",
+            isTitleVisible ? "opacity-100" : "opacity-0"
           )}
         >
           Skills & Expertise
@@ -105,14 +104,14 @@ export function SkillsSection() {
         <div
           ref={carouselBlockRef}
           className={cn(
-            "relative max-w-5xl mx-auto",
-            "transition-all duration-1000 ease-out delay-200",
-            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "relative max-w-5xl mx-auto", // This div now controls the max-width and centering
+            "transition-opacity duration-1000 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100" : "opacity-0"
             )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div
+          <div // This is the scroll container
             ref={scrollContainerRef}
             className={cn(
               "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full justify-center" 
@@ -127,9 +126,9 @@ export function SkillsSection() {
                   onClick={() => handleCardClick(index)}
                   className={cn(
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer shadow-lg",
-                    isActive
-                      ? "w-[90%] max-w-[256px] sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent"
-                      : "w-[80%] max-w-[208px] sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
+                     isActive
+                      ? "w-[90%] max-w-[256px] sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-accent to-ring"
+                      : "w-[80%] max-w-[208px] sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring"
                   )}
                   role="button"
                   tabIndex={0}
@@ -140,8 +139,7 @@ export function SkillsSection() {
                   <Card
                     className={cn(
                       "w-full h-full flex flex-col items-center text-center p-1 transition-all duration-300 ease-in-out overflow-hidden justify-start",
-                      isActive ? "bg-card" : "bg-card", 
-                      "rounded-xl" 
+                      "rounded-xl bg-card" 
                     )}
                   >
                     <CardHeader className="p-2 shrink-0">
@@ -160,7 +158,7 @@ export function SkillsSection() {
                         {category.name}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className={cn(
+                     <CardContent className={cn(
                         "w-full flex-grow overflow-hidden transition-all duration-500 ease-in-out",
                         isActive ? "max-h-full opacity-100 pt-3" : "max-h-0 opacity-0 p-0"
                       )}
@@ -189,7 +187,7 @@ export function SkillsSection() {
 
           {skillCategories.length > 1 && (
             <>
-              <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
+              <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
                 <Button
                   variant="outline"
                   onClick={handlePrev}
@@ -199,7 +197,7 @@ export function SkillsSection() {
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
               </div>
-              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
+              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
                 <Button
                   variant="outline"
                   onClick={handleNext}
@@ -243,4 +241,3 @@ export function SkillsSection() {
     </section>
   );
 }
-

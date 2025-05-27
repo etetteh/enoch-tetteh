@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useRef, useEffect, type ReactNode } from 'react';
@@ -39,7 +38,7 @@ const highlightSkillsInDescriptionInternal = (
   projectTechStack: string[],
   uniquePrefix: string
 ): ReactNode[] => {
-  if (!description) return [<React.Fragment key={`${uniquePrefix}-empty`}>{description}</React.Fragment>];
+  if (typeof description !== 'string' || !description) return [<React.Fragment key={`${uniquePrefix}-empty`}>{description}</React.Fragment>];
 
   const allKeywordsToHighlight = [...new Set([...(projectTechStack || []), ...mlAiKeywords]
     .filter(skill => typeof skill === 'string' && skill.trim() !== ''))];
@@ -82,14 +81,12 @@ export function ProjectsSection() {
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
-  const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const introTextRef = useRef<HTMLParagraphElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
-  const isSectionVisible = useFadeInOnScroll(sectionRef);
   const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isIntroTextVisible = useFadeInOnScroll(introTextRef);
+  const isIntroTextVisible = useFadeInOnScroll(introTextRef, { threshold: 0.05 });
   const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
 
 
@@ -131,21 +128,20 @@ export function ProjectsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPaused, projects.length]);
 
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
 
   return (
-    <section id="projects" ref={sectionRef}>
+    <section id="projects">
       <div className="container">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "transition-opacity duration-1000 ease-out",
+            isTitleVisible ? "opacity-100" : "opacity-0"
           )}
         >
           Featured Projects
@@ -154,8 +150,8 @@ export function ProjectsSection() {
           ref={introTextRef}
           className={cn(
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base",
-            "transition-all duration-1000 ease-out delay-200",
-            isIntroTextVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+            "transition-opacity duration-1000 ease-out delay-200",
+            isIntroTextVisible ? "opacity-100" : "opacity-0"
           )}
         >
          Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
@@ -165,8 +161,8 @@ export function ProjectsSection() {
           ref={carouselBlockRef}
           className={cn(
             "my-8",
-             "transition-all duration-1000 ease-out delay-300",
-            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+             "transition-opacity duration-1000 ease-out delay-300",
+            isCarouselBlockVisible ? "opacity-100" : "opacity-0"
           )}
         >
           <div
@@ -180,7 +176,7 @@ export function ProjectsSection() {
               <div
                 ref={textContentRef}
                 key={currentProject.id + '-text'} 
-                className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
+                className="w-full md:w-1/2 h-full flex flex-col animate-in fade-in-0 duration-500"
               >
                 <ScrollArea className="flex-grow pr-2">
                   <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
@@ -291,26 +287,26 @@ export function ProjectsSection() {
             </div>
 
             {/* Navigation Arrows */}
-            <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
-              <Button
-                variant="outline"
-                onClick={handlePrev}
-                className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
-                aria-label="Previous Project"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
-            </div>
-            <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
-              <Button
-                variant="outline"
-                onClick={handleNext}
-                className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
-                aria-label="Next Project"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </Button>
-            </div>
+             <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
+                <Button
+                  variant="outline"
+                  onClick={handlePrev}
+                  className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+                  aria-label="Previous Project"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </Button>
+              </div>
+              <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
+                <Button
+                  variant="outline"
+                  onClick={handleNext}
+                  className="rounded-full w-full h-full p-0 flex items-center justify-center bg-background text-muted-foreground group-hover:bg-card group-hover:text-primary group-hover:border-transparent"
+                  aria-label="Next Project"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </Button>
+              </div>
           </div>
         </div>
         
@@ -342,4 +338,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-
