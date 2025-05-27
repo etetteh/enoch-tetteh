@@ -54,7 +54,6 @@ export function SkillsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPaused, skillCategories.length]);
 
   useEffect(() => {
@@ -88,13 +87,16 @@ export function SkillsSection() {
         </h2>
 
         <div
-          className="relative"
+          className="relative max-w-5xl mx-auto" // Constrain width for arrow positioning
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
             ref={scrollContainerRef}
-            className="flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] justify-center mx-auto max-w-5xl"
+            className={cn(
+              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full" 
+              // Removed: justify-center, mx-auto, max-w-5xl from here
+            )}
           >
             {skillCategories.map((category, index) => {
               const isActive = index === currentIndex;
@@ -107,7 +109,7 @@ export function SkillsSection() {
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer shadow-lg",
                     isActive
                       ? "w-64 sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-accent to-ring"
-                      : "w-48 sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-accent to-ring"
+                      : "w-48 sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring"
                   )}
                   role="button"
                   tabIndex={0}
@@ -117,8 +119,9 @@ export function SkillsSection() {
                 >
                   <Card
                     className={cn(
-                      "w-full h-full flex flex-col items-center justify-start text-center p-4 transition-all duration-300 ease-in-out overflow-hidden",
-                      "bg-card rounded-xl" 
+                      "w-full h-full flex flex-col items-center justify-start text-center p-1 transition-all duration-300 ease-in-out overflow-hidden",
+                      isActive ? "bg-card" : "bg-card", 
+                      "rounded-xl"
                     )}
                   >
                     <CardHeader className="p-2 shrink-0">
@@ -145,7 +148,7 @@ export function SkillsSection() {
                     >
                       {isActive && ( 
                         <ScrollArea className="h-full">
-                          <div className="flex flex-wrap gap-2 justify-center">
+                          <div className="flex flex-wrap gap-2 justify-center p-3 sm:p-4">
                             {category.skills.map((skill) => (
                               <Badge
                                 key={skill}
@@ -166,7 +169,7 @@ export function SkillsSection() {
           </div>
 
           {/* Navigation Arrows */}
-          <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
+          <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
             <Button
               variant="outline"
               onClick={handlePrev}
@@ -176,7 +179,7 @@ export function SkillsSection() {
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </div>
-          <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
+          <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br hover:from-primary hover:via-accent hover:to-ring">
             <Button
               variant="outline"
               onClick={handleNext}
