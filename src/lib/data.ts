@@ -86,8 +86,8 @@ export const skillCategories: SkillCategory[] = [
     name: 'Cloud, MLOps & DevOps',
     icon: Cloud,
     skills: [
-      'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run',
-      'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform', 'LLMOps',
+      'Google Cloud Platform (GCP)', 'Vertex AI', 'GKE', 'Cloud Run', 'LLMOps',
+      'Docker', 'Kubernetes', 'CI/CD', 'Git', 'Terraform',
       'Weights & Biases (W&B)', 'MLflow', 'Ray Tune', 'Population-Based Training',
       'Pydantic', 'pytest', 'flake8', 'mypy', 'GitHub Actions',
     ],
@@ -203,6 +203,14 @@ export const certifications: Certification[] = [
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2155405',
     icon: BarChart3,
   },
+  {
+    id: 'bigquery-insights',
+    title: 'Derive Insights from BigQuery Data',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'June 3, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2147732',
+    icon: Database,
+  },
 ];
 
 
@@ -214,7 +222,6 @@ export const portfolioOwner = {
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
 };
-
     
 
     
