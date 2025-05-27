@@ -187,15 +187,7 @@ export const publications: Publication[] = [
 ];
 
 export const certifications: Certification[] = [
-  {
-    id: 'coursera-deep-learning-spec',
-    title: 'Certificate of Completion: Deep Learning Specialization',
-    issuer: 'Coursera (deeplearning.ai)',
-    dateObtained: 'Feb 2020',
-    credentialUrl: 'https://www.coursera.org/account/accomplishments/specialization/certificate/YOUR_ID_HERE', // Replace with your actual URL
-    icon: Award,
-  },
-  // The Google Cloud Skills Boost entry was here and is now removed.
+  // Certificates will be added here
 ];
 
 
