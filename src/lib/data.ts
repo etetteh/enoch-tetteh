@@ -243,6 +243,14 @@ export const certifications: Certification[] = [
     credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/8272941',
     icon: ShieldCheck,
   },
+  {
+    id: 'gcp-ml-data',
+    title: 'Applying Machine Learning to your Data with Google Cloud',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'May 27, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2096799',
+    icon: Cloud, // Using the Cloud icon as it's directly related
+  },
 ];
 
 
