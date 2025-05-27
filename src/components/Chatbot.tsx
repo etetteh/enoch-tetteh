@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetFooter } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bot, User, Loader2, Send, BrainCircuit } from 'lucide-react'; // Changed Sparkles to BrainCircuit
+import { Bot, User, Loader2, Send, BrainCircuit } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { portfolioOwner } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -21,9 +21,9 @@ interface Message {
 }
 
 const defaultSuggestedQueries = [
-  `What are ${portfolioOwner.name.split(' ')[0]}'s key skills?`,
-  `Latest project details?`,
-  `${portfolioOwner.name.split(' ')[0]}'s experience with GCP?`,
+  `Enoch's key skills?`,
+  `Recent project details?`,
+  `Enoch's GCP experience?`,
 ];
 
 export function Chatbot() {
@@ -38,7 +38,7 @@ export function Chatbot() {
 
   const [dynamicSuggestedQueries, setDynamicSuggestedQueries] = useState<string[]>(defaultSuggestedQueries);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(true);
-  
+
   const [displayedSuggestedQuery, setDisplayedSuggestedQuery] = useState<string>('');
   const queryIndexRef = useRef(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -46,7 +46,7 @@ export function Chatbot() {
   useEffect(() => {
     setIsMounted(true);
     if (typeof window !== 'undefined') {
-      setMessages([{id: 'greeting', text: `Hello there! I'm ${portfolioOwner.name.split(' ')[0]}'s portfolio assistant. How can I help you learn more about ${portfolioOwner.name.split(' ')[0]}'s projects, skills, or experience today?`, sender: 'bot'}]);
+      setMessages([{ id: 'greeting', text: `Hello there! I'm ${portfolioOwner.name.split(' ')[0]}'s portfolio assistant. How can I help you learn more about ${portfolioOwner.name.split(' ')[0]}'s projects, skills, or experience today?`, sender: 'bot' }]);
     }
 
     const fetchSuggestions = async () => {
@@ -56,7 +56,7 @@ export function Chatbot() {
         if (pageContent) {
           const input: SuggestedQueriesInput = { portfolioContent: pageContent };
           const suggestionsOutput: SuggestedQueriesOutput = await suggestedQueriesFlow(input);
-          const validQueries = suggestionsOutput.queries?.filter(q => q && q.trim() !== '');
+          const validQueries = suggestionsOutput.queries?.filter(q => q && q.trim() !== '').map(q => q.trim());
           if (validQueries && validQueries.length > 0) {
             setDynamicSuggestedQueries(validQueries);
           } else {
@@ -68,7 +68,7 @@ export function Chatbot() {
       } catch (error) {
         console.error("Failed to fetch dynamic suggestions:", error);
         setDynamicSuggestedQueries(defaultSuggestedQueries);
-         toast({
+        toast({
           title: "Suggestion Error",
           description: "Could not load AI-powered suggestions, using defaults.",
           variant: "default",
@@ -79,23 +79,23 @@ export function Chatbot() {
     };
 
     if (typeof window !== 'undefined') {
-        fetchSuggestions();
+      fetchSuggestions();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toast]); 
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toast]);
+
   useEffect(() => {
     if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
-      if(!displayedSuggestedQuery) {
-        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current % dynamicSuggestedQueries.length]);
+      if (!displayedSuggestedQuery) {
+        setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current % dynamicSuggestedQueries.length] || `Ask about ${portfolioOwner.name.split(' ')[0]}'s portfolio...`);
       }
-      
+
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
 
       const isBottomInputFocused = bottomInputRef.current === document.activeElement;
-      if (!isOpen && !isBottomInputFocused && !query) {
+      if (!isOpen && !isBottomInputFocused && !query) { // Only cycle if input is not focused and empty
         intervalRef.current = setInterval(() => {
           queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
           setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
@@ -113,7 +113,7 @@ export function Chatbot() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-  
+
   const extractPageContent = () => {
     if (typeof document !== 'undefined') {
       const mainElement = document.querySelector('main');
@@ -123,11 +123,11 @@ export function Chatbot() {
   };
 
   const processQuery = async (queryString: string) => {
-    if (!queryString.trim()) return; 
+    if (!queryString.trim()) return;
 
     const userMessage: Message = { id: Date.now().toString(), text: queryString, sender: 'user' };
     setMessages(prev => [...prev, userMessage]);
-    
+
     setIsLoading(true);
 
     const currentPortfolioContent = extractPageContent();
@@ -145,7 +145,7 @@ export function Chatbot() {
       const errorMessage = err instanceof Error ? err.message : "Sorry, I couldn't process that.";
       const errorBotMessage: Message = { id: (Date.now() + 1).toString(), text: `Error: ${errorMessage}`, sender: 'bot' };
       setMessages(prev => [...prev, errorBotMessage]);
-       toast({
+      toast({
         title: "Chatbot Error",
         description: errorMessage,
         variant: "destructive",
@@ -159,31 +159,30 @@ export function Chatbot() {
     e?.preventDefault();
     let queryToProcess = query.trim();
 
-    if (!queryToProcess && displayedSuggestedQuery) {
-        queryToProcess = displayedSuggestedQuery;
+    if (!queryToProcess && displayedSuggestedQuery && displayedSuggestedQuery !== `Ask about ${portfolioOwner.name.split(' ')[0]}'s portfolio...` && displayedSuggestedQuery !== "Loading suggestions...") {
+      queryToProcess = displayedSuggestedQuery;
     }
-    
-    if (!queryToProcess) return;
-    
-    setIsOpen(true); 
 
-    // Wait for the sheet to potentially animate open slightly before processing
-    // This is a small UX tweak, can be adjusted or removed
+    if (!queryToProcess) return;
+
+    setIsOpen(true);
+
+    // Wait for sheet to open before processing, ensures messages are visible
     await new Promise(resolve => setTimeout(resolve, 100));
 
     await processQuery(queryToProcess);
-    setQuery(''); 
+    setQuery('');
   };
-  
+
   const handleSheetFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!query.trim() || isLoading) return;
     await processQuery(query);
-    setQuery(''); 
+    setQuery('');
   };
-    
+
   if (!isMounted) {
-    return null; 
+    return null;
   }
 
   const currentPlaceholder = isLoadingSuggestions ? "Loading suggestions..." : displayedSuggestedQuery || `Ask about ${portfolioOwner.name.split(' ')[0]}'s portfolio...`;
@@ -196,7 +195,7 @@ export function Chatbot() {
           className={cn(
             "fixed bottom-6 left-1/2 -translate-x-1/2",
             "w-11/12 max-w-lg h-14 px-3 py-2",
-            "bg-neutral-700 dark:bg-neutral-800", 
+            "bg-neutral-700 dark:bg-neutral-800",
             "rounded-full shadow-xl",
             "flex items-center justify-between gap-2 z-50 group"
           )}
@@ -218,7 +217,7 @@ export function Chatbot() {
             }}
             onBlur={() => {
               if (!query && !isOpen && !isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted) {
-                if (intervalRef.current) clearInterval(intervalRef.current); 
+                if (intervalRef.current) clearInterval(intervalRef.current);
                 intervalRef.current = setInterval(() => {
                   queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
                   setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
@@ -226,32 +225,31 @@ export function Chatbot() {
               }
             }}
           />
-          <Button 
-            type="submit" 
-            size="icon" 
-            variant="ghost" 
-            disabled={isLoading && !!query.trim()}
-            className="h-9 w-9 p-0 text-neutral-300 hover:text-accent disabled:text-neutral-500 transition-colors"
+          <Button
+            type="submit"
+            size="icon"
+            variant="ghost"
+            disabled={isLoading && (!!query.trim() || (!!displayedSuggestedQuery && displayedSuggestedQuery !== "Loading suggestions..." && displayedSuggestedQuery !== `Ask about ${portfolioOwner.name.split(' ')[0]}'s portfolio...`))}
+            className="h-9 w-9 p-0 text-neutral-300 hover:text-neutral-300 disabled:text-neutral-500 transition-colors"
             aria-label="Send message or use suggestion"
           >
-            {(isLoading && (!!query.trim() || !!displayedSuggestedQuery)) ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+            {(isLoading && (!!query.trim() || (!!displayedSuggestedQuery && displayedSuggestedQuery !== "Loading suggestions..." && displayedSuggestedQuery !== `Ask about ${portfolioOwner.name.split(' ')[0]}'s portfolio...`))) ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </Button>
         </form>
       )}
 
       <Sheet open={isOpen} onOpenChange={(open) => {
-          setIsOpen(open);
-          if (!open) {
-            setQuery(''); 
-            if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted && !bottomInputRef.current?.matches(':focus') && !query) {
-                if (intervalRef.current) clearInterval(intervalRef.current);
-                intervalRef.current = setInterval(() => {
-                  queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
-                  setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
-                }, 3000);
-            }
+        setIsOpen(open);
+        if (!open) {
+          if (!isLoadingSuggestions && dynamicSuggestedQueries.length > 0 && isMounted && !bottomInputRef.current?.matches(':focus') && !query) {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            intervalRef.current = setInterval(() => {
+              queryIndexRef.current = (queryIndexRef.current + 1) % dynamicSuggestedQueries.length;
+              setDisplayedSuggestedQuery(dynamicSuggestedQueries[queryIndexRef.current]);
+            }, 3000);
           }
-        }}
+        }
+      }}
       >
         <SheetContent className="w-full max-w-md sm:max-w-lg flex flex-col p-0">
           <SheetHeader className="p-6 pb-2 border-b shrink-0">
@@ -265,7 +263,7 @@ export function Chatbot() {
               Ask me anything about the content on this page.
             </SheetDescription>
           </SheetHeader>
-          
+
           <ScrollArea className="flex-grow p-6">
             <div className="space-y-4">
               {messages.map((msg) => (
@@ -275,21 +273,20 @@ export function Chatbot() {
                 >
                   {msg.sender === 'bot' && (
                     <Avatar className="h-9 w-9" aria-label="Bot Avatar">
-                      <AvatarFallback className="bg-primary text-primary-foreground"><Bot size={20}/></AvatarFallback>
+                      <AvatarFallback className="bg-primary text-primary-foreground"><Bot size={20} /></AvatarFallback>
                     </Avatar>
                   )}
                   <div
-                    className={`max-w-[75%] rounded-lg px-3 py-2 text-xs sm:text-sm shadow ${
-                      msg.sender === 'user'
+                    className={`max-w-[75%] rounded-lg px-3 py-2 text-xs sm:text-sm shadow ${msg.sender === 'user'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-card text-card-foreground border'
-                    }`}
+                      }`}
                   >
                     {msg.text}
                   </div>
-                   {msg.sender === 'user' && (
+                  {msg.sender === 'user' && (
                     <Avatar className="h-9 w-9" aria-label="User Avatar">
-                      <AvatarFallback className="bg-muted-foreground text-background"><User size={20}/></AvatarFallback>
+                      <AvatarFallback className="bg-muted-foreground text-background"><User size={20} /></AvatarFallback>
                     </Avatar>
                   )}
                 </div>
@@ -320,3 +317,4 @@ export function Chatbot() {
     </>
   );
 }
+
