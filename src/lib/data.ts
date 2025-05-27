@@ -125,7 +125,7 @@ export const experiences: Experience[] = [
     id: 'xray-ood-exp',
     role: 'Deep Learning Research Engineer | OOD Medical Image Classification',
     company: 'Mila - Quebec Artificial Intelligence Institute',
-    period: '2020 - 2021',
+    period: '2020 - 2019',
     description: [
       "Architected multi-domain balanced sampling framework for chest X-ray pathology prediction using PyTorch and TorchXRayVision, achieving improved out-of-distribution generalization across 4 major medical datasets (NIH ChestX-ray8, PadChest, CheXpert, MIMIC-CXR) with 12 cross-validation configurations handling 100K+ medical images.",
       "Implemented advanced computer vision pipeline with DenseNet-121 and ResNet-50 architectures for 4-class pathology classification (Cardiomegaly, Effusion, Edema, Consolidation), optimizing ROC-AUC performance through custom weighted BCE loss functions and cosine annealing scheduling with warmup periods for robust medical AI deployment.",
@@ -134,7 +134,7 @@ export const experiences: Experience[] = [
     ],
     icon: Microscope,
   },
-    {
+  {
     id: 'cv-framework-architect-exp',
     role: 'Senior Computer Vision Engineer | End-to-End Image Classification',
     company: 'Freelance',
@@ -187,7 +187,14 @@ export const publications: Publication[] = [
 ];
 
 export const certifications: Certification[] = [
-  // Certificates will be added here
+  {
+    id: 'gcp-mlops-genai',
+    title: 'Machine Learning Operations (MLOps) for Generative AI',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'April 13, 2025',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14840035',
+    icon: ShieldCheck,
+  },
 ];
 
 
