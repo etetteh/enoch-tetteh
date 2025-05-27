@@ -196,44 +196,28 @@ export const certifications: Certification[] = [
     icon: ShieldCheck,
   },
   {
-    id: 'looker-data-viz',
-    title: 'Analyzing and Visualizing Data in Looker',
+    id: 'attention-mechanism',
+    title: 'Attention Mechanism',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'Jun 3, 2022',
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2155405',
-    icon: BarChart3,
+    dateObtained: 'Feb 21, 2025',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14048632',
+    icon: Workflow,
   },
   {
-    id: 'bigquery-insights',
-    title: 'Derive Insights from BigQuery Data',
+    id: 'image-gen-intro',
+    title: 'Introduction to Image Generation',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'Jun 3, 2022',
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2147732',
-    icon: Database,
+    dateObtained: 'Feb 21, 2025',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14048484',
+    icon: ImageIcon,
   },
   {
-    id: 'bigquery-advanced-insights',
-    title: 'Achieving Advanced Insights with BigQuery',
+    id: 'responsible-ai-gcp',
+    title: 'Responsible AI: Applying AI Principles with Google Cloud',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'May 27, 2022',
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2089825',
-    icon: TestTube2,
-  },
-  {
-    id: 'lookml-data-models',
-    title: 'Developing Data Models with LookML',
-    issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'Jun 21, 2022',
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2297953',
-    icon: Cog,
-  },
-  {
-    id: 'llm-intro',
-    title: 'Introduction to Large Language Models',
-    issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'Mar 7, 2024',
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/8246700',
-    icon: MessageCircle,
+    dateObtained: 'Jul 17, 2024',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/9878060',
+    icon: ShieldCheck,
   },
   {
     id: 'gen-ai-intro',
@@ -252,6 +236,38 @@ export const certifications: Certification[] = [
     icon: ShieldCheck,
   },
   {
+    id: 'llm-intro',
+    title: 'Introduction to Large Language Models',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Mar 7, 2024',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/8246700',
+    icon: MessageCircle,
+  },
+  {
+    id: 'lookml-data-models',
+    title: 'Developing Data Models with LookML',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Jun 21, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2297953',
+    icon: Cog,
+  },
+  {
+    id: 'looker-data-viz',
+    title: 'Analyzing and Visualizing Data in Looker',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Jun 3, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2155405',
+    icon: BarChart3,
+  },
+  {
+    id: 'bigquery-insights',
+    title: 'Derive Insights from BigQuery Data',
+    issuer: 'Google Cloud Skills Boost',
+    dateObtained: 'Jun 3, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2147732',
+    icon: Database,
+  },
+  {
     id: 'gcp-ml-data',
     title: 'Applying Machine Learning to your Data with Google Cloud',
     issuer: 'Google Cloud Skills Boost',
@@ -260,20 +276,12 @@ export const certifications: Certification[] = [
     icon: Cloud,
   },
   {
-    id: 'image-gen-intro',
-    title: 'Introduction to Image Generation',
+    id: 'bigquery-advanced-insights',
+    title: 'Achieving Advanced Insights with BigQuery',
     issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'Feb 21, 2025',
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/14048484',
-    icon: ImageIcon,
-  },
-  {
-    id: 'responsible-ai-gcp',
-    title: 'Responsible AI: Applying AI Principles with Google Cloud',
-    issuer: 'Google Cloud Skills Boost',
-    dateObtained: 'Jul 17, 2024',
-    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/9878060',
-    icon: ShieldCheck,
+    dateObtained: 'May 27, 2022',
+    credentialUrl: 'https://www.cloudskillsboost.google/public_profiles/3b19899c-db1e-4ec3-8c3e-8e14502b1c8f/badges/2089825',
+    icon: TestTube2,
   },
 ];
 
@@ -293,6 +301,7 @@ export const portfolioOwner = {
     
 
     
+
 
 
 
