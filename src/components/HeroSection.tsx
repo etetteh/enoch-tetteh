@@ -1,7 +1,6 @@
 
 'use client';
 
-import { useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { portfolioOwner } from "@/lib/data";
@@ -9,11 +8,6 @@ import Balancer from 'react-wrap-balancer';
 import { cn } from '@/lib/utils';
 
 export function HeroSection() {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const bioRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-
   return (
     <section
       id="hero"
@@ -23,7 +17,6 @@ export function HeroSection() {
     >
       <div className="container text-center">
         <h1
-          ref={titleRef}
           className={cn(
             "text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl",
             "animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300"
@@ -32,7 +25,6 @@ export function HeroSection() {
           <Balancer>{portfolioOwner.name}</Balancer>
         </h1>
         <p
-          ref={subtitleRef}
           className={cn(
             "mt-6 max-w-2xl mx-auto text-lg text-foreground sm:text-xl md:text-2xl",
             "animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-500"
@@ -40,21 +32,43 @@ export function HeroSection() {
         >
           <Balancer>{portfolioOwner.title}</Balancer>
         </p>
-        <p
-          ref={bioRef}
+        <div
           className={cn(
-            "mt-8 max-w-3xl mx-auto text-md text-muted-foreground sm:text-lg",
-            "animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700"
+            "mt-8 max-w-3xl mx-auto text-md text-muted-foreground sm:text-lg"
           )}
         >
-          <Balancer>{portfolioOwner.bio}</Balancer>
-        </p>
+          <Balancer>
+            {Array.isArray(portfolioOwner.bio) ? (
+              portfolioOwner.bio.map((line, index) => (
+                <span
+                  key={index}
+                  className={cn(
+                    "block", 
+                    "animate-in fade-in slide-in-from-bottom-4 duration-1000"
+                  )}
+                  style={{ animationDelay: `${700 + index * 150}ms` }} 
+                >
+                  {line}
+                </span>
+              ))
+            ) : (
+              // Fallback for string bio, though we expect an array now
+              <span
+                className={cn(
+                  "animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700"
+                )}
+              >
+                {portfolioOwner.bio}
+              </span>
+            )}
+          </Balancer>
+        </div>
         <div
-          ref={buttonsRef}
           className={cn(
             "mt-10 flex flex-col sm:flex-row gap-4 justify-center",
-            "animate-in fade-in slide-in-from-bottom-3 duration-1000 delay-900"
+            "animate-in fade-in slide-in-from-bottom-3 duration-1000",
           )}
+          style={{ animationDelay: `${700 + (Array.isArray(portfolioOwner.bio) ? portfolioOwner.bio.length : 1) * 150 + 200}ms` }}
         >
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform transition-transform hover:scale-105">
             <Link href="#projects">View My Work</Link>
@@ -67,3 +81,4 @@ export function HeroSection() {
     </section>
   );
 }
+

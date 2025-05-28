@@ -289,7 +289,15 @@ export const certifications: Certification[] = [
 export const portfolioOwner = {
   name: "Enoch Tetteh",
   title: "Innovative AI Engineer & MLOps Expert",
-  bio: "Proven AI/ML Engineer adept at transforming complex challenges into impactful, enterprise-grade solutions across NLP, Computer Vision, and Generative AI. My expertise in MLOps, advanced model optimization (LoRA, quantization, pruning), and cutting-edge tools like Google Gemini & LangChain consistently drives tangible results: from 75% model size reductions and 40% data quality boosts to pioneering out-of-distribution generalization for critical, large-scale systems. I build AI that delivers.",
+  bio: [
+    "Proven AI/ML Engineer adept at transforming complex challenges into impactful, enterprise-grade solutions",
+    "across NLP, Computer Vision, and Generative AI.",
+    "My expertise in MLOps, advanced model optimization (LoRA, quantization, pruning),",
+    "and cutting-edge tools like Google Gemini & LangChain consistently drives tangible results:",
+    "from 75% model size reductions and 40% data quality boosts",
+    "to pioneering out-of-distribution generalization for critical, large-scale systems.",
+    "I build AI that delivers."
+  ],
   contactEmail: "enoch.tetteh.2099@gmail.com",
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
@@ -301,6 +309,7 @@ export const portfolioOwner = {
     
 
     
+
 
 
 
