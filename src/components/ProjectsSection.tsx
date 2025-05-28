@@ -44,11 +44,11 @@ const highlightSkillsInDescriptionInternal = (
   if (!allKeywordsToHighlight || allKeywordsToHighlight.length === 0) {
     return [<React.Fragment key={`${uniquePrefix}-nodesc`}>{description}</React.Fragment>];
   }
-  
+
   const patternString = allKeywordsToHighlight
     .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
-  
+
   if (!patternString) return [<React.Fragment key={`${uniquePrefix}-nopattern`}>{description}</React.Fragment>];
 
   const regex = new RegExp(`(${patternString})`, 'gi');
@@ -67,6 +67,7 @@ const highlightSkillsInDescriptionInternal = (
       }
       return <React.Fragment key={key}>{part}</React.Fragment>;
     }
+    // Return an empty fragment for undefined parts or handle as needed
     return <React.Fragment key={key}></React.Fragment>;
   });
 };
@@ -104,10 +105,8 @@ export function ProjectsSection() {
 
   useEffect(() => {
     if (textContentRef.current) {
-      // Force re-trigger animation by briefly removing and re-adding animation classes
-      // This is a common pattern for re-animating elements on prop changes
       textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'duration-500');
-      void textContentRef.current.offsetWidth; // Trigger reflow
+      void textContentRef.current.offsetWidth; 
       textContentRef.current.classList.add('animate-in', 'fade-in-0', 'duration-500');
     }
   }, [currentIndex]);
@@ -120,7 +119,7 @@ export function ProjectsSection() {
     if (!isPaused && projects.length > 1) {
       intervalIdRef.current = setInterval(() => {
         handleNext();
-      }, 9000); 
+      }, 9000);
     }
 
     return () => {
@@ -140,7 +139,6 @@ export function ProjectsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
             isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
@@ -150,18 +148,16 @@ export function ProjectsSection() {
           ref={introTextRef}
           className={cn(
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base",
-            "transition-all duration-1000 ease-out",
             isIntroTextVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
-         Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
+          Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
 
         <div
           ref={carouselBlockRef}
           className={cn(
             "my-8",
-            "transition-all duration-1000 ease-out",
             isCarouselBlockVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
           )}
         >
@@ -175,8 +171,8 @@ export function ProjectsSection() {
               {/* Left Pane: Text Content */}
               <div
                 ref={textContentRef}
-                key={currentProject.id + '-text-pane'} 
-                className="w-full md:w-1/2 md:h-full flex flex-col" // Removed animation classes here, will apply to children
+                key={currentProject.id + '-text-pane'}
+                className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
               >
                 <ScrollArea className="flex-grow pr-2">
                   <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
@@ -186,8 +182,8 @@ export function ProjectsSection() {
                         {currentProject.keyAchievement}
                       </p>
                     )}
-                     <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-150">
-                      {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-carousel-${currentIndex}`)}
+                    <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-150">
+                      {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-carousel-short-${currentIndex}`)}
                     </p>
 
                     <Dialog>
@@ -211,33 +207,33 @@ export function ProjectsSection() {
                         <DialogHeader className="p-6 pb-4 border-b shrink-0">
                           <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                         </DialogHeader>
-                        <ScrollArea className="flex-grow my-4 px-6">
-                           <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2 prose prose-sm max-w-none">
+                        <ScrollArea className="flex-grow my-4 px-6 min-h-0">
+                          <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2 prose prose-sm max-w-none">
                             {highlightSkillsInDescriptionInternal(
-                                currentProject.description,
-                                currentProject.techStack,
-                                `project-desc-dialog-${currentIndex}`
+                              currentProject.description,
+                              currentProject.techStack,
+                              `project-desc-dialog-${currentIndex}`
                             ).map((node, i) => <React.Fragment key={i}>{node}</React.Fragment>)}
                           </div>
                         </ScrollArea>
                         {(currentProject.githubUrl || currentProject.liveUrl) && (
                           <div className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 mt-auto">
-                              {currentProject.githubUrl && (
+                            {currentProject.githubUrl && (
                               <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
-                                  <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                                <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
                                   <Github /> GitHub
-                                  </a>
+                                </a>
                               </Button>
-                              )}
-                              {currentProject.liveUrl && (
+                            )}
+                            {currentProject.liveUrl && (
                               <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
-                                  <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                                <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                                   <ExternalLink /> Live Demo
-                                  </a>
+                                </a>
                               </Button>
-                              )}
+                            )}
                           </div>
-                          )}
+                        )}
                       </DialogContent>
                     </Dialog>
 
@@ -252,20 +248,20 @@ export function ProjectsSection() {
                   </div>
                 </ScrollArea>
                 <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto p-1 md:p-2 lg:p-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-300">
-                    {currentProject.githubUrl && (
+                  {currentProject.githubUrl && (
                     <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
-                        <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                      <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
                         <Github /> GitHub
-                        </a>
+                      </a>
                     </Button>
-                    )}
-                    {currentProject.liveUrl && (
+                  )}
+                  {currentProject.liveUrl && (
                     <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
-                        <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink /> Live Demo
-                        </a>
+                      </a>
                     </Button>
-                    )}
+                  )}
                 </div>
               </div>
 
@@ -273,11 +269,11 @@ export function ProjectsSection() {
               <div
                 className={cn(
                   "w-full md:w-1/2 h-64 md:h-full rounded-md flex flex-col items-center justify-center p-4 relative aspect-video md:aspect-auto",
-                   "transition-all duration-500 ease-in-out", // For smooth background transition if needed
+                  "transition-all duration-500 ease-in-out",
                   currentIndex % 4 === 0 ? "bg-gradient-to-br from-primary/20 to-primary/5" :
-                  currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
-                  currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" :
-                                      "bg-gradient-to-br from-ring/20 to-ring/5", 
+                    currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
+                      currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" :
+                        "bg-gradient-to-br from-ring/20 to-ring/5",
                 )}
                 data-ai-hint={currentProject.imageHint}
               >
@@ -311,7 +307,7 @@ export function ProjectsSection() {
             </div>
           </div>
         </div>
-        
+
         <div className="flex justify-center items-center space-x-2 py-6">
           {projects.map((_, index) => (
             <button
@@ -328,7 +324,7 @@ export function ProjectsSection() {
             >
               {currentIndex === index && (
                 <div
-                  key={`fill-project-${currentIndex}`} 
+                  key={`fill-project-${currentIndex}`}
                   className="h-full bg-primary rounded-full"
                   style={{ animation: 'progress-fill 9s linear forwards' }}
                 />
