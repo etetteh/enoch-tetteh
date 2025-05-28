@@ -5,12 +5,11 @@ import React, { useState, useRef, useEffect, type ReactNode } from 'react';
 import type { Project } from '@/types/portfolio';
 import { projects } from '@/lib/data';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, VideoIcon, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, VideoIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
+import { ScrollArea } from '@/components/ui/scroll-area'; // Keep ScrollArea for styled scrollbars if preferred
 
 const mlAiKeywords = [
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
@@ -67,7 +66,6 @@ const highlightSkillsInDescriptionInternal = (
       }
       return <React.Fragment key={key}>{part}</React.Fragment>;
     }
-    // Return an empty fragment for undefined parts or handle as needed
     return <React.Fragment key={key}></React.Fragment>;
   });
 };
@@ -79,15 +77,6 @@ export function ProjectsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
-
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const introTextRef = useRef<HTMLParagraphElement>(null);
-  const carouselBlockRef = useRef<HTMLDivElement>(null);
-
-  const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isIntroTextVisible = useFadeInOnScroll(introTextRef, { threshold: 0.05, delay: 150 });
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05, delay: 300 });
-
 
   const currentProject = projects[currentIndex];
 
@@ -135,31 +124,15 @@ export function ProjectsSection() {
   return (
     <section id="projects">
       <div className="container">
-        <h2
-          ref={titleRef}
-          className={cn(
-            "section-title",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          )}
-        >
+        <h2 className="section-title opacity-0 animate-in fade-in-0 slide-in-from-top-4 duration-1000">
           Featured Projects
         </h2>
-        <p
-          ref={introTextRef}
-          className={cn(
-            "text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base",
-            isIntroTextVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          )}
-        >
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base opacity-0 animate-in fade-in-0 slide-in-from-top-4 duration-1000 delay-200">
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
         </p>
 
         <div
-          ref={carouselBlockRef}
-          className={cn(
-            "my-8",
-            isCarouselBlockVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          )}
+          className="my-8 opacity-0 animate-in fade-in-0 scale-95 duration-1000 delay-400"
         >
           <div
             ref={carouselRef}
@@ -174,79 +147,79 @@ export function ProjectsSection() {
                 key={currentProject.id + '-text-pane'}
                 className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
               >
-                <ScrollArea className="flex-grow pr-2">
-                  <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
-                    <h3 className="text-2xl md:text-3xl font-bold text-primary animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-50">{currentProject.title}</h3>
-                    {currentProject.keyAchievement && (
-                      <p className="text-xs sm:text-sm md:text-md font-semibold text-foreground mt-1 mb-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-100">
-                        {currentProject.keyAchievement}
-                      </p>
-                    )}
-                    <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-150">
-                      {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-carousel-short-${currentIndex}`)}
+                <div className="flex-grow p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left overflow-y-auto"> 
+                  <h3 className="text-2xl md:text-3xl font-bold text-primary animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-50">{currentProject.title}</h3>
+                  {currentProject.keyAchievement && (
+                    <p className="text-xs sm:text-sm md:text-md font-semibold text-foreground mt-1 mb-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-100">
+                      {currentProject.keyAchievement}
                     </p>
+                  )}
+                  <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-150">
+                    {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-carousel-short-${currentIndex}`)}
+                  </p>
 
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          className={cn(
-                            "rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2",
-                            "text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90",
-                            "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-200"
-                          )}
-                        >
-                          See more
-                          <span className="bg-primary-foreground group-hover:bg-primary-foreground/80 rounded-full p-1 transition-colors">
-                            <ArrowRight className="h-3 w-3 text-primary" />
-                          </span>
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-y-auto">
-                        <DialogHeader className="p-6 pb-4 border-b shrink-0">
-                          <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
-                        </DialogHeader>
-                        <ScrollArea className="flex-grow my-4 px-6 min-h-0">
-                          <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2 prose prose-sm max-w-none">
-                            {highlightSkillsInDescriptionInternal(
-                              currentProject.description,
-                              currentProject.techStack,
-                              `project-desc-dialog-${currentIndex}`
-                            ).map((node, i) => <React.Fragment key={i}>{node}</React.Fragment>)}
-                          </div>
-                        </ScrollArea>
-                        {(currentProject.githubUrl || currentProject.liveUrl) && (
-                          <div className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 mt-auto">
-                            {currentProject.githubUrl && (
-                              <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
-                                <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                                  <Github /> GitHub
-                                </a>
-                              </Button>
-                            )}
-                            {currentProject.liveUrl && (
-                              <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
-                                <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                                  <ExternalLink /> Live Demo
-                                </a>
-                              </Button>
-                            )}
-                          </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className={cn(
+                          "rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2",
+                          "text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90",
+                          "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-200"
                         )}
-                      </DialogContent>
-                    </Dialog>
+                      >
+                        See more
+                        <span className="bg-primary-foreground group-hover:bg-primary-foreground/80 rounded-full p-1 transition-colors">
+                          <ArrowRight className="h-3 w-3 text-primary" />
+                        </span>
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-hidden"> {/* Added overflow-hidden here */}
+                      <DialogHeader className="p-6 pb-4 border-b shrink-0 sticky top-0 bg-background z-10">
+                        <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
+                      </DialogHeader>
+                      
+                      <ScrollArea className="flex-grow px-6 py-4"> {/* ScrollArea handles its own scrolling */}
+                        <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2 prose prose-sm max-w-none">
+                          {highlightSkillsInDescriptionInternal(
+                            currentProject.description,
+                            currentProject.techStack,
+                            `project-desc-dialog-${currentIndex}`
+                          ).map((node, i) => <React.Fragment key={i}>{node}</React.Fragment>)}
+                        </div>
+                      </ScrollArea>
 
-                    <div className="pt-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-250">
-                      <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
-                      <div className="flex flex-wrap gap-1 justify-center md:justify-start">
-                        {currentProject.techStack.map((tech) => (
-                          <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-                        ))}
-                      </div>
+                      {(currentProject.githubUrl || currentProject.liveUrl) && (
+                        <div className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 mt-auto sticky bottom-0 bg-background z-10">
+                          {currentProject.githubUrl && (
+                            <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
+                              <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                                <Github /> GitHub
+                              </a>
+                            </Button>
+                          )}
+                          {currentProject.liveUrl && (
+                            <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                              <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink /> Live Demo
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                      )}
+                    </DialogContent>
+                  </Dialog>
+
+                  <div className="pt-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-250">
+                    <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
+                    <div className="flex flex-wrap gap-1 justify-center md:justify-start">
+                      {currentProject.techStack.map((tech) => (
+                        <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
+                      ))}
                     </div>
                   </div>
-                </ScrollArea>
+                </div>
                 <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto p-1 md:p-2 lg:p-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-300">
                   {currentProject.githubUrl && (
                     <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
@@ -285,7 +258,7 @@ export function ProjectsSection() {
             </div>
 
             {/* Navigation Arrows */}
-            <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
+             <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
               <Button
                 variant="outline"
                 onClick={handlePrev}
@@ -295,7 +268,7 @@ export function ProjectsSection() {
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </div>
-            <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-accent to-ring">
+            <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
               <Button
                 variant="outline"
                 onClick={handleNext}
