@@ -18,16 +18,14 @@ export function HeroSection() {
       <div className="container text-center">
         <h1
           className={cn(
-            "text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl",
-            "animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300"
+            "text-4xl font-extrabold tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl"
           )}
         >
           <Balancer>{portfolioOwner.name}</Balancer>
         </h1>
         <p
           className={cn(
-            "mt-6 max-w-2xl mx-auto text-lg text-foreground sm:text-xl md:text-2xl",
-            "animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-500"
+            "mt-6 max-w-2xl mx-auto text-lg text-foreground sm:text-xl md:text-2xl"
           )}
         >
           <Balancer>{portfolioOwner.title}</Balancer>
@@ -43,19 +41,16 @@ export function HeroSection() {
                 <span
                   key={index}
                   className={cn(
-                    "block", 
-                    "animate-in fade-in slide-in-from-bottom-4 duration-1000"
+                    "block"
                   )}
-                  style={{ animationDelay: `${700 + index * 150}ms` }} 
                 >
                   {line}
                 </span>
               ))
             ) : (
-              // Fallback for string bio, though we expect an array now
               <span
                 className={cn(
-                  "animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700"
+                  ""
                 )}
               >
                 {portfolioOwner.bio}
@@ -65,10 +60,8 @@ export function HeroSection() {
         </div>
         <div
           className={cn(
-            "mt-10 flex flex-col sm:flex-row gap-4 justify-center",
-            "animate-in fade-in slide-in-from-bottom-3 duration-1000",
+            "mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           )}
-          style={{ animationDelay: `${700 + (Array.isArray(portfolioOwner.bio) ? portfolioOwner.bio.length : 1) * 150 + 200}ms` }}
         >
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transform transition-transform hover:scale-105">
             <Link href="#projects">View My Work</Link>
@@ -81,4 +74,3 @@ export function HeroSection() {
     </section>
   );
 }
-
