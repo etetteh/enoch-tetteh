@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { skillCategories } from '@/lib/data';
 import type { SkillCategory } from '@/types/portfolio';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,22 +10,17 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function SkillsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const mainCarouselBlockRef = useRef<HTMLDivElement>(null); 
+  const scrollContainerRef = useRef<HTMLDivElement>(null); 
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const carouselBlockRef = useRef<HTMLDivElement>(null);
-
-  const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { delay: 200 });
-
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? skillCategories.length - 1 : prevIndex - 1));
@@ -45,7 +40,7 @@ export function SkillsSection() {
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, skillCategories.length);
-  }, []);
+  }, [skillCategories.length]);
 
   useEffect(() => {
     if (intervalIdRef.current) {
@@ -65,21 +60,22 @@ export function SkillsSection() {
 
   useEffect(() => {
     const container = scrollContainerRef.current;
-    const activeCard = cardRefs.current[currentIndex];
+    if (container && cardRefs.current && cardRefs.current.length > currentIndex) {
+      const activeCard = cardRefs.current[currentIndex];
+      if (activeCard) {
+        const containerContentWidth = container.clientWidth;
+        const cardLeft = activeCard.offsetLeft;
+        const cardWidth = activeCard.offsetWidth;
+        
+        let targetScrollLeft = cardLeft - (containerContentWidth / 2) + (cardWidth / 2);
+        
+        targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth));
 
-    if (container && activeCard) {
-      const containerContentWidth = container.clientWidth;
-      const cardLeft = activeCard.offsetLeft;
-      const cardWidth = activeCard.offsetWidth;
-      
-      let targetScrollLeft = cardLeft - (containerContentWidth / 2) + (cardWidth / 2);
-      
-      targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth));
-
-      container.scrollTo({
-        left: targetScrollLeft,
-        behavior: 'auto', 
-      });
+        container.scrollTo({
+          left: targetScrollLeft,
+          behavior: 'auto', 
+        });
+      }
     }
   }, [currentIndex, skillCategories.length]);
 
@@ -95,19 +91,17 @@ export function SkillsSection() {
           ref={titleRef} 
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            "opacity-100 translate-y-0"
           )}
         >
           Skills & Expertise
         </h2>
 
         <div
-          ref={carouselBlockRef}
+          ref={mainCarouselBlockRef}
           className={cn(
             "relative max-w-5xl mx-auto",
-            "transition-all duration-1000 ease-out",
-            isCarouselBlockVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            "opacity-100 scale-100"
             )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -129,7 +123,7 @@ export function SkillsSection() {
                     "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer shadow-lg",
                      isActive
                       ? "w-[90%] max-w-[256px] sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent"
-                      : "w-[80%] max-w-[208px] sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary hover:via-primary to-accent"
+                      : "w-[80%] max-w-[208px] sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary via-primary to-accent"
                   )}
                   role="button"
                   tabIndex={0}
@@ -139,14 +133,10 @@ export function SkillsSection() {
                 >
                   <Card
                     className={cn(
-                      "w-full h-full flex flex-col items-center text-center p-1 transition-all duration-300 ease-in-out overflow-hidden justify-start",
-                      "rounded-xl bg-card" 
+                      "w-full h-full flex flex-col items-center text-center p-1 transition-all duration-300 ease-in-out overflow-hidden justify-start rounded-xl bg-card"
                     )}
                   >
-                    <CardHeader className={cn(
-                      "p-2 shrink-0",
-                      isActive && "animate-in fade-in-0 slide-in-from-top-1 duration-300"
-                      )}>
+                    <CardHeader className={cn("p-2 shrink-0")}>
                       <category.icon
                         className={cn(
                           "mx-auto mb-2 transition-all duration-300 ease-in-out",
@@ -163,8 +153,8 @@ export function SkillsSection() {
                       </CardTitle>
                     </CardHeader>
                      <CardContent className={cn(
-                        "w-full flex-grow overflow-hidden transition-all duration-500 ease-in-out",
-                        isActive ? "max-h-full opacity-100 pt-3 animate-in fade-in-0 duration-500 delay-100" : "max-h-0 opacity-0 p-0"
+                        "w-full overflow-hidden transition-all duration-500 ease-in-out",
+                        isActive ? "max-h-96 opacity-100 pt-3" : "max-h-0 opacity-0 p-0" 
                       )}
                     >
                       {isActive && ( 
@@ -245,3 +235,5 @@ export function SkillsSection() {
     </section>
   );
 }
+
+    

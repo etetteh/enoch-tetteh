@@ -80,7 +80,6 @@ export function ProjectsSection() {
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
-
   if (!projects || projects.length === 0) {
     console.warn("ProjectsSection: No projects data found or projects array is empty.");
     return null;
@@ -91,7 +90,6 @@ export function ProjectsSection() {
     console.error("ProjectsSection: currentProject is undefined, even after fallback. Projects data might be problematic.");
     return <div className="container text-center py-10">Error loading project data. Please try again later.</div>; 
   }
-
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? projects.length - 1 : prevIndex - 1));
@@ -126,7 +124,6 @@ export function ProjectsSection() {
   const handleMouseEnter = () => setIsPaused(true);
   const handleMouseLeave = () => setIsPaused(false);
 
-
   return (
     <section id="projects">
       <div className="container">
@@ -134,7 +131,7 @@ export function ProjectsSection() {
           ref={carouselBlockRef} 
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out opacity-100 scale-100" 
+            "opacity-100 scale-100" 
           )}
         >
           Featured Projects
@@ -142,7 +139,7 @@ export function ProjectsSection() {
         <p
           className={cn(
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base",
-            "transition-all duration-1000 ease-out opacity-100 scale-100"
+             "opacity-100 scale-100"
           )}
         >
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
@@ -151,7 +148,7 @@ export function ProjectsSection() {
         <div
           className={cn(
             "my-8", 
-            "transition-all duration-1000 ease-out opacity-100 scale-100"
+            "opacity-100 scale-100"
           )}
         >
           <div
@@ -170,7 +167,7 @@ export function ProjectsSection() {
                 key={currentProject.id + '-text-pane'} 
                 className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
               >
-                 <ScrollArea className="flex-grow min-h-0">
+                 <ScrollArea className="flex-grow min-h-0"> 
                     <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
                       <h3 className="text-2xl md:text-3xl font-bold text-primary animate-in fade-in-0 slide-in-from-bottom-2 duration-500">{currentProject.title}</h3>
                       {currentProject.keyAchievement && (
@@ -189,7 +186,7 @@ export function ProjectsSection() {
                             size="sm"
                             className={cn(
                               "rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2",
-                              "text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90",
+                              "text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90",
                               "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-300"
                             )}
                           >
@@ -199,7 +196,7 @@ export function ProjectsSection() {
                             </span>
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
+                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0">
                           <DialogHeader className="p-6 pb-4 border-b shrink-0 sticky top-0 bg-background z-10">
                             <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                           </DialogHeader>
@@ -224,7 +221,7 @@ export function ProjectsSection() {
                                 </Button>
                               )}
                               {currentProject.liveUrl && (
-                                <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                                <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 transform transition-transform hover:scale-105">
                                   <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                                     <ExternalLink /> Live Demo
                                   </a>
@@ -254,7 +251,7 @@ export function ProjectsSection() {
                     </Button>
                   )}
                   {currentProject.liveUrl && (
-                    <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                    <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 transform transition-transform hover:scale-105">
                       <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink /> Live Demo
                       </a>
@@ -285,7 +282,7 @@ export function ProjectsSection() {
 
             {projects.length > 1 && (
               <>
-                <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
+                <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                   <Button
                     variant="outline"
                     onClick={handlePrev}
@@ -295,7 +292,7 @@ export function ProjectsSection() {
                     <ChevronLeft className="h-6 w-6" />
                   </Button>
                 </div>
-                <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
+                <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                   <Button
                     variant="outline"
                     onClick={handleNext}
@@ -340,3 +337,5 @@ export function ProjectsSection() {
     </section>
   );
 }
+
+    
