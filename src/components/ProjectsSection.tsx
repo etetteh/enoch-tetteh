@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, VideoIcon 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area'; // Keep ScrollArea for styled scrollbars if preferred
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const mlAiKeywords = [
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
@@ -21,10 +21,10 @@ const mlAiKeywords = [
   "Accuracy", "Performance", "Cross-Validation", "Distributed Training", "Hyperparameter Tuning",
   "MLOps", "CI/CD", "Data Pipeline", "Deployment", "Production-Ready", "Scalable", "Robust", "Efficient",
   "Real-time", "Inference", "Monitoring", "Experiment Tracking", "Version Control", "LLMOps",
-  "PyTorch", "TensorFlow", "Scikit-learn", "LangChain", "Hugging Face", "Transformers", "Datasets",
-  "Accelerate", "PEFT", "TIMM", "TorchMetrics", "Sentence-Transformers", "FAISS", "Vertex AI", "Google Gemini API",
+  "PyTorch", "Sentence-Transformers", "Hugging Face", "Transformers", "Datasets",
+  "Accelerate", "PEFT", "TIMM", "TorchMetrics", "FAISS", "Vertex AI", "Google Gemini API",
   "MLflow", "Ray Tune", "SHAP", "ONNX", "FastAPI", "Docker", "Kubernetes", "GCP",
-  "Google Cloud Platform", "BigQuery", "Pydantic", "pytest",
+  "Google Cloud Platform", "BigQuery", "Pydantic", "pytest", "LangChain", "Pandas",
   "Architected", "Developed", "Implemented", "Engineered", "Optimized", "Deployed", "Integrated",
   "Researched", "Analyzed", "Spearheaded", "Led", "Managed", "Designed", "Automated", "Built",
   "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
@@ -35,20 +35,20 @@ const highlightSkillsInDescriptionInternal = (
   projectTechStack: string[],
   uniquePrefix: string
 ): ReactNode[] => {
-  if (typeof description !== 'string' || !description) return [<React.Fragment key={`${uniquePrefix}-empty`}>{description}</React.Fragment>];
+  if (typeof description !== 'string' || !description) return [React.createElement(React.Fragment, { key: `${uniquePrefix}-empty` }, description)];
 
   const allKeywordsToHighlight = [...new Set([...(projectTechStack || []), ...mlAiKeywords]
     .filter(skill => typeof skill === 'string' && skill.trim() !== ''))];
 
   if (!allKeywordsToHighlight || allKeywordsToHighlight.length === 0) {
-    return [<React.Fragment key={`${uniquePrefix}-nodesc`}>{description}</React.Fragment>];
+    return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nodesc` }, description)];
   }
 
   const patternString = allKeywordsToHighlight
     .map(skill => `\\b${skill.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
 
-  if (!patternString) return [<React.Fragment key={`${uniquePrefix}-nopattern`}>{description}</React.Fragment>];
+  if (!patternString) return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nopattern` }, description)];
 
   const regex = new RegExp(`(${patternString})`, 'gi');
   const parts = description.split(regex);
@@ -62,11 +62,12 @@ const highlightSkillsInDescriptionInternal = (
       );
 
       if (isKeyword) {
-        return <span key={key} className="font-bold text-accent">{part}</span>;
+        return React.createElement('span', { key: key, className: "font-bold text-accent" }, part);
       }
-      return <React.Fragment key={key}>{part}</React.Fragment>;
+      return React.createElement(React.Fragment, { key: key }, part);
     }
-    return <React.Fragment key={key}></React.Fragment>;
+    // Handle cases where 'part' might be undefined or empty due to regex split
+    return React.createElement(React.Fragment, { key: key });
   });
 };
 
@@ -91,14 +92,6 @@ export function ProjectsSection() {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
-
-  useEffect(() => {
-    if (textContentRef.current) {
-      textContentRef.current.classList.remove('animate-in', 'fade-in-0', 'duration-500');
-      void textContentRef.current.offsetWidth; 
-      textContentRef.current.classList.add('animate-in', 'fade-in-0', 'duration-500');
-    }
-  }, [currentIndex]);
 
   useEffect(() => {
     if (intervalIdRef.current) {
@@ -147,79 +140,81 @@ export function ProjectsSection() {
                 key={currentProject.id + '-text-pane'}
                 className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
               >
-                <div className="flex-grow p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left overflow-y-auto"> 
-                  <h3 className="text-2xl md:text-3xl font-bold text-primary animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-50">{currentProject.title}</h3>
-                  {currentProject.keyAchievement && (
-                    <p className="text-xs sm:text-sm md:text-md font-semibold text-foreground mt-1 mb-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-100">
-                      {currentProject.keyAchievement}
-                    </p>
-                  )}
-                  <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-150">
-                    {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-carousel-short-${currentIndex}`)}
-                  </p>
-
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="default"
-                        size="sm"
-                        className={cn(
-                          "rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2",
-                          "text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90",
-                          "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-200"
-                        )}
-                      >
-                        See more
-                        <span className="bg-primary-foreground group-hover:bg-primary-foreground/80 rounded-full p-1 transition-colors">
-                          <ArrowRight className="h-3 w-3 text-primary" />
-                        </span>
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-hidden"> {/* Added overflow-hidden here */}
-                      <DialogHeader className="p-6 pb-4 border-b shrink-0 sticky top-0 bg-background z-10">
-                        <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
-                      </DialogHeader>
-                      
-                      <ScrollArea className="flex-grow px-6 py-4"> {/* ScrollArea handles its own scrolling */}
-                        <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2 prose prose-sm max-w-none">
-                          {highlightSkillsInDescriptionInternal(
-                            currentProject.description,
-                            currentProject.techStack,
-                            `project-desc-dialog-${currentIndex}`
-                          ).map((node, i) => <React.Fragment key={i}>{node}</React.Fragment>)}
-                        </div>
-                      </ScrollArea>
-
-                      {(currentProject.githubUrl || currentProject.liveUrl) && (
-                        <div className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 mt-auto sticky bottom-0 bg-background z-10">
-                          {currentProject.githubUrl && (
-                            <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
-                              <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                                <Github /> GitHub
-                              </a>
-                            </Button>
-                          )}
-                          {currentProject.liveUrl && (
-                            <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
-                              <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                                <ExternalLink /> Live Demo
-                              </a>
-                            </Button>
-                          )}
-                        </div>
+                 <ScrollArea className="flex-grow min-h-0"> {/* Added min-h-0 */}
+                    <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
+                      <h3 className="text-2xl md:text-3xl font-bold text-primary animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-50">{currentProject.title}</h3>
+                      {currentProject.keyAchievement && (
+                        <p className="text-xs sm:text-sm md:text-md font-semibold text-foreground mt-1 mb-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-100">
+                          {currentProject.keyAchievement}
+                        </p>
                       )}
-                    </DialogContent>
-                  </Dialog>
+                      <p className="text-xs sm:text-sm md:text-base text-foreground leading-relaxed animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-150">
+                        {highlightSkillsInDescriptionInternal(currentProject.carouselDescription, currentProject.techStack, `project-carousel-short-${currentIndex}`)}
+                      </p>
 
-                  <div className="pt-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-250">
-                    <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
-                    <div className="flex flex-wrap gap-1 justify-center md:justify-start">
-                      {currentProject.techStack.map((tech) => (
-                        <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
-                      ))}
-                    </div>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="default"
+                            size="sm"
+                            className={cn(
+                              "rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2",
+                              "text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90",
+                              "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-200"
+                            )}
+                          >
+                            See more
+                            <span className="bg-primary-foreground group-hover:bg-primary-foreground/80 rounded-full p-1 transition-colors">
+                              <ArrowRight className="h-3 w-3 text-primary" />
+                            </span>
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
+                          <DialogHeader className="p-6 pb-4 border-b shrink-0 sticky top-0 bg-background z-10">
+                            <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
+                          </DialogHeader>
+                          
+                          <ScrollArea className="flex-grow px-6 py-4 min-h-0"> {/* Added min-h-0 */}
+                            <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2 prose prose-sm max-w-none">
+                              {highlightSkillsInDescriptionInternal(
+                                currentProject.description,
+                                currentProject.techStack,
+                                `project-desc-dialog-${currentIndex}`
+                              ).map((node, i) => React.createElement(React.Fragment, { key: i }, node))}
+                            </div>
+                          </ScrollArea>
+
+                          {(currentProject.githubUrl || currentProject.liveUrl) && (
+                            <div className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 mt-auto sticky bottom-0 bg-background z-10">
+                              {currentProject.githubUrl && (
+                                <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
+                                  <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                                    <Github /> GitHub
+                                  </a>
+                                </Button>
+                              )}
+                              {currentProject.liveUrl && (
+                                <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
+                                  <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                                    <ExternalLink /> Live Demo
+                                  </a>
+                                </Button>
+                              )}
+                            </div>
+                          )}
+                        </DialogContent>
+                      </Dialog>
+
+                      <div className="pt-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-250">
+                        <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
+                        <div className="flex flex-wrap gap-1 justify-center md:justify-start">
+                          {currentProject.techStack.map((tech) => (
+                            <Badge key={tech} variant="secondary" className="text-xs">{tech}</Badge>
+                          ))}
+                        </div>
+                      </div>
                   </div>
-                </div>
+                </ScrollArea>
                 <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto p-1 md:p-2 lg:p-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-300">
                   {currentProject.githubUrl && (
                     <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
