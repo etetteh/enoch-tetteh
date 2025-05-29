@@ -31,7 +31,6 @@ const mlAiProfessionalKeywords = [
   "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
 ];
 
-// Helper function to highlight skills in the description
 const highlightSkillsInDescriptionInternal = (
   description: string,
   skillsToHighlight: string[],
@@ -42,6 +41,7 @@ const highlightSkillsInDescriptionInternal = (
   }
 
   const combinedKeywords = Array.from(new Set([...skillsToHighlight, ...mlAiProfessionalKeywords].filter(kw => typeof kw === 'string' && kw.trim() !== '')));
+  
   if (combinedKeywords.length === 0) {
     return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nodesc` }, description)];
   }
@@ -52,7 +52,7 @@ const highlightSkillsInDescriptionInternal = (
 
   const patternString = `\\b(${escapedKeywords.join('|')})\\b`;
   if (!patternString || patternString === "\\b()\\b") {
-    return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nopatt` }, description)];
+     return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nopatt` }, description)];
   }
   
   const regex = new RegExp(patternString, 'gi');
@@ -81,15 +81,16 @@ export function ProjectsSection() {
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
   if (!projects || projects.length === 0) {
-    console.warn("ProjectsSection: No projects data found or projects array is empty.");
     return null;
   }
   
   const currentProject = projects[currentIndex] || projects[0];
   if (!currentProject) {
-    console.error("ProjectsSection: currentProject is undefined, even after fallback. Projects data might be problematic.");
     return <div className="container text-center py-10">Error loading project data. Please try again later.</div>; 
   }
+
+  const allKeywordsToHighlight = currentProject.techStack.concat(mlAiProfessionalKeywords);
+
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? projects.length - 1 : prevIndex - 1));
@@ -165,7 +166,7 @@ export function ProjectsSection() {
               <div
                 ref={textContentRef}
                 key={currentProject.id + '-text-pane'} 
-                className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
+                className="w-full md:w-1/2 md:h-full flex flex-col"
               >
                  <ScrollArea className="flex-grow min-h-0"> 
                     <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
@@ -196,20 +197,22 @@ export function ProjectsSection() {
                             </span>
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0">
+                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-y-auto">
                           <DialogHeader className="p-6 pb-4 border-b shrink-0 sticky top-0 bg-background z-10">
                             <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                           </DialogHeader>
                           
-                          <ScrollArea className="flex-grow min-h-0">
-                            <div className="px-6 py-4 text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
-                              {highlightSkillsInDescriptionInternal(
-                                currentProject.description,
-                                mlAiProfessionalKeywords.concat(currentProject.techStack),
-                                `project-desc-dialog-${currentIndex}`
-                              ).map((node, i) => React.createElement(React.Fragment, { key: `desc-node-${i}` }, node))}
+                          <div className="px-6 py-4 text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
+                              {currentProject.description.split('\n').map((paragraph, i) => (
+                                <p key={i} className={paragraph.startsWith('Key innovations include') || paragraph.startsWith('Key innovations:') ? 'font-bold mt-2' : ''}>
+                                  {highlightSkillsInDescriptionInternal(
+                                    paragraph,
+                                    allKeywordsToHighlight,
+                                    `project-desc-dialog-${currentIndex}-p-${i}`
+                                  )}
+                                </p>
+                              ))}
                             </div>
-                          </ScrollArea>
 
                           {(currentProject.githubUrl || currentProject.liveUrl) && (
                             <DialogFooter className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 sticky bottom-0 bg-background z-10">
@@ -337,5 +340,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-
-    
