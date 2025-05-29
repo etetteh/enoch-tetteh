@@ -11,6 +11,7 @@ import { projects } from '@/lib/data';
 import type { Project } from '@/types/portfolio';
 import { cn } from '@/lib/utils';
 
+// Combined list of professional keywords
 const mlAiProfessionalKeywords = [
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
   "LLM", "Large Language Model", "Transformer", "Embedding", "Classification", "Regression", "Clustering",
@@ -30,6 +31,7 @@ const mlAiProfessionalKeywords = [
   "Enterprise-grade", "State-of-the-art", "High-performance", "Production-grade"
 ];
 
+// Helper function to highlight skills in the description
 const highlightSkillsInDescriptionInternal = (
   description: string,
   skillsToHighlight: string[],
@@ -48,12 +50,12 @@ const highlightSkillsInDescriptionInternal = (
     keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   );
 
-  const pattern = `\\b(${escapedKeywords.join('|')})\\b`;
-  if (!pattern || pattern === "\\b()\\b") {
+  const patternString = `\\b(${escapedKeywords.join('|')})\\b`;
+  if (!patternString || patternString === "\\b()\\b") {
     return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nopatt` }, description)];
   }
   
-  const regex = new RegExp(pattern, 'gi');
+  const regex = new RegExp(patternString, 'gi');
   const parts = description.split(regex);
 
   return parts.map((part, index) => {
@@ -119,7 +121,6 @@ export function ProjectsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, isPaused, projects.length]);
 
   const handleMouseEnter = () => setIsPaused(true);
@@ -132,7 +133,8 @@ export function ProjectsSection() {
         <h2
           ref={carouselBlockRef} 
           className={cn(
-            "section-title opacity-100 scale-100" 
+            "section-title",
+            "transition-all duration-1000 ease-out opacity-100 scale-100" 
           )}
         >
           Featured Projects
@@ -140,7 +142,7 @@ export function ProjectsSection() {
         <p
           className={cn(
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base",
-            "opacity-100 scale-100" 
+            "transition-all duration-1000 ease-out opacity-100 scale-100"
           )}
         >
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
@@ -149,7 +151,7 @@ export function ProjectsSection() {
         <div
           className={cn(
             "my-8", 
-            "opacity-100 scale-100" 
+            "transition-all duration-1000 ease-out opacity-100 scale-100"
           )}
         >
           <div
@@ -182,7 +184,7 @@ export function ProjectsSection() {
 
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button
+                           <Button
                             variant="default"
                             size="sm"
                             className={cn(
@@ -202,8 +204,8 @@ export function ProjectsSection() {
                             <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                           </DialogHeader>
                           
-                          <ScrollArea className="flex-grow px-6 py-4 min-h-0">
-                            <div className="text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
+                          <ScrollArea className="flex-grow min-h-0">
+                            <div className="px-6 py-4 text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
                               {highlightSkillsInDescriptionInternal(
                                 currentProject.description,
                                 mlAiProfessionalKeywords.concat(currentProject.techStack),
@@ -213,7 +215,7 @@ export function ProjectsSection() {
                           </ScrollArea>
 
                           {(currentProject.githubUrl || currentProject.liveUrl) && (
-                            <DialogFooter className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 mt-auto sticky bottom-0 bg-background z-10">
+                            <DialogFooter className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 sticky bottom-0 bg-background z-10">
                               {currentProject.githubUrl && (
                                 <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
                                   <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
