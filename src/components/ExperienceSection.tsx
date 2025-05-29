@@ -1,13 +1,11 @@
 
 'use client';
 
-import React, { type ReactNode, useRef } from 'react'; // Ensure React is imported
+import React, { type ReactNode, useRef } from 'react'; 
 import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
-
 
 const mlAiProfessionalKeywords = [
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
@@ -31,7 +29,7 @@ const mlAiProfessionalKeywords = [
 
 const highlightExperienceKeywords = (
   text: string,
-  uniquePrefix: string 
+  uniquePrefix: string
 ): ReactNode[] => {
   if (typeof text !== 'string' || !text) {
     return [React.createElement(React.Fragment, { key: `${uniquePrefix}-empty` }, text)];
@@ -40,7 +38,7 @@ const highlightExperienceKeywords = (
   const patternString = mlAiProfessionalKeywords
     .map(keyword => `\\b${keyword.replace(/[.*+?^${}()|[\]\\\\]/g, '\\$&')}\\b`)
     .join('|');
-  
+
   if (!patternString) {
     return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nodesc` }, text)];
   }
@@ -57,22 +55,19 @@ const highlightExperienceKeywords = (
         }
         return React.createElement(React.Fragment, { key: key }, part);
     }
-    return React.createElement(React.Fragment, { key: key }); 
+    return React.createElement(React.Fragment, { key: key });
   });
 };
 
 const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  // const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1, delay: expIndex * 100 }); // Fade-in removed by user request
 
   return (
     <div
       ref={cardRef}
       className={cn(
-        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-accent to-ring shadow-lg",
-        // "transition-all duration-1000 ease-out", // Fade-in removed
-        // isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95" // Fade-in removed
-        "opacity-100 scale-100" // Ensure it's visible
+        "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
+        "opacity-100 scale-100"
       )}
     >
       <Card className="bg-card rounded-lg h-full">
@@ -101,7 +96,6 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
 
 export function ExperienceSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  // const isTitleVisible = useFadeInOnScroll(titleRef); // Fade-in removed
 
   return (
     <section id="experience">
@@ -109,9 +103,7 @@ export function ExperienceSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title"
-            // "transition-all duration-1000 ease-out", // Fade-in removed
-            // isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4" // Fade-in removed
+            "section-title opacity-100 translate-y-0"
           )}
         >
           Professional Experience
