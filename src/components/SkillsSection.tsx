@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, type ReactNode } from 'react';
 import { skillCategories } from '@/lib/data';
 import type { SkillCategory } from '@/types/portfolio';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,19 +14,25 @@ export function SkillsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  const mainCarouselBlockRef = useRef<HTMLDivElement>(null); 
-  const scrollContainerRef = useRef<HTMLDivElement>(null); 
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const mainCarouselBlockRef = useRef<HTMLDivElement>(null);
+
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleNext = React.useCallback(() => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === skillCategories.length - 1 ? 0 : prevIndex + 1
+    );
+  }, [skillCategories.length]);
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? skillCategories.length - 1 : prevIndex - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === skillCategories.length - 1 ? 0 : prevIndex + 1));
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? skillCategories.length - 1 : prevIndex - 1
+    );
   };
 
   const goToSlide = (index: number) => {
@@ -56,26 +61,36 @@ export function SkillsSection() {
         clearInterval(intervalIdRef.current);
       }
     };
-  }, [currentIndex, isPaused, skillCategories.length]);
+  }, [currentIndex, isPaused, skillCategories.length, handleNext]);
 
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container && cardRefs.current && cardRefs.current.length > currentIndex) {
-      const activeCard = cardRefs.current[currentIndex];
-      if (activeCard) {
-        const containerContentWidth = container.clientWidth;
-        const cardLeft = activeCard.offsetLeft;
-        const cardWidth = activeCard.offsetWidth;
-        
-        let targetScrollLeft = cardLeft - (containerContentWidth / 2) + (cardWidth / 2);
-        
-        targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth));
+    const container = carouselContainerRef.current;
+    if (!container) return;
 
-        container.scrollTo({
-          left: targetScrollLeft,
-          behavior: 'auto', 
-        });
-      }
+    if (currentIndex === 0) {
+      // For the very first card, forcefully set scrollLeft to 0.
+      // The container's px-4 padding should ensure it's visible.
+      // Snap-center will then try to center it within the viewport.
+      container.scrollLeft = 0;
+      return;
+    }
+    
+    const activeCard = cardRefs.current[currentIndex];
+    if (activeCard) {
+      const containerContentWidth = container.clientWidth;
+      const cardLeft = activeCard.offsetLeft;
+      const cardWidth = activeCard.offsetWidth;
+
+      let targetScrollLeft = cardLeft - containerContentWidth / 2 + cardWidth / 2;
+      targetScrollLeft = Math.max(
+        0,
+        Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth)
+      );
+
+      container.scrollTo({
+        left: targetScrollLeft,
+        behavior: 'auto',
+      });
     }
   }, [currentIndex, skillCategories.length]);
 
@@ -87,8 +102,8 @@ export function SkillsSection() {
   return (
     <section id="skills">
       <div className="container">
-        <h2 
-          ref={titleRef} 
+        <h2
+          ref={titleRef}
           className={cn(
             "section-title",
             "opacity-100 translate-y-0"
@@ -100,16 +115,18 @@ export function SkillsSection() {
         <div
           ref={mainCarouselBlockRef}
           className={cn(
-            "relative max-w-5xl mx-auto",
+            "relative max-w-5xl mx-auto", // Controls centering and max-width of the whole carousel block
             "opacity-100 scale-100"
-            )}
+          )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
-            ref={scrollContainerRef}
+            ref={carouselContainerRef}
             className={cn(
-              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full justify-center" 
+              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full"
+              // Removed justify-center, as scroll logic handles active card centering.
+              // Keeping px-4 to ensure space for first/last cards against edges if not snapped perfectly.
             )}
           >
             {skillCategories.map((category, index) => {
@@ -120,23 +137,27 @@ export function SkillsSection() {
                   ref={(el) => (cardRefs.current[index] = el)}
                   onClick={() => handleCardClick(index)}
                   className={cn(
-                    "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer shadow-lg",
-                     isActive
-                      ? "w-[90%] max-w-[256px] sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent"
+                    "group rounded-xl p-0.5 overflow-hidden transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center cursor-pointer",
+                    isActive
+                      ? "w-[90%] max-w-[256px] sm:w-72 opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent shadow-xl"
                       : "w-[80%] max-w-[208px] sm:w-52 opacity-70 hover:opacity-90 hover:scale-105 hover:bg-gradient-to-br hover:from-primary via-primary to-accent"
                   )}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick(index);}}
-                  aria-label={`View skills for ${category.name}. ${isActive ? 'Currently active.' : ''}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') handleCardClick(index);
+                  }}
+                  aria-label={`View skills for ${category.name}. ${isActive ? 'Currently active.' : ''
+                    }`}
                   aria-expanded={isActive}
                 >
                   <Card
                     className={cn(
-                      "w-full h-full flex flex-col items-center text-center p-1 transition-all duration-300 ease-in-out overflow-hidden justify-start rounded-xl bg-card"
+                      "w-full h-full flex flex-col items-center text-center p-1 transition-all duration-300 ease-in-out overflow-hidden justify-start rounded-xl",
+                      isActive ? "bg-card" : "bg-card" // Ensure solid background for inactive too
                     )}
                   >
-                    <CardHeader className={cn("p-2 shrink-0")}>
+                    <CardHeader className={cn("p-2 shrink-0 transition-all duration-300 ease-in-out", isActive ? "delay-100" : "")}>
                       <category.icon
                         className={cn(
                           "mx-auto mb-2 transition-all duration-300 ease-in-out",
@@ -152,12 +173,13 @@ export function SkillsSection() {
                         {category.name}
                       </CardTitle>
                     </CardHeader>
-                     <CardContent className={cn(
+                    <CardContent
+                      className={cn(
                         "w-full overflow-hidden transition-all duration-500 ease-in-out",
-                        isActive ? "max-h-96 opacity-100 pt-3" : "max-h-0 opacity-0 p-0" 
+                        isActive ? "max-h-96 opacity-100 pt-3 flex-grow" : "max-h-0 opacity-0 p-0"
                       )}
                     >
-                      {isActive && ( 
+                      {isActive && (
                         <ScrollArea className="h-full">
                           <div className="flex flex-wrap gap-2 justify-center p-3 sm:p-4">
                             {category.skills.map((skill) => (
@@ -204,7 +226,7 @@ export function SkillsSection() {
             </>
           )}
         </div>
-        
+
         {skillCategories.length > 1 && (
           <div className="flex justify-center items-center space-x-2 py-6">
             {skillCategories.map((_, index) => (
@@ -235,5 +257,3 @@ export function SkillsSection() {
     </section>
   );
 }
-
-    
