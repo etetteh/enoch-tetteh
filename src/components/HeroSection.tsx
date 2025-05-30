@@ -12,10 +12,74 @@ export function HeroSection() {
     <section
       id="hero"
       className={cn(
-        "min-h-screen flex flex-col justify-center py-12 md:py-20"
+        "relative min-h-screen flex flex-col justify-center py-12 md:py-20 overflow-hidden" // Added relative and overflow-hidden
       )}
     >
-      <div className="container text-center">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 -z-10">
+        <div
+          className="particle"
+          style={{
+            width: '150px',
+            height: '150px',
+            top: '10%',
+            left: '15%',
+            animationDuration: '25s',
+            animationDelay: '0s',
+            backgroundColor: 'hsl(var(--primary))',
+          }}
+        />
+        <div
+          className="particle"
+          style={{
+            width: '200px',
+            height: '200px',
+            top: '60%',
+            left: '70%',
+            animationDuration: '30s',
+            animationDelay: '-5s',
+            backgroundColor: 'hsl(var(--accent))',
+          }}
+        />
+        <div
+          className="particle"
+          style={{
+            width: '100px',
+            height: '100px',
+            top: '30%',
+            left: '40%',
+            animationDuration: '20s',
+            animationDelay: '-10s',
+            backgroundColor: 'hsl(var(--primary))',
+          }}
+        />
+        <div
+          className="particle"
+          style={{
+            width: '120px',
+            height: '120px',
+            bottom: '5%',
+            left: '5%',
+            animationDuration: '28s',
+            animationDelay: '-15s',
+            backgroundColor: 'hsl(var(--accent))',
+          }}
+        />
+        <div
+          className="particle"
+          style={{
+            width: '80px',
+            height: '80px',
+            top: '50%',
+            left: '50%',
+            animationDuration: '22s',
+            animationDelay: '-3s',
+            backgroundColor: 'hsl(var(--primary))',
+          }}
+        />
+      </div>
+
+      <div className="container relative z-0 text-center"> {/* Ensured content is above background */}
         {/* Main Heading */}
         <h1
           className={cn(
@@ -46,7 +110,7 @@ export function HeroSection() {
         {/* Detailed Bio Paragraphs */}
         <div
           className={cn(
-            "mt-6 max-w-3xl mx-auto text-base text-muted-foreground sm:text-lg space-y-3"
+            "mt-6 max-w-3xl mx-auto text-base sm:text-lg text-muted-foreground space-y-3"
           )}
         >
           <Balancer>
@@ -89,4 +153,3 @@ export function HeroSection() {
     </section>
   );
 }
-
