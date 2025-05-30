@@ -13,14 +13,14 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef, { threshold: 0.1, delay: pubIndex * 100 });
+  const isVisible = useFadeInOnScroll(cardRef);
 
   return (
     <div
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-all duration-700 ease-out",
+        "transition-all duration-1000 ease-out",
         isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
       )}
     >
@@ -28,7 +28,7 @@ const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-grow">
-              <CardTitle className="text-xl font-semibold text-primary">{pub.title}</CardTitle>
+              <CardTitle className="text-lg sm:text-xl font-semibold text-primary">{pub.title}</CardTitle>
               <CardDescription className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Authors: <span className="italic">{pub.authors}</span>
               </CardDescription>

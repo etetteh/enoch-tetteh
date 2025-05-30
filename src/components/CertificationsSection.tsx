@@ -62,7 +62,7 @@ export function CertificationsSection() {
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { delay: 200 });
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef);
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, certifications.length);

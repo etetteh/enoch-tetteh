@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, type ReactNode } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -43,7 +43,7 @@ const highlightSkillsInDescriptionInternal = (
   const combinedKeywords = Array.from(new Set([...skillsToHighlight, ...mlAiProfessionalKeywords].filter(kw => typeof kw === 'string' && kw.trim() !== '')));
   
   if (combinedKeywords.length === 0) {
-    return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nodesc` }, description)];
+     return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nodesc` }, description)];
   }
   
   const escapedKeywords = combinedKeywords.map(keyword =>
@@ -166,7 +166,7 @@ export function ProjectsSection() {
               <div
                 ref={textContentRef}
                 key={currentProject.id + '-text-pane'} 
-                className="w-full md:w-1/2 md:h-full flex flex-col"
+                className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
               >
                  <ScrollArea className="flex-grow min-h-0"> 
                     <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
@@ -187,7 +187,7 @@ export function ProjectsSection() {
                             size="sm"
                             className={cn(
                               "rounded-full px-3 py-1.5 text-xs sm:text-sm flex items-center gap-2 group mt-2",
-                              "text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90",
+                              "text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90",
                               "animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-300"
                             )}
                           >
@@ -197,22 +197,24 @@ export function ProjectsSection() {
                             </span>
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-y-auto">
+                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
                           <DialogHeader className="p-6 pb-4 border-b shrink-0 sticky top-0 bg-background z-10">
                             <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                           </DialogHeader>
                           
-                          <div className="px-6 py-4 text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
-                              {currentProject.description.split('\n').map((paragraph, i) => (
-                                <p key={i} className={paragraph.startsWith('Key innovations include') || paragraph.startsWith('Key innovations:') ? 'font-bold mt-2' : ''}>
-                                  {highlightSkillsInDescriptionInternal(
-                                    paragraph,
-                                    allKeywordsToHighlight,
-                                    `project-desc-dialog-${currentIndex}-p-${i}`
-                                  )}
-                                </p>
-                              ))}
-                            </div>
+                          <ScrollArea className="flex-grow min-h-0">
+                            <div className="px-6 py-4 text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
+                                {currentProject.description.split('\n').map((paragraph, i) => (
+                                  <p key={i} className={paragraph.startsWith('Key innovations include') || paragraph.startsWith('Key innovations:') ? 'font-bold mt-2' : ''}>
+                                    {highlightSkillsInDescriptionInternal(
+                                      paragraph,
+                                      allKeywordsToHighlight,
+                                      `project-desc-dialog-${currentIndex}-p-${i}`
+                                    )}
+                                  </p>
+                                ))}
+                              </div>
+                          </ScrollArea>
 
                           {(currentProject.githubUrl || currentProject.liveUrl) && (
                             <DialogFooter className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 sticky bottom-0 bg-background z-10">
@@ -224,7 +226,7 @@ export function ProjectsSection() {
                                 </Button>
                               )}
                               {currentProject.liveUrl && (
-                                <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 transform transition-transform hover:scale-105">
+                                <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
                                   <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                                     <ExternalLink /> Live Demo
                                   </a>
@@ -254,7 +256,7 @@ export function ProjectsSection() {
                     </Button>
                   )}
                   {currentProject.liveUrl && (
-                    <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-accent to-ring hover:brightness-90 transform transition-transform hover:scale-105">
+                    <Button size="sm" asChild className="text-primary-foreground bg-gradient-to-br from-primary via-primary to-accent hover:brightness-90 transform transition-transform hover:scale-105">
                       <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink /> Live Demo
                       </a>
@@ -285,7 +287,7 @@ export function ProjectsSection() {
 
             {projects.length > 1 && (
               <>
-                <div className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
+                <div className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                   <Button
                     variant="outline"
                     onClick={handlePrev}
@@ -295,7 +297,7 @@ export function ProjectsSection() {
                     <ChevronLeft className="h-6 w-6" />
                   </Button>
                 </div>
-                <div className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
+                <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 z-10 rounded-full h-10 w-10 p-0.5 group transition-all duration-300 ease-in-out hover:bg-gradient-to-br from-primary via-primary to-accent">
                   <Button
                     variant="outline"
                     onClick={handleNext}
