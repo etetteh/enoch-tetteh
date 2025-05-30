@@ -287,9 +287,9 @@ export const certifications: Certification[] = [
 
 
 export const portfolioOwner = {
-  name: "Enoch Tetteh",
-  title: "Innovative AI Engineer & MLOps Expert",
-  bio: [
+  name: "Enoch Tetteh", // Used for Navbar, Footer, Resume filename, Chatbot (Enoch's assistant) etc.
+  title: "Innovative AI Engineer & MLOps Expert", // Original title, potentially for metadata or other general uses.
+  bio: [ // Original bio, potentially for metadata or if a compact bio is needed elsewhere.
     "Proven AI/ML Engineer adept at transforming complex challenges into impactful, enterprise-grade solutions",
     "across NLP, Computer Vision, and Generative AI.",
     "My expertise in MLOps, advanced model optimization (LoRA, quantization, pruning),",
@@ -301,6 +301,16 @@ export const portfolioOwner = {
   contactEmail: "enoch.tetteh.2099@gmail.com",
   linkedinUrl: "https://www.linkedin.com/in/enoch-tetteh-80450211a",
   githubUrl: "https://github.com/etetteh",
+
+  // New fields for Hero Section
+  heroMainHeading: "AI Engineering Leader",
+  heroSubHeading: "Transforming Innovation Into Enterprise Impact",
+  heroTagline: "Senior AI/ML Engineer specializing in production-grade solutions that deliver measurable business results.",
+  heroDetailedBio: [
+    "I architect and deploy enterprise AI systems across NLP, Computer Vision, and Generative AI that scale to millions of users. My expertise in MLOps and advanced model optimization has consistently delivered breakthrough results: 75% model size reductions, 40% data quality improvements, and 4% improvement in out-of-distribution generalization for mission-critical systems.",
+    "From OpenAI GPT integrations and Google Gemini deployments to custom LangChain and LangGraph implementations, I build AI solutions that don't just work—they transform businesses and create lasting competitive advantages."
+  ],
+  heroFinalCallToAction: "Ready to lead your next AI transformation."
 };
     
 
@@ -309,6 +319,7 @@ export const portfolioOwner = {
     
 
     
+
 
 
 
