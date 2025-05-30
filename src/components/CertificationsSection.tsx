@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -9,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: boolean }) => {
   const IconToUse = cert.icon || Award;
@@ -19,10 +17,10 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
       className={cn(
         "rounded-xl p-0.5 shadow-lg transition-all duration-300 ease-in-out",
         "w-64 sm:w-72 md:w-80 lg:w-96 h-full flex-shrink-0 snap-center",
-        isActive ? "opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent" : "opacity-70 scale-100 hover:opacity-90 hover:bg-gradient-to-br hover:from-primary hover:via-primary hover:to-accent"
+        isActive ? "opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent" : "opacity-70 scale-100 hover:opacity-90 hover:bg-gradient-to-br hover:from-primary hover:via-primary to-accent"
       )}
     >
-      <Card className="bg-card rounded-lg h-full flex flex-col">
+      <Card className="bg-card rounded-xl h-full flex flex-col"> {/* Changed from rounded-lg */}
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-grow">
@@ -61,9 +59,6 @@ export function CertificationsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
-  const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef);
-
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, certifications.length);
   }, []);
@@ -87,7 +82,7 @@ export function CertificationsSection() {
     if (!isPaused && certifications.length > 1) {
       intervalIdRef.current = setInterval(() => {
         handleNext();
-      }, 9000); 
+      }, 9000);
     }
     return () => {
       if (intervalIdRef.current) {
@@ -104,14 +99,14 @@ export function CertificationsSection() {
       const containerContentWidth = container.clientWidth;
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
-      
+
       let targetScrollLeft = cardLeft - (containerContentWidth / 2) + (cardWidth / 2);
-      
+
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerContentWidth));
 
       container.scrollTo({
         left: targetScrollLeft,
-        behavior: 'auto', 
+        behavior: 'auto',
       });
     }
   }, [currentIndex]);
@@ -123,12 +118,10 @@ export function CertificationsSection() {
   return (
     <section id="certifications">
       <div className="container">
-        <h2 
+        <h2
           ref={titleRef}
           className={cn(
-            "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            "section-title opacity-100 translate-y-0"
           )}
         >
           Certifications & Learning
@@ -136,9 +129,7 @@ export function CertificationsSection() {
         <div
           ref={carouselBlockRef}
           className={cn(
-            "relative max-w-3xl mx-auto",
-            "transition-all duration-1000 ease-out",
-            isCarouselBlockVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            "relative max-w-3xl mx-auto opacity-100 scale-100"
           )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -205,7 +196,7 @@ export function CertificationsSection() {
               >
                 {currentIndex === index && (
                   <div
-                    key={`fill-cert-${currentIndex}`} 
+                    key={`fill-cert-${currentIndex}`}
                     className="h-full bg-primary rounded-full"
                     style={{ animation: 'progress-fill 9s linear forwards' }}
                   />

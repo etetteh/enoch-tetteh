@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -8,7 +7,6 @@ import { Mail, Linkedin, Github } from "lucide-react";
 import Link from "next/link";
 import { portfolioOwner } from "@/lib/data";
 import { cn } from '@/lib/utils';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function ContactSection() {
   const [emailHref, setEmailHref] = useState<string>('#');
@@ -16,9 +14,6 @@ export function ContactSection() {
 
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cardWrapperRef = useRef<HTMLDivElement>(null);
-
-  const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isCardWrapperVisible = useFadeInOnScroll(cardWrapperRef, { delay: 200 });
 
   useEffect(() => {
     setIsClient(true);
@@ -37,9 +32,7 @@ export function ContactSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            "section-title opacity-100 translate-y-0"
           )}
         >
           Get In Touch
@@ -48,11 +41,10 @@ export function ContactSection() {
           ref={cardWrapperRef}
           className={cn(
             "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg max-w-2xl mx-auto",
-            "transition-all duration-1000 ease-out",
-            isCardWrapperVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            "opacity-100 scale-100"
           )}
         >
-          <Card className="bg-card rounded-lg">
+          <Card className="bg-card rounded-xl"> {/* Changed from rounded-lg */}
             <CardHeader>
               <CardTitle className="text-2xl font-semibold text-primary">Contact Me</CardTitle>
               <CardDescription className="text-xs sm:text-sm text-muted-foreground">

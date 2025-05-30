@@ -1,30 +1,26 @@
-
 'use client';
 
 import type { Publication } from '@/types/portfolio';
 import { publications } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Github, ExternalLink, FileText as DefaultPubIcon } from 'lucide-react';
+import { Github, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
-import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardRef);
 
   return (
     <div
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-all duration-1000 ease-out",
-        isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        "opacity-100 scale-100"
       )}
     >
-      <Card className="bg-card rounded-lg h-full flex flex-col">
+      <Card className="bg-card rounded-xl h-full flex flex-col"> {/* Changed from rounded-lg */}
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-grow">
@@ -64,10 +60,9 @@ const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number
 
 export function PublicationsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const isTitleVisible = useFadeInOnScroll(titleRef);
 
   if (!publications || publications.length === 0) {
-    return null; 
+    return null;
   }
 
   return (
@@ -76,9 +71,7 @@ export function PublicationsSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            "section-title opacity-100 translate-y-0"
           )}
         >
           Publications

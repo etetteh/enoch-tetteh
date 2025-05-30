@@ -1,7 +1,6 @@
-
 'use client';
 
-import React, { type ReactNode, useRef } from 'react'; 
+import React, { type ReactNode, useRef } from 'react';
 import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -67,10 +66,10 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
       ref={cardRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "opacity-100 scale-100"
+        "opacity-100 scale-100" 
       )}
     >
-      <Card className="bg-card rounded-lg h-full">
+      <Card className="bg-card rounded-xl h-full"> {/* Changed from rounded-lg */}
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div>
