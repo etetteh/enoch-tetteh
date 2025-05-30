@@ -2,7 +2,14 @@
 'use client';
 
 import React, { useState, useRef, useEffect, type ReactNode } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter // Ensure DialogFooter is imported
+} from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -41,11 +48,11 @@ const highlightSkillsInDescriptionInternal = (
   }
 
   const combinedKeywords = Array.from(new Set([...skillsToHighlight, ...mlAiProfessionalKeywords].filter(kw => typeof kw === 'string' && kw.trim() !== '')));
-  
+
   if (combinedKeywords.length === 0) {
      return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nodesc` }, description)];
   }
-  
+
   const escapedKeywords = combinedKeywords.map(keyword =>
     keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   );
@@ -54,7 +61,7 @@ const highlightSkillsInDescriptionInternal = (
   if (!patternString || patternString === "\\b()\\b") {
      return [React.createElement(React.Fragment, { key: `${uniquePrefix}-nopatt` }, description)];
   }
-  
+
   const regex = new RegExp(patternString, 'gi');
   const parts = description.split(regex);
 
@@ -67,7 +74,7 @@ const highlightSkillsInDescriptionInternal = (
         }
         return React.createElement(React.Fragment, { key: key }, part);
     }
-    return React.createElement(React.Fragment, { key: key }); 
+    return React.createElement(React.Fragment, { key: key });
   });
 };
 
@@ -83,10 +90,10 @@ export function ProjectsSection() {
   if (!projects || projects.length === 0) {
     return null;
   }
-  
+
   const currentProject = projects[currentIndex] || projects[0];
   if (!currentProject) {
-    return <div className="container text-center py-10">Error loading project data. Please try again later.</div>; 
+    return <div className="container text-center py-10">Error loading project data. Please try again later.</div>;
   }
 
   const allKeywordsToHighlight = currentProject.techStack.concat(mlAiProfessionalKeywords);
@@ -129,10 +136,10 @@ export function ProjectsSection() {
     <section id="projects">
       <div className="container">
         <h2
-          ref={carouselBlockRef} 
+          ref={carouselBlockRef}
           className={cn(
             "section-title",
-            "opacity-100 scale-100" 
+            "opacity-100 scale-100"
           )}
         >
           Featured Projects
@@ -148,7 +155,7 @@ export function ProjectsSection() {
 
         <div
           className={cn(
-            "my-8", 
+            "my-8",
             "opacity-100 scale-100"
           )}
         >
@@ -160,19 +167,19 @@ export function ProjectsSection() {
           >
             <div className={cn(
               "bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8",
-              "md:h-[500px]" 
+              "md:h-[500px]"
             )}>
               {/* Left Pane: Text Content */}
               <div
                 ref={textContentRef}
-                key={currentProject.id + '-text-pane'} 
+                key={currentProject.id + '-text-pane'}
                 className="w-full md:w-1/2 md:h-full flex flex-col animate-in fade-in-0 duration-500"
               >
-                 <ScrollArea className="flex-grow min-h-0"> 
+                 <ScrollArea className="flex-grow min-h-0">
                     <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
                       <h3 className="text-2xl md:text-3xl font-bold text-primary animate-in fade-in-0 slide-in-from-bottom-2 duration-500">{currentProject.title}</h3>
                       {currentProject.keyAchievement && (
-                        <p className="text-xs sm:text-sm md:text-md font-semibold text-foreground mt-1 mb-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-100">
+                        <p className="text-xs sm:text-sm md:text-md font-bold text-foreground mt-1 mb-2 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-100">
                           {currentProject.keyAchievement}
                         </p>
                       )}
@@ -202,8 +209,7 @@ export function ProjectsSection() {
                             <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                           </DialogHeader>
                           
-                          <ScrollArea className="flex-grow min-h-0">
-                            <div className="px-6 py-4 text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
+                          <div className="flex-grow min-h-0 overflow-y-auto px-6 py-4 text-xs sm:text-sm text-foreground leading-relaxed space-y-2">
                                 {currentProject.description.split('\n').map((paragraph, i) => (
                                   <p key={i} className={paragraph.startsWith('Key innovations include') || paragraph.startsWith('Key innovations:') ? 'font-bold mt-2' : ''}>
                                     {highlightSkillsInDescriptionInternal(
@@ -213,8 +219,7 @@ export function ProjectsSection() {
                                     )}
                                   </p>
                                 ))}
-                              </div>
-                          </ScrollArea>
+                          </div>
 
                           {(currentProject.githubUrl || currentProject.liveUrl) && (
                             <DialogFooter className="flex-shrink-0 flex gap-2 justify-end pt-4 pb-6 px-6 border-t border-border/30 sticky bottom-0 bg-background z-10">
@@ -237,7 +242,7 @@ export function ProjectsSection() {
                         </DialogContent>
                       </Dialog>
 
-                      <div className="pt-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-400"> 
+                      <div className="pt-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-400">
                         <h4 className="text-xs font-semibold text-muted-foreground mb-1 uppercase tracking-wider">Tech Stack:</h4>
                         <div className="flex flex-wrap gap-1 justify-center md:justify-start">
                           {currentProject.techStack.map((tech) => (
@@ -247,7 +252,7 @@ export function ProjectsSection() {
                       </div>
                   </div>
                 </ScrollArea>
-                <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto p-1 md:p-2 lg:p-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-500"> 
+                <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto p-1 md:p-2 lg:p-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-500">
                   {currentProject.githubUrl && (
                     <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
                       <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
@@ -270,7 +275,7 @@ export function ProjectsSection() {
                 className={cn(
                   "w-full md:w-1/2 h-64 md:h-full rounded-md flex flex-col items-center justify-center p-4 relative aspect-video md:aspect-auto",
                   "transition-all duration-500 ease-in-out",
-                  "animate-in fade-in-0 duration-700 delay-200", 
+                  "animate-in fade-in-0 duration-700 delay-200",
                   currentIndex % 4 === 0 ? "bg-gradient-to-br from-primary/20 to-primary/5" :
                     currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
                       currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" :
@@ -278,7 +283,7 @@ export function ProjectsSection() {
                 )}
                 data-ai-hint={currentProject.imageHint}
               >
-                <div className="text-center animate-in fade-in-0 duration-500 delay-300"> 
+                <div className="text-center animate-in fade-in-0 duration-500 delay-300">
                   <VideoIcon className="h-16 w-16 text-foreground/30 mx-auto mb-2" />
                   <p className="text-xs text-foreground/50">Project Visual Coming Soon</p>
                 </div>
