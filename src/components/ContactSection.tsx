@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -7,6 +8,7 @@ import { Mail, Linkedin, Github } from "lucide-react";
 import Link from "next/link";
 import { portfolioOwner } from "@/lib/data";
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function ContactSection() {
   const [emailHref, setEmailHref] = useState<string>('#');
@@ -14,6 +16,9 @@ export function ContactSection() {
 
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cardWrapperRef = useRef<HTMLDivElement>(null);
+
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const isCardWrapperVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: 200 });
 
   useEffect(() => {
     setIsClient(true);
@@ -32,7 +37,9 @@ export function ContactSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title opacity-100 translate-y-0"
+            "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Get In Touch
@@ -41,10 +48,11 @@ export function ContactSection() {
           ref={cardWrapperRef}
           className={cn(
             "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg max-w-2xl mx-auto",
-            "opacity-100 scale-100"
+            "transition-all duration-1000 ease-out delay-200",
+            isCardWrapperVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
-          <Card className="bg-card rounded-xl"> {/* Changed from rounded-lg */}
+          <Card className="bg-card rounded-xl">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold text-primary">Contact Me</CardTitle>
               <CardDescription className="text-xs sm:text-sm text-muted-foreground">
@@ -79,3 +87,4 @@ export function ContactSection() {
     </section>
   );
 }
+

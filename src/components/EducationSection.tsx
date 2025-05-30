@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { type ReactNode, useRef } from 'react';
@@ -5,19 +6,22 @@ import type { Education } from '@/types/portfolio';
 import { education } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const EducationCard = ({ edu, eduIndex }: { edu: Education, eduIndex: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardWrapperRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: eduIndex * 100 });
 
   return (
     <div
-      ref={cardRef}
+      ref={cardWrapperRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "opacity-100 scale-100"
+        "transition-all duration-1000 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}
     >
-      <Card className="bg-card rounded-xl"> {/* Changed from rounded-lg */}
+      <Card className="bg-card rounded-xl">
         <CardHeader>
            <div className="flex items-start justify-between gap-4">
               <div>
@@ -49,6 +53,7 @@ const EducationCard = ({ edu, eduIndex }: { edu: Education, eduIndex: number }) 
 
 export function EducationSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
 
   return (
     <section id="education">
@@ -56,7 +61,9 @@ export function EducationSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title opacity-100 translate-y-0"
+            "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Education
@@ -70,3 +77,4 @@ export function EducationSection() {
     </section>
   );
 }
+

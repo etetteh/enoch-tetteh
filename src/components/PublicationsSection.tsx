@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Publication } from '@/types/portfolio';
@@ -8,19 +9,23 @@ import { Github, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardWrapperRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: pubIndex * 100 });
+
 
   return (
     <div
-      ref={cardRef}
+      ref={cardWrapperRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "opacity-100 scale-100"
+        "transition-all duration-1000 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}
     >
-      <Card className="bg-card rounded-xl h-full flex flex-col"> {/* Changed from rounded-lg */}
+      <Card className="bg-card rounded-xl h-full flex flex-col">
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-grow">
@@ -60,6 +65,7 @@ const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number
 
 export function PublicationsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
 
   if (!publications || publications.length === 0) {
     return null;
@@ -71,7 +77,9 @@ export function PublicationsSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title opacity-100 translate-y-0"
+            "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Publications
@@ -85,3 +93,4 @@ export function PublicationsSection() {
     </section>
   );
 }
+

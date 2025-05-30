@@ -10,7 +10,6 @@ import {
   DialogTrigger,
   DialogFooter
 } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Github, ExternalLink, ArrowRight, VideoIcon } from 'lucide-react';
@@ -83,14 +82,15 @@ const highlightSkillsInDescriptionInternal = (
 export function ProjectsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
-  const isTitleVisible = useFadeInOnScroll(titleRef);
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { delay: 200 });
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const isDescriptionVisible = useFadeInOnScroll(descriptionRef, { threshold: 0.1, delay: 100 });
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05, delay: 200 });
 
 
   const carouselRef = useRef<HTMLDivElement>(null);
-  const textContentRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
@@ -147,17 +147,18 @@ export function ProjectsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-opacity duration-1000 ease-out",
-            isTitleVisible ? "opacity-100" : "opacity-0"
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Featured Projects
         </h2>
         <p
+          ref={descriptionRef}
           className={cn(
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base",
-            "transition-opacity duration-1000 ease-out delay-100", // Slight delay
-            isTitleVisible ? "opacity-100" : "opacity-0" // Triggered by title's visibility
+            "transition-all duration-1000 ease-out delay-100",
+            isDescriptionVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
@@ -167,8 +168,8 @@ export function ProjectsSection() {
           ref={carouselBlockRef}
           className={cn(
             "my-8",
-            "transition-all duration-1000 ease-out",
-            isCarouselBlockVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            "transition-all duration-1000 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           <div
@@ -183,11 +184,10 @@ export function ProjectsSection() {
             )}>
               {/* Left Pane: Text Content */}
               <div
-                ref={textContentRef}
                 key={currentProject.id + '-text-pane'} 
                 className="w-full md:w-1/2 md:h-full flex flex-col"
               >
-                 <ScrollArea className="flex-grow min-h-0">
+                 <div className="flex-grow min-h-0 overflow-y-auto">
                     <div className="p-1 md:p-2 lg:p-4 space-y-3 text-center md:text-left">
                       <h3 className="text-2xl md:text-3xl font-bold text-primary">{currentProject.title}</h3>
                       {currentProject.keyAchievement && (
@@ -262,7 +262,7 @@ export function ProjectsSection() {
                         </div>
                       </div>
                   </div>
-                </ScrollArea>
+                </div>
                 <div className="flex-shrink-0 flex gap-2 justify-center md:justify-start pt-4 border-t border-border/30 mt-auto p-1 md:p-2 lg:p-4">
                   {currentProject.githubUrl && (
                     <Button variant="outline" size="sm" asChild className="transform transition-transform hover:scale-105">
@@ -285,7 +285,6 @@ export function ProjectsSection() {
               <div
                 className={cn(
                   "w-full md:w-1/2 h-64 md:h-full rounded-md flex flex-col items-center justify-center p-4 relative aspect-video md:aspect-auto",
-                  "transition-all duration-500 ease-in-out",
                   currentIndex % 4 === 0 ? "bg-gradient-to-br from-primary/20 to-primary/5" :
                     currentIndex % 4 === 1 ? "bg-gradient-to-br from-accent/20 to-accent/5" :
                       currentIndex % 4 === 2 ? "bg-gradient-to-br from-secondary/30 to-secondary/10" :
@@ -357,3 +356,4 @@ export function ProjectsSection() {
     </section>
   );
 }
+

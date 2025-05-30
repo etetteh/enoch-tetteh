@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -8,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Award, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: boolean }) => {
   const IconToUse = cert.icon || Award;
@@ -20,7 +22,7 @@ const CertificationCard = ({ cert, isActive }: { cert: Certification; isActive: 
         isActive ? "opacity-100 scale-105 bg-gradient-to-br from-primary via-primary to-accent" : "opacity-70 scale-100 hover:opacity-90 hover:bg-gradient-to-br hover:from-primary hover:via-primary to-accent"
       )}
     >
-      <Card className="bg-card rounded-xl h-full flex flex-col"> {/* Changed from rounded-lg */}
+      <Card className="bg-card rounded-xl h-full flex flex-col">
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-grow">
@@ -58,6 +60,9 @@ export function CertificationsSection() {
 
   const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05, delay: 200 });
+
 
   useEffect(() => {
     cardRefs.current = cardRefs.current.slice(0, certifications.length);
@@ -121,7 +126,9 @@ export function CertificationsSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title opacity-100 translate-y-0"
+            "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Certifications & Learning
@@ -129,7 +136,9 @@ export function CertificationsSection() {
         <div
           ref={carouselBlockRef}
           className={cn(
-            "relative max-w-3xl mx-auto opacity-100 scale-100"
+            "relative max-w-3xl mx-auto",
+            "transition-all duration-1000 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -209,3 +218,4 @@ export function CertificationsSection() {
     </section>
   );
 }
+

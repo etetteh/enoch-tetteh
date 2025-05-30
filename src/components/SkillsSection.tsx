@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect, type ReactNode } from 'react';
@@ -9,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 export function SkillsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,6 +22,9 @@ export function SkillsSection() {
 
   const titleRef = useRef<HTMLHeadingElement>(null);
   const mainCarouselBlockRef = useRef<HTMLDivElement>(null);
+
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const isCarouselBlockVisible = useFadeInOnScroll(mainCarouselBlockRef, { threshold: 0.05, delay: 200 });
 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,9 +73,6 @@ export function SkillsSection() {
     if (!container) return;
 
     if (currentIndex === 0) {
-      // For the very first card, forcefully set scrollLeft to 0.
-      // The container's px-4 padding should ensure it's visible.
-      // Snap-center will then try to center it within the viewport.
       container.scrollLeft = 0;
       return;
     }
@@ -106,7 +108,8 @@ export function SkillsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "opacity-100 translate-y-0"
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Skills & Expertise
@@ -115,8 +118,9 @@ export function SkillsSection() {
         <div
           ref={mainCarouselBlockRef}
           className={cn(
-            "relative max-w-5xl mx-auto", // Controls centering and max-width of the whole carousel block
-            "opacity-100 scale-100"
+            "relative max-w-5xl mx-auto",
+            "transition-all duration-1000 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -125,8 +129,6 @@ export function SkillsSection() {
             ref={carouselContainerRef}
             className={cn(
               "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-stretch snap-x snap-mandatory h-[400px] sm:h-[460px] w-full"
-              // Removed justify-center, as scroll logic handles active card centering.
-              // Keeping px-4 to ensure space for first/last cards against edges if not snapped perfectly.
             )}
           >
             {skillCategories.map((category, index) => {
@@ -154,10 +156,10 @@ export function SkillsSection() {
                   <Card
                     className={cn(
                       "w-full h-full flex flex-col items-center text-center p-1 transition-all duration-300 ease-in-out overflow-hidden justify-start rounded-xl",
-                      isActive ? "bg-card" : "bg-card" // Ensure solid background for inactive too
+                      isActive ? "bg-card" : "bg-card" 
                     )}
                   >
-                    <CardHeader className={cn("p-2 shrink-0 transition-all duration-300 ease-in-out", isActive ? "delay-100" : "")}>
+                    <CardHeader className={cn("p-2 shrink-0")}>
                       <category.icon
                         className={cn(
                           "mx-auto mb-2 transition-all duration-300 ease-in-out",
@@ -257,3 +259,4 @@ export function SkillsSection() {
     </section>
   );
 }
+

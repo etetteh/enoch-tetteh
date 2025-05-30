@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { type ReactNode, useRef } from 'react';
@@ -5,6 +6,7 @@ import type { Experience } from '@/types/portfolio';
 import { experiences } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const mlAiProfessionalKeywords = [
   "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing", "Computer Vision", "Generative AI",
@@ -59,17 +61,20 @@ const highlightExperienceKeywords = (
 };
 
 const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardWrapperRef = useRef<HTMLDivElement>(null);
+  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: expIndex * 100 });
+
 
   return (
     <div
-      ref={cardRef}
+      ref={cardWrapperRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "opacity-100 scale-100" 
+        "transition-all duration-1000 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8" 
       )}
     >
-      <Card className="bg-card rounded-xl h-full"> {/* Changed from rounded-lg */}
+      <Card className="bg-card rounded-xl h-full">
         <CardHeader>
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -95,6 +100,7 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
 
 export function ExperienceSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
 
   return (
     <section id="experience">
@@ -102,7 +108,9 @@ export function ExperienceSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title opacity-100 translate-y-0"
+            "section-title",
+            "transition-all duration-1000 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
           Professional Experience
@@ -116,3 +124,4 @@ export function ExperienceSection() {
     </section>
   );
 }
+
