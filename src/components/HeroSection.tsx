@@ -46,7 +46,7 @@ export function HeroSection() {
         {/* Detailed Bio Paragraphs */}
         <div
           className={cn(
-            "mt-6 max-w-3xl mx-auto text-sm text-muted-foreground sm:text-base space-y-3"
+            "mt-6 max-w-3xl mx-auto text-base text-muted-foreground sm:text-lg space-y-3"
           )}
         >
           <Balancer>
