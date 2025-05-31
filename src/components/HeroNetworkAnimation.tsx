@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -13,21 +14,37 @@ interface Particle {
 export function HeroNetworkAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [basePrimaryColor, setBasePrimaryColor] = useState('217 91% 60%'); // Default from globals.css
-  const [baseAccentColor, setBaseAccentColor] = useState('174 100% 29%'); // Default from globals.css
+  const [chartColors, setChartColors] = useState<string[]>([]);
   const [isMounted, setIsMounted] = useState(false);
-
 
   useEffect(() => {
     setIsMounted(true);
     if (typeof window !== 'undefined') {
       const computedStyle = getComputedStyle(document.documentElement);
-      setBasePrimaryColor(computedStyle.getPropertyValue('--primary').trim() || basePrimaryColor);
-      setBaseAccentColor(computedStyle.getPropertyValue('--accent').trim() || baseAccentColor);
+      const primary = computedStyle.getPropertyValue('--primary').trim();
+      const accent = computedStyle.getPropertyValue('--accent').trim();
+      
+      setBasePrimaryColor(primary || '217 91% 60%');
+
+      const fetchedChartColors = [];
+      for (let i = 1; i <= 5; i++) { // Try to fetch up to 5 chart colors
+        const color = computedStyle.getPropertyValue(`--chart-${i}`).trim();
+        if (color) {
+          fetchedChartColors.push(color);
+        }
+      }
+
+      if (fetchedChartColors.length > 0) {
+        setChartColors(fetchedChartColors);
+      } else {
+        // Fallback if no chart colors are found, use primary and accent
+        setChartColors([primary || '217 91% 60%', accent || '174 100% 29%'].filter(Boolean));
+      }
     }
-  }, [basePrimaryColor, baseAccentColor]);
+  }, []);
 
   useEffect(() => {
-    if (!isMounted || !canvasRef.current) return;
+    if (!isMounted || !canvasRef.current || chartColors.length === 0) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -35,9 +52,9 @@ export function HeroNetworkAnimation() {
 
     let animationFrameId: number;
     let particles: Particle[] = [];
-    const numParticles = 50; // Adjust for density/performance
-    const connectDistance = 120; // Max distance to draw a line
-    const particleSpeed = 0.3; // Max speed of particles
+    const numParticles = 50; 
+    const connectDistance = 120; 
+    const particleSpeed = 0.3;
 
     const initParticles = () => {
       particles = [];
@@ -49,12 +66,13 @@ export function HeroNetworkAnimation() {
           y: Math.random() * canvas.height,
           vx: (Math.random() - 0.5) * particleSpeed * 2,
           vy: (Math.random() - 0.5) * particleSpeed * 2,
-          radius: Math.random() * 1.5 + 0.5, // Particle dot size
+          radius: Math.random() * 1.5 + 0.5,
         });
       }
     };
 
     const getHslString = (baseColorHsl: string, opacity: number) => {
+        if (!baseColorHsl) return `hsla(0, 0%, 0%, ${opacity})`; // Fallback for safety
         const [h, s, l] = baseColorHsl.split(' ');
         return `hsla(${h}, ${s}, ${l}, ${opacity})`;
     }
@@ -66,18 +84,15 @@ export function HeroNetworkAnimation() {
         p.x += p.vx;
         p.y += p.vy;
 
-        // Boundary checks (bounce)
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-        // Draw particle dot
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = getHslString(basePrimaryColor, 0.3); // Subtle particle color
+        ctx.fillStyle = getHslString(basePrimaryColor, 0.3); 
         ctx.fill();
       });
 
-      // Draw lines
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const p1 = particles[i];
@@ -91,10 +106,10 @@ export function HeroNetworkAnimation() {
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
-            // Alternate line color for visual variety
-            const lineColor = i % 2 === 0 ? basePrimaryColor : baseAccentColor;
-            ctx.strokeStyle = getHslString(lineColor, opacity * 0.2); // Subtle line color
-            ctx.lineWidth = 0.5; // Thin lines
+            
+            const lineColor = chartColors[(i + j) % chartColors.length]; // Cycle through chart colors
+            ctx.strokeStyle = getHslString(lineColor, opacity * 0.2); 
+            ctx.lineWidth = 0.5; 
             ctx.stroke();
           }
         }
@@ -107,7 +122,6 @@ export function HeroNetworkAnimation() {
     draw();
 
     const handleResize = () => {
-      // Debounce resize or use a timeout to avoid performance issues
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
       initParticles();
       draw();
@@ -126,7 +140,7 @@ export function HeroNetworkAnimation() {
       window.removeEventListener('resize', debouncedResize);
       clearTimeout(resizeTimeout);
     };
-  }, [isMounted, basePrimaryColor, baseAccentColor]); // Rerun on color change
+  }, [isMounted, basePrimaryColor, chartColors]);
 
   return (
     <canvas
