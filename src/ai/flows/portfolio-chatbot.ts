@@ -46,7 +46,7 @@ const prompt = ai.definePrompt({
   User Query: {{{query}}}
   Portfolio Content: {{{portfolioContent}}}
   `,
-  config: {
+  config: { // Correctly nested safetySettings
     safetySettings: [
       {
         category: 'HARM_CATEGORY_HATE_SPEECH',
