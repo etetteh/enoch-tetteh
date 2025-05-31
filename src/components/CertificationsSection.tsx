@@ -111,7 +111,7 @@ export function CertificationsSection() {
 
       container.scrollTo({
         left: targetScrollLeft,
-        behavior: 'auto',
+        behavior: 'auto', // Changed from 'smooth' to 'auto' for immediate positioning
       });
     }
   }, [currentIndex]);
@@ -137,9 +137,10 @@ export function CertificationsSection() {
           ref={carouselBlockRef}
           className={cn(
             "relative max-w-3xl mx-auto",
-            "transition-all duration-700 ease-out delay-200",
+            "transition-all duration-700 ease-out", // Removed delay-200 as it was an invalid prop for useFadeInOnScroll
             isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
+          style={isCarouselBlockVisible ? { transitionDelay: `200ms` } : undefined}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
@@ -150,7 +151,7 @@ export function CertificationsSection() {
             {certifications.map((cert, index) => (
               <div
                 key={cert.id}
-                ref={(el) => (cardRefs.current[index] = el)}
+                ref={(el) => { cardRefs.current[index] = el; }}
                 onClick={() => goToSlide(index)}
                 role="button"
                 tabIndex={0}
@@ -218,4 +219,3 @@ export function CertificationsSection() {
     </section>
   );
 }
-

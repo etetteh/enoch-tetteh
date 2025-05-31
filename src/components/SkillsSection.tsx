@@ -24,7 +24,7 @@ export function SkillsSection() {
   const mainCarouselBlockRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
-  const isSummaryVisible = useFadeInOnScroll(summaryRef, { threshold: 0.1 }); 
+  const isSummaryVisible = useFadeInOnScroll(summaryRef, { threshold: 0.1 });
   const isCarouselBlockVisible = useFadeInOnScroll(mainCarouselBlockRef, { threshold: 0.05 });
 
   const handleNext = React.useCallback(() => {
@@ -80,7 +80,7 @@ export function SkillsSection() {
       const containerWidth = container.offsetWidth;
       const cardLeft = activeCard.offsetLeft;
       const cardWidth = activeCard.offsetWidth;
-      
+
       let targetScrollLeft = cardLeft - (containerWidth / 2) + (cardWidth / 2);
       targetScrollLeft = Math.max(0, Math.min(targetScrollLeft, container.scrollWidth - containerWidth));
 
@@ -112,9 +112,10 @@ export function SkillsSection() {
           ref={summaryRef}
           className={cn(
             "text-center text-muted-foreground mb-8 md:mb-10 lg:mb-12 max-w-3xl mx-auto text-sm sm:text-base md:text-lg",
-            "transition-all duration-700 ease-out delay-100", // CSS delay for summary
+            "transition-all duration-700 ease-out",
             isSummaryVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
+          style={isSummaryVisible ? { transitionDelay: `100ms` } : undefined}
         >
           My deep expertise in AI/ML—spanning Generative AI, NLP, and Computer Vision—combined with production-grade MLOps, enables me to architect and deploy innovative, scalable solutions that deliver significant business impact.
         </p>
@@ -123,16 +124,17 @@ export function SkillsSection() {
           ref={mainCarouselBlockRef}
           className={cn(
             "relative max-w-full mx-auto flex-grow flex flex-col justify-center",
-            "transition-all duration-700 ease-out delay-200", // CSS delay for carousel block
+            "transition-all duration-700 ease-out",
             isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
+          style={isCarouselBlockVisible ? { transitionDelay: `200ms` } : undefined}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           <div
             ref={carouselContainerRef}
             className={cn(
-              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-center snap-x snap-mandatory w-full"
+              "flex overflow-x-auto scrollbar-hide py-8 px-4 space-x-4 md:space-x-6 items-center snap-x snap-mandatory w-full" // Ensure items-center for vertical alignment
             )}
           >
             {skillCategories.map((category, index) => {
@@ -142,15 +144,15 @@ export function SkillsSection() {
               return (
                 <div
                   key={category.name}
-                  ref={(el) => (cardRefs.current[index] = el)}
+                  ref={(el) => { cardRefs.current[index] = el; }}
                   className={cn(
                     "group rounded-xl p-0.5 transition-all duration-500 ease-in-out transform flex-shrink-0 snap-center",
-                    "w-[calc(90vw-1rem)] max-w-[300px] sm:max-w-[320px] md:max-w-[350px]", // Consistent width for cards
+                    "w-[calc(90vw-1rem)] max-w-[300px] sm:max-w-[320px] md:max-w-[350px]",
                     isThisCardUserExpanded ? "h-auto" : "h-[450px]", // Fixed initial height, auto if expanded by user
                     isThisCardActive
                       ? "scale-105 bg-gradient-to-br from-primary via-primary to-accent shadow-xl z-10"
                       : "scale-100 hover:shadow-lg z-0",
-                    "cursor-pointer" // Allow clicking card to center it
+                    "cursor-pointer"
                   )}
                   role="listitem"
                   onClick={() => { if (index !== currentIndex) goToSlide(index); }}
@@ -160,7 +162,7 @@ export function SkillsSection() {
                     category={category}
                     isUserExpanded={isThisCardUserExpanded}
                     onToggleExpand={() => toggleUserExpand(index)}
-                    contentMaxHeightBeforeExpand="150px" // Max height for skill list before "more"
+                    contentMaxHeightBeforeExpand="150px"
                   />
                 </div>
               );
@@ -223,5 +225,3 @@ export function SkillsSection() {
     </section>
   );
 }
-
-    
