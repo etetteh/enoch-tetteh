@@ -45,7 +45,7 @@ Output the questions as a JSON array of strings. For example:
     "Enoch's Google Cloud experience?"
   ]
 }`,
-  config: { // Corrected: safetySettings nested under config
+  config: { // Correctly nested safetySettings
     safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
