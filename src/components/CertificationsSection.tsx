@@ -61,7 +61,7 @@ export function CertificationsSection() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05, delay: 200 });
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
 
 
   useEffect(() => {
@@ -127,8 +127,8 @@ export function CertificationsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Certifications & Learning
@@ -137,8 +137,8 @@ export function CertificationsSection() {
           ref={carouselBlockRef}
           className={cn(
             "relative max-w-3xl mx-auto",
-            "transition-all duration-1000 ease-out delay-200",
-            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}

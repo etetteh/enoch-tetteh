@@ -86,8 +86,8 @@ export function ProjectsSection() {
   const carouselBlockRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
-  const isDescriptionVisible = useFadeInOnScroll(descriptionRef, { threshold: 0.1, delay: 100 });
-  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05, delay: 200 });
+  const isDescriptionVisible = useFadeInOnScroll(descriptionRef, { threshold: 0.1 });
+  const isCarouselBlockVisible = useFadeInOnScroll(carouselBlockRef, { threshold: 0.05 });
 
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -147,8 +147,8 @@ export function ProjectsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Featured Projects
@@ -157,8 +157,8 @@ export function ProjectsSection() {
           ref={descriptionRef}
           className={cn(
             "text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base",
-            "transition-all duration-1000 ease-out delay-100",
-            isDescriptionVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out delay-100",
+            isDescriptionVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Explore key projects where I've engineered impactful, production-ready AI solutions. This selection showcases my end-to-end expertise in developing scalable systems for NLP and Computer Vision, implementing advanced MLOps, and leveraging Generative AI to solve complex challenges.
@@ -168,8 +168,8 @@ export function ProjectsSection() {
           ref={carouselBlockRef}
           className={cn(
             "my-8",
-            "transition-all duration-1000 ease-out delay-200",
-            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out delay-200",
+            isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           <div
@@ -180,11 +180,11 @@ export function ProjectsSection() {
           >
             <div className={cn(
               "bg-card shadow-xl rounded-lg overflow-hidden p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8",
-              "md:h-[500px]" 
+              "md:h-[500px]"
             )}>
               {/* Left Pane: Text Content */}
               <div
-                key={currentProject.id + '-text-pane'} 
+                key={currentProject.id + '-text-pane'}
                 className="w-full md:w-1/2 md:h-full flex flex-col"
               >
                  <div className="flex-grow min-h-0 overflow-y-auto">
@@ -215,7 +215,7 @@ export function ProjectsSection() {
                             </span>
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-hidden"> 
+                        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
                           <DialogHeader className="p-6 pb-4 border-b shrink-0 sticky top-0 bg-background z-10">
                             <DialogTitle className="text-2xl text-primary">{currentProject.title}</DialogTitle>
                           </DialogHeader>

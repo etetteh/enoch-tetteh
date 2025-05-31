@@ -24,8 +24,8 @@ export function SkillsSection() {
   const mainCarouselBlockRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
-  const isSummaryVisible = useFadeInOnScroll(summaryRef, { threshold: 0.1, delay: 100 }); // Animation for summary
-  const isCarouselBlockVisible = useFadeInOnScroll(mainCarouselBlockRef, { threshold: 0.05, delay: 200 });
+  const isSummaryVisible = useFadeInOnScroll(summaryRef, { threshold: 0.1 }); 
+  const isCarouselBlockVisible = useFadeInOnScroll(mainCarouselBlockRef, { threshold: 0.05 });
 
   const handleNext = React.useCallback(() => {
     setCurrentIndex((prevIndex) =>
@@ -112,7 +112,7 @@ export function SkillsSection() {
           ref={summaryRef}
           className={cn(
             "text-center text-muted-foreground mb-8 md:mb-10 lg:mb-12 max-w-3xl mx-auto text-sm sm:text-base md:text-lg",
-            "transition-all duration-700 ease-out delay-100",
+            "transition-all duration-700 ease-out delay-100", // CSS delay for summary
             isSummaryVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
@@ -123,7 +123,7 @@ export function SkillsSection() {
           ref={mainCarouselBlockRef}
           className={cn(
             "relative max-w-full mx-auto flex-grow flex flex-col justify-center",
-            "transition-all duration-700 ease-out delay-200",
+            "transition-all duration-700 ease-out delay-200", // CSS delay for carousel block
             isCarouselBlockVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
           onMouseEnter={() => setIsPaused(true)}

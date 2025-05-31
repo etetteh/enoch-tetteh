@@ -62,7 +62,7 @@ const highlightExperienceKeywords = (
 
 const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }) => {
   const cardWrapperRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: expIndex * 100 });
+  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
 
 
   return (
@@ -70,9 +70,10 @@ const ExperienceCard = ({ exp, expIndex }: { exp: Experience; expIndex: number }
       ref={cardWrapperRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-all duration-1000 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8" 
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       )}
+      style={isVisible ? { transitionDelay: `${expIndex * 100}ms` } : undefined}
     >
       <Card className="bg-card rounded-xl h-full">
         <CardHeader>
@@ -103,14 +104,15 @@ export function ExperienceSection() {
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
 
   return (
-    <section id="experience">
-      <div className="container">
+    <section id="experience" className="relative overflow-hidden">
+      <div className="absolute inset-0 -z-10 animated-section-background-layer"></div>
+      <div className="container relative z-0">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Professional Experience

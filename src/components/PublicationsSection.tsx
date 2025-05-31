@@ -13,7 +13,7 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number }) => {
   const cardWrapperRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: pubIndex * 100 });
+  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
 
 
   return (
@@ -21,9 +21,10 @@ const PublicationCard = ({ pub, pubIndex }: { pub: Publication, pubIndex: number
       ref={cardWrapperRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-all duration-1000 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       )}
+      style={isVisible ? { transitionDelay: `${pubIndex * 100}ms` } : undefined}
     >
       <Card className="bg-card rounded-xl h-full flex flex-col">
         <CardHeader>
@@ -78,8 +79,8 @@ export function PublicationsSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Publications

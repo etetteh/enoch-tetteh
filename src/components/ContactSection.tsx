@@ -18,7 +18,7 @@ export function ContactSection() {
   const cardWrapperRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
-  const isCardWrapperVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: 200 });
+  const isCardWrapperVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
 
   useEffect(() => {
     setIsClient(true);
@@ -38,8 +38,8 @@ export function ContactSection() {
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Get In Touch
@@ -48,8 +48,8 @@ export function ContactSection() {
           ref={cardWrapperRef}
           className={cn(
             "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg max-w-2xl mx-auto",
-            "transition-all duration-1000 ease-out delay-200",
-            isCardWrapperVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out delay-200",
+            isCardWrapperVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           <Card className="bg-card rounded-xl">

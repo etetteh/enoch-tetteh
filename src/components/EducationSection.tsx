@@ -10,16 +10,17 @@ import { useFadeInOnScroll } from '@/hooks/useFadeInOnScroll';
 
 const EducationCard = ({ edu, eduIndex }: { edu: Education, eduIndex: number }) => {
   const cardWrapperRef = useRef<HTMLDivElement>(null);
-  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1, delay: eduIndex * 100 });
+  const isVisible = useFadeInOnScroll(cardWrapperRef, { threshold: 0.1 });
 
   return (
     <div
       ref={cardWrapperRef}
       className={cn(
         "rounded-xl p-0.5 bg-gradient-to-br from-primary via-primary to-accent shadow-lg",
-        "transition-all duration-1000 ease-out",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        "transition-all duration-700 ease-out",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       )}
+      style={isVisible ? { transitionDelay: `${eduIndex * 100}ms` } : undefined}
     >
       <Card className="bg-card rounded-xl">
         <CardHeader>
@@ -56,14 +57,15 @@ export function EducationSection() {
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
 
   return (
-    <section id="education">
-      <div className="container">
+    <section id="education" className="relative overflow-hidden">
+      <div className="absolute inset-0 -z-10 animated-section-background-layer"></div>
+      <div className="container relative z-0">
         <h2
           ref={titleRef}
           className={cn(
             "section-title",
-            "transition-all duration-1000 ease-out",
-            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "transition-all duration-700 ease-out",
+            isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Education
