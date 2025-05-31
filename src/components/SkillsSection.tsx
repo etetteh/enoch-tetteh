@@ -20,9 +20,11 @@ export function SkillsSection() {
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const summaryRef = useRef<HTMLParagraphElement>(null); // Ref for the summary
   const mainCarouselBlockRef = useRef<HTMLDivElement>(null);
 
   const isTitleVisible = useFadeInOnScroll(titleRef, { threshold: 0.1 });
+  const isSummaryVisible = useFadeInOnScroll(summaryRef, { threshold: 0.1, delay: 100 }); // Animation for summary
   const isCarouselBlockVisible = useFadeInOnScroll(mainCarouselBlockRef, { threshold: 0.05, delay: 200 });
 
   const handleNext = React.useCallback(() => {
@@ -99,13 +101,23 @@ export function SkillsSection() {
         <h2
           ref={titleRef}
           className={cn(
-            "section-title mb-8 md:mb-12 lg:mb-16",
+            "section-title mb-4 md:mb-6", // Reduced bottom margin for title
             "transition-all duration-700 ease-out",
             isTitleVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           )}
         >
           Skills & Expertise
         </h2>
+        <p
+          ref={summaryRef}
+          className={cn(
+            "text-center text-muted-foreground mb-8 md:mb-10 lg:mb-12 max-w-3xl mx-auto text-sm sm:text-base md:text-lg",
+            "transition-all duration-700 ease-out delay-100",
+            isSummaryVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          )}
+        >
+          My deep expertise in AI/ML—spanning Generative AI, NLP, and Computer Vision—combined with production-grade MLOps, enables me to architect and deploy innovative, scalable solutions that deliver significant business impact.
+        </p>
 
         <div
           ref={mainCarouselBlockRef}
@@ -211,3 +223,5 @@ export function SkillsSection() {
     </section>
   );
 }
+
+    
