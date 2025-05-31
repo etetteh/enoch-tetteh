@@ -5,7 +5,7 @@ import './globals.css';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Toaster } from "@/components/ui/toaster"
-import { Chatbot } from '@/components/Chatbot';
+// import { Chatbot } from '@/components/Chatbot'; // Commented out for static export
 import { ThemeProvider } from '@/components/ThemeProvider';
 
 const geistSans = Geist({
@@ -42,7 +42,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
-          <Chatbot />
+          {/* <Chatbot /> */} {/* Commented out for static export */}
           <Toaster />
         </ThemeProvider>
       </body>
