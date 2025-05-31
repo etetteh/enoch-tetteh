@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
     ],
   },
   webpack: (config, { isServer }) => {
-    // Fix for 'async_hooks' module not found error, often related to OpenTelemetry
+    // Fix for 'async_hooks' and other OpenTelemetry related module not found errors
     // Ensure this modification only applies to client-side bundles
     if (!isServer) {
       // Initialize config.resolve if it doesn't exist
@@ -33,6 +33,7 @@ const nextConfig: NextConfig = {
       }
       // Add or overwrite async_hooks to be ignored (false means it's treated as an empty module)
       config.resolve.fallback.async_hooks = false;
+      config.resolve.fallback['@opentelemetry/exporter-jaeger'] = false; // Add this line
     }
     return config;
   },

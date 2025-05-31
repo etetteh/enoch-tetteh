@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview AI-powered tool to generate a resume in Markdown format from the website's content.
@@ -65,7 +66,7 @@ export async function generateResumeFromWebsite(): Promise<GenerateResumeOutput>
   const inputForPrompt = {
     name: portfolioOwner.name,
     title: portfolioOwner.title,
-    bio: portfolioOwner.bio,
+    bio: portfolioOwner.bio.join('\n'), // Join the bio array into a single string
     contactEmail: portfolioOwner.contactEmail,
     linkedinUrl: portfolioOwner.linkedinUrl,
     githubUrl: portfolioOwner.githubUrl,
@@ -81,7 +82,7 @@ export async function generateResumeFromWebsite(): Promise<GenerateResumeOutput>
 const GenerateResumeInputSchema = z.object({
   name: z.string(),
   title: z.string(),
-  bio: z.string(),
+  bio: z.string(), // Expecting a single string here
   contactEmail: z.string(),
   linkedinUrl: z.string(),
   githubUrl: z.string(),
