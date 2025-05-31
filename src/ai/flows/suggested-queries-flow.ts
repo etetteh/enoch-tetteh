@@ -45,7 +45,7 @@ Output the questions as a JSON array of strings. For example:
     "Enoch's Google Cloud experience?"
   ]
 }`,
-  config: { // Correctly nested safetySettings
+  config: {
     safetySettings: [
       { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
       { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
@@ -75,5 +75,3 @@ const _internalSuggestedQueriesFlow = ai.defineFlow(
 export async function suggestedQueriesFlow(input: SuggestedQueriesInput): Promise<SuggestedQueriesOutput> {
   return _internalSuggestedQueriesFlow(input);
 }
-
-    
