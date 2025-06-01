@@ -303,7 +303,7 @@ export const portfolioOwner = {
   githubUrl: "https://github.com/etetteh",
 
   // New fields for Hero Section
-  heroMainHeading: "Lead AI Engineer",
+  heroMainHeading: "Senior AI/ML Engineer",
   heroSubHeading: "Transforming Innovation Into Enterprise Impact",
   heroTagline: "Senior AI/ML Engineer specializing in production-grade solutions that deliver measurable business results.",
   heroDetailedBio: [
@@ -319,6 +319,7 @@ export const portfolioOwner = {
     
 
     
+
 
 
 
